@@ -1,0 +1,95 @@
+@CHARSET "UTF-8";
+.main{
+	       width: 88%;
+    margin-left: 6%;
+    padding-top: 80px;
+       
+}
+.tel{
+	
+}
+.title{
+	    float: left;
+  
+}
+.content{
+	margin-left: 27%;
+    width: 55%;
+       
+}
+.serviceP{
+	
+}
+
+.serTxt{
+	    width: 90%;
+    padding-left: 5px;
+}
+.code{
+	
+}
+.codeTxt{
+	    float: left;
+    width: 55%!important;
+    margin-right: 10px;
+}
+.getCode{
+	    color: #E284D2;
+	    float: right;
+}
+.surebtn{
+	     margin-top: 50px;
+    text-align: center;
+    height: 50px;
+    border: solid 1px;
+    line-height: 50px;
+    border-radius: 50px;
+    font-size: 17px;
+     background: linear-gradient(to right, #7F8CFF , #7F8CFF);
+         color: #fff;
+}
+.forget{
+	       float: right;
+    margin: 10px;
+    color: #666666;
+}
+.txt{
+    border: 0px;
+    height: 45px;
+    outline: none;
+    line-height: 20px;
+    width: 60%;
+    padding-left: 5px;
+    font-size: 16px;   
+}
+.style{
+    border-bottom: solid 1px #eaeaea;
+    height: 55px;
+    line-height: 55px;
+      color: #3b3a3e;
+       position: relative;
+}
+.protocol{
+	    font-size: 13px;
+    color: #999999;
+    margin-top: 50px;
+    margin-bottom: 7px;
+        text-align: center;
+}
+.link{
+	    color: #7F8CFF;
+}
+.eyeImage{
+	    width: 20px;
+    position: absolute;
+    top: 22px;
+    right: 5%;
+}
+.contentword {
+    font-size: 15px;
+    color: #333;
+    border-bottom: solid 1px #d6d6d6;
+    height: 70px;
+    padding-top: 50px;
+    line-height:20px;
+}

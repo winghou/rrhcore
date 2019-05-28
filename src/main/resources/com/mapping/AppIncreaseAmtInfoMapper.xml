@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppIncreaseAmtInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppIncreaseAmtInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="appr_id" property="appr_id" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="image_url" property="image_url" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="expires_in" property="expires_in" jdbcType="VARCHAR" />
+    <result column="access_token" property="access_token" jdbcType="VARCHAR" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, type, appr_id, city, province, country, gender, name, image_url, uid, expires_in, access_token,openid
+  </sql>
+  
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="int" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_increase_amt_info
+    where appr_id = #{appr_id,jdbcType=INTEGER}
+  </select>
+  <select id="qqAuthorizeByApprId" resultMap="BaseResultMap" parameterType="int" >
+    select
+    <include refid="Base_Column_List" />
+    from app_increase_amt_info
+    where appr_id = #{appr_id,jdbcType=INTEGER} and type = 0
+  </select>
+  <select id="weChatAuthorizeByApprId" resultMap="BaseResultMap" parameterType="int" >
+    select
+    <include refid="Base_Column_List" />
+    from app_increase_amt_info
+    where appr_id = #{appr_id,jdbcType=INTEGER} and type = 1
+  </select>
+  
+  <select id="selectByApprIdAndType" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_increase_amt_info
+    where appr_id = #{appr_id,jdbcType=INTEGER} and type = #{type,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.model.AppIncreaseAmtInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_increase_amt_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="appr_id != null" >
+        appr_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="image_url != null" >
+        image_url,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="expires_in != null" >
+        expires_in,
+      </if>
+      <if test="access_token != null" >
+        access_token,
+      </if>
+       <if test="openid != null" >
+        openid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appr_id != null" >
+        #{appr_id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="image_url != null" >
+        #{image_url,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="expires_in != null" >
+        #{expires_in,jdbcType=VARCHAR},
+      </if>
+      <if test="access_token != null" >
+        #{access_token,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByApprIdAndType" parameterType="com.model.AppIncreaseAmtInfo" >
+    update app_increase_amt_info
+    <set >
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="image_url != null" >
+        image_url = #{image_url,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="expires_in != null" >
+        expires_in = #{expires_in,jdbcType=VARCHAR},
+      </if>
+      <if test="access_token != null" >
+        access_token = #{access_token,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where appr_id = #{appr_id,jdbcType=INTEGER} and type = #{type,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

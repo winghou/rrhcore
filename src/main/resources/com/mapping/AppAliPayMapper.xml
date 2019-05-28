@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppAliPayMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppAliPay" >
+    <id column="pay_id" property="payId" jdbcType="INTEGER" />
+    <result column="partner" property="partner" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="VARCHAR" />
+    <result column="private_key" property="privateKey" jdbcType="VARCHAR" />
+    <result column="public_key" property="publicKey" jdbcType="VARCHAR" />
+    <result column="notify_url" property="notifyUrl" jdbcType="VARCHAR" />
+    <result column="return_url" property="returnUrl" jdbcType="VARCHAR" />
+    <result column="sign_type" property="signType" jdbcType="VARCHAR" />
+    <result column="input_charset" property="inputCharset" jdbcType="VARCHAR" />
+    <result column="payment_type" property="paymentType" jdbcType="VARCHAR" />
+    <result column="service" property="service" jdbcType="VARCHAR" />
+    <result column="anti_phishing_key" property="antiPhishingKey" jdbcType="VARCHAR" />
+    <result column="exter_invoke_ip" property="exterInvokeIp" jdbcType="VARCHAR" />
+    <result column="timeout_express" property="timeoutExpress" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="private_key2" property="privateKey2" jdbcType="VARCHAR" />
+    <result column="public_key2" property="publicKey2" jdbcType="VARCHAR" />
+    <result column="notify_url2" property="notifyUrl2" jdbcType="VARCHAR" />
+    <result column="gate_way_url" property="gateWayUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pay_id, partner, seller_id, private_key, public_key, notify_url, return_url, sign_type, 
+    input_charset, payment_type, service, anti_phishing_key, exter_invoke_ip, timeout_express, 
+    product_code, private_key2, public_key2, notify_url2, gate_way_url
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_ali_pay
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_ali_pay
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppAliPay" >
+    insert into app_ali_pay (pay_id, partner, seller_id, 
+      private_key, public_key, notify_url, 
+      return_url, sign_type, input_charset, 
+      payment_type, service, anti_phishing_key, 
+      exter_invoke_ip, timeout_express, product_code
+      )
+    values (#{payId,jdbcType=INTEGER}, #{partner,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, 
+      #{privateKey,jdbcType=VARCHAR}, #{publicKey,jdbcType=VARCHAR}, #{notifyUrl,jdbcType=VARCHAR}, 
+      #{returnUrl,jdbcType=VARCHAR}, #{signType,jdbcType=VARCHAR}, #{inputCharset,jdbcType=VARCHAR}, 
+      #{paymentType,jdbcType=VARCHAR}, #{service,jdbcType=VARCHAR}, #{antiPhishingKey,jdbcType=VARCHAR}, 
+      #{exterInvokeIp,jdbcType=VARCHAR}, #{timeoutExpress,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppAliPay" >
+    insert into app_ali_pay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="payId != null" >
+        pay_id,
+      </if>
+      <if test="partner != null" >
+        partner,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="privateKey != null" >
+        private_key,
+      </if>
+      <if test="publicKey != null" >
+        public_key,
+      </if>
+      <if test="notifyUrl != null" >
+        notify_url,
+      </if>
+      <if test="returnUrl != null" >
+        return_url,
+      </if>
+      <if test="signType != null" >
+        sign_type,
+      </if>
+      <if test="inputCharset != null" >
+        input_charset,
+      </if>
+      <if test="paymentType != null" >
+        payment_type,
+      </if>
+      <if test="service != null" >
+        service,
+      </if>
+      <if test="antiPhishingKey != null" >
+        anti_phishing_key,
+      </if>
+      <if test="exterInvokeIp != null" >
+        exter_invoke_ip,
+      </if>
+      <if test="timeoutExpress != null" >
+        timeout_express,
+      </if>
+      <if test="productCode != null" >
+        product_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="payId != null" >
+        #{payId,jdbcType=INTEGER},
+      </if>
+      <if test="partner != null" >
+        #{partner,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="privateKey != null" >
+        #{privateKey,jdbcType=VARCHAR},
+      </if>
+      <if test="publicKey != null" >
+        #{publicKey,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyUrl != null" >
+        #{notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="returnUrl != null" >
+        #{returnUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="signType != null" >
+        #{signType,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCharset != null" >
+        #{inputCharset,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentType != null" >
+        #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="service != null" >
+        #{service,jdbcType=VARCHAR},
+      </if>
+      <if test="antiPhishingKey != null" >
+        #{antiPhishingKey,jdbcType=VARCHAR},
+      </if>
+      <if test="exterInvokeIp != null" >
+        #{exterInvokeIp,jdbcType=VARCHAR},
+      </if>
+      <if test="timeoutExpress != null" >
+        #{timeoutExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppAliPay" >
+    update app_ali_pay
+    <set >
+      <if test="partner != null" >
+        partner = #{partner,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="privateKey != null" >
+        private_key = #{privateKey,jdbcType=VARCHAR},
+      </if>
+      <if test="publicKey != null" >
+        public_key = #{publicKey,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyUrl != null" >
+        notify_url = #{notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="returnUrl != null" >
+        return_url = #{returnUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="signType != null" >
+        sign_type = #{signType,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCharset != null" >
+        input_charset = #{inputCharset,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentType != null" >
+        payment_type = #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="service != null" >
+        service = #{service,jdbcType=VARCHAR},
+      </if>
+      <if test="antiPhishingKey != null" >
+        anti_phishing_key = #{antiPhishingKey,jdbcType=VARCHAR},
+      </if>
+      <if test="exterInvokeIp != null" >
+        exter_invoke_ip = #{exterInvokeIp,jdbcType=VARCHAR},
+      </if>
+      <if test="timeoutExpress != null" >
+        timeout_express = #{timeoutExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppAliPay" >
+    update app_ali_pay
+    set partner = #{partner,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      private_key = #{privateKey,jdbcType=VARCHAR},
+      public_key = #{publicKey,jdbcType=VARCHAR},
+      notify_url = #{notifyUrl,jdbcType=VARCHAR},
+      return_url = #{returnUrl,jdbcType=VARCHAR},
+      sign_type = #{signType,jdbcType=VARCHAR},
+      input_charset = #{inputCharset,jdbcType=VARCHAR},
+      payment_type = #{paymentType,jdbcType=VARCHAR},
+      service = #{service,jdbcType=VARCHAR},
+      anti_phishing_key = #{antiPhishingKey,jdbcType=VARCHAR},
+      exter_invoke_ip = #{exterInvokeIp,jdbcType=VARCHAR},
+      timeout_express = #{timeoutExpress,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR}
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </update>
+</mapper>

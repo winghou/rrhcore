@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLoanCtmShipMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLoanCtmShip" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ship_type" property="shipType" jdbcType="VARCHAR" />
+    <result column="ship_name" property="shipName" jdbcType="VARCHAR" />
+    <result column="ship_cnt" property="shipCnt" jdbcType="VARCHAR" />
+    <result column="ship_addr" property="shipAddr" jdbcType="VARCHAR" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="relationship" property="relationship" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ship_type, ship_name, ship_cnt, ship_addr, appr_id,relationship
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMSHIP
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="selectByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMSHIP
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from APP_LOAN_CTMSHIP
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppLoanCtmShip" >
+    insert into APP_LOAN_CTMSHIP (id, ship_type, ship_name, 
+      ship_cnt, ship_addr, appr_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{shipType,jdbcType=VARCHAR}, #{shipName,jdbcType=VARCHAR}, 
+      #{shipCnt,jdbcType=VARCHAR}, #{shipAddr,jdbcType=VARCHAR}, #{apprId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppLoanCtmShip" >
+    insert into APP_LOAN_CTMSHIP
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shipType != null" >
+        ship_type,
+      </if>
+      <if test="shipName != null" >
+        ship_name,
+      </if>
+      <if test="shipCnt != null" >
+        ship_cnt,
+      </if>
+      <if test="shipAddr != null" >
+        ship_addr,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="relationship != null" >
+        relationship,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shipType != null" >
+        #{shipType,jdbcType=VARCHAR},
+      </if>
+      <if test="shipName != null" >
+        #{shipName,jdbcType=VARCHAR},
+      </if>
+      <if test="shipCnt != null" >
+        #{shipCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="shipAddr != null" >
+        #{shipAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="relationship != null" >
+        #{relationship,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppLoanCtmShip" >
+    update APP_LOAN_CTMSHIP
+    <set >
+      <if test="shipType != null" >
+        ship_type = #{shipType,jdbcType=VARCHAR},
+      </if>
+      <if test="shipName != null" >
+        ship_name = #{shipName,jdbcType=VARCHAR},
+      </if>
+      <if test="shipCnt != null" >
+        ship_cnt = #{shipCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="shipAddr != null" >
+        ship_addr = #{shipAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="relationship != null" >
+        relationship = #{relationship,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppLoanCtmShip" >
+    update APP_LOAN_CTMSHIP
+    set ship_type = #{shipType,jdbcType=VARCHAR},
+      ship_name = #{shipName,jdbcType=VARCHAR},
+      ship_cnt = #{shipCnt,jdbcType=VARCHAR},
+      ship_addr = #{shipAddr,jdbcType=VARCHAR},
+      appr_id = #{apprId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

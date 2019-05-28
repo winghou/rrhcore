@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLoanBankMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLoanBank" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bank_id" property="bankId" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="VARCHAR" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+    <result column="dq_year" property="dqYear" jdbcType="VARCHAR" />
+    <result column="dq_month" property="dqMonth" jdbcType="VARCHAR" />
+    <result column="card_last3" property="cardLast3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, bank_id, bank_name, card_type, card_no, dq_year, dq_month, card_last3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_loan_bank
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_loan_bank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppLoanBank" >
+    insert into app_loan_bank (id, bank_id, bank_name, 
+      card_type, card_no, dq_year, 
+      dq_month, card_last3)
+    values (#{id,jdbcType=INTEGER}, #{bankId,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+      #{cardType,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{dqYear,jdbcType=VARCHAR}, 
+      #{dqMonth,jdbcType=VARCHAR}, #{cardLast3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppLoanBank" >
+    insert into app_loan_bank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bankId != null" >
+        bank_id,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="cardNo != null" >
+        card_no,
+      </if>
+      <if test="dqYear != null" >
+        dq_year,
+      </if>
+      <if test="dqMonth != null" >
+        dq_month,
+      </if>
+      <if test="cardLast3 != null" >
+        card_last3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dqYear != null" >
+        #{dqYear,jdbcType=VARCHAR},
+      </if>
+      <if test="dqMonth != null" >
+        #{dqMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="cardLast3 != null" >
+        #{cardLast3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppLoanBank" >
+    update app_loan_bank
+    <set >
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dqYear != null" >
+        dq_year = #{dqYear,jdbcType=VARCHAR},
+      </if>
+      <if test="dqMonth != null" >
+        dq_month = #{dqMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="cardLast3 != null" >
+        card_last3 = #{cardLast3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppLoanBank" >
+    update app_loan_bank
+    set bank_id = #{bankId,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      card_type = #{cardType,jdbcType=VARCHAR},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      dq_year = #{dqYear,jdbcType=VARCHAR},
+      dq_month = #{dqMonth,jdbcType=VARCHAR},
+      card_last3 = #{cardLast3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

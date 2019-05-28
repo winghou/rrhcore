@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLoanAttchMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLoanAttch" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="file_uri" property="fileUri" jdbcType="VARCHAR" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="small_pic_url" property="smallPicUrl" jdbcType="VARCHAR" />
+    <result column="pic_desc" property="picDesc" jdbcType="VARCHAR" />
+    <result column="portrait_photo_url" property="portraitPhotoUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, file_name, file_uri, appr_id, small_pic_url, pic_desc, portrait_photo_url
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_ATTCH
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectPicIsAll" resultMap="BaseResultMap"   parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_ATTCH
+    where appr_id= #{apprId} and file_name in('0','1','2')
+  </select>
+  <select id="selectByPicType" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_ATTCH
+    where file_name = #{fileName} and appr_id= #{apprId} and file_name in('0','1','2') order by file_name+0
+  </select>
+  <select id="selectByFileNameAndApprId" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_ATTCH
+    where file_name = #{fileName} and appr_id= #{apprId}
+  </select>
+  <select id="selectByapprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_ATTCH
+    where appr_id = #{apprId,jdbcType=INTEGER} and file_name in('0','1','2','3')
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from APP_LOAN_ATTCH
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppLoanAttch" >
+    insert into APP_LOAN_ATTCH (id, file_name, file_uri, 
+      appr_id)
+    values (#{id,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{fileUri,jdbcType=VARCHAR}, 
+      #{apprId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppLoanAttch" >
+    insert into APP_LOAN_ATTCH
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="fileUri != null" >
+        file_uri,
+      </if>
+      <if test="smallPicUrl != null" >
+        small_pic_url,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="portraitPhotoUrl != null" >
+        portrait_photo_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUri != null" >
+        #{fileUri,jdbcType=VARCHAR},
+      </if>
+      <if test="smallPicUrl != null" >
+        #{smallPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="portraitPhotoUrl != null" >
+        #{portraitPhotoUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppLoanAttch" >
+    update APP_LOAN_ATTCH
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUri != null" >
+        file_uri = #{fileUri,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="portraitPhotoUrl != null" >
+        portrait_photo_url = #{portraitPhotoUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppLoanAttch" >
+    update APP_LOAN_ATTCH
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      file_uri = #{fileUri,jdbcType=VARCHAR},
+      appr_id = #{apprId,jdbcType=INTEGER},
+      portrait_photo_url = #{portraitPhotoUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppUploadPdfFileMapper">
+	<resultMap id="BaseResultMap" type="com.model.AppUploadPdfFile">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="apply_no" property="applyNo" jdbcType="VARCHAR" />
+		<result column="withdraw_id" property="withDrawId" jdbcType="VARCHAR" />
+		<result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="file_desc" property="fileDesc" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, apply_no, withdraw_id, file_url, create_time,
+		file_desc, status
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from app_upload_pdf_file
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByApplyNo" resultMap="BaseResultMap"
+		parameterType="string">
+		select
+		<include refid="Base_Column_List" />
+		from app_upload_pdf_file
+		where apply_no = #{param,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByWithDrawId" resultMap="BaseResultMap"
+		parameterType="string">
+		select
+		<include refid="Base_Column_List" />
+		from app_upload_pdf_file
+		where withdraw_id = #{param,jdbcType=VARCHAR}
+	</select>
+	<insert id="insert" parameterType="com.model.AppUploadPdfFile">
+		insert into
+		app_upload_pdf_file (id, apply_no, withdraw_id,
+		file_url,create_time,file_desc,status)
+		values (#{id,jdbcType=INTEGER},
+		#{applyNo,jdbcType=VARCHAR},
+		#{withDrawId,jdbcType=VARCHAR},
+		#{fileUrl,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{fileDesc,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.model.AppUploadPdfFile">
+		 insert into app_upload_pdf_file
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="applyNo != null" >
+        apply_no,
+      </if>
+      <if test="withDrawId != null" >
+        withdraw_id,
+      </if>
+      <if test="fileUrl != null" >
+        file_url,
+      </if>
+      <if test="createTime == null" >
+        create_time,
+      </if>
+      <if test="fileDesc != null" >
+        file_desc,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="applyNo != null" >
+        #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawId != null" >
+        #{withDrawId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null" >
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime == null" >
+        now(),
+      </if>
+      <if test="fileDesc != null" >
+        #{fileDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.model.AppUploadPdfFile" >
+    update app_upload_pdf_file
+    <set >
+      <if test="applyNo != null" >
+        apply_no = #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawId != null" >
+        withdraw_id = #{withDrawId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null" >
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime == null" >
+        create_time = now(),
+      </if>
+      <if test="fileDesc != null" >
+        file_desc = #{fileDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByWithIdSelective" parameterType="com.model.AppUploadPdfFile" >
+    	update app_upload_pdf_file
+    <set >
+      <if test="applyNo != null" >
+        apply_no = #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null" >
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime == null" >
+        create_time = now(),
+      </if>
+      <if test="fileDesc != null" >
+        file_desc = #{fileDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where withdraw_id = #{withDrawId,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_upload_pdf_file
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

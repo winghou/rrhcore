@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+.main{
+	background: #f2f2f2;
+    height: 100%;
+}
+.title{
+    padding-top: 20px;
+    margin: 0 20px;
+    font-size: 18px;
+  color: #333333;
+    
+}
+.content{
+	padding-left: 20px;
+    padding-right: 19px;
+    color: #666666;
+    font-size: 15px;
+    text-indent:2em ; 
+}
+.time{
+	margin-bottom: 10px;
+	padding-left: 20px;
+	color: #999999;
+	font-size: 13px;
+}

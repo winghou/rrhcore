@@ -1,0 +1,162 @@
+@CHARSET "UTF-8";
+body, html {
+    height: 100%;
+    margin: 0px;
+}
+.main{
+	
+}
+.topTitLe{
+	font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    margin-top: 20px;
+}
+.shouldPayMoney{
+	font-family: PingFang-HK-Regular;
+font-size: 35px;
+color: #000000;
+letter-spacing: -0.84px;
+text-align: center;
+}
+.tableTitle{
+opacity: 0.5;
+font-family: PingFang-HK-Regular;
+font-size: 12px;
+color: #000000;
+letter-spacing: -0.72px;
+}
+.informationTable{
+	    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+}
+.loanDate{
+	font-family: PingFang-HK-Regular;
+font-size: 14px;
+color: #000000;
+letter-spacing: -0.84px;
+}
+.repayDate{
+	font-family: PingFang-HK-Regular;
+font-size: 14px;
+color: #000000;
+letter-spacing: -0.84px;
+}
+.orderAccount{
+font-size: 14px;
+color: #999999;
+letter-spacing: -0.34px;
+}
+.orderAccount{
+    background: #F0F0F0;
+    margin-top: 12px;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 5%;
+}
+.loanInformationTitle{
+    font-size: 17px;
+    color: #333333;
+    padding: 7px 0px;
+    border-bottom: solid 1px #F0F0F0;
+    width: 90%;
+    margin-left: 5%;
+}
+.loanInformationTable{
+	    width: 90%;
+    margin-left: 5%;
+}
+.titleName{
+	    color: #999999;
+    font-size: 16px;
+    padding: 5px;
+}
+.loanInformationContent{
+	      float: right;
+    margin-right: 10%;
+    padding: 5px 0px;
+}
+.loanPageSelected{
+	       width: 8px;
+    float: right;
+    margin-right: 10%;
+    padding: 5px 0px;
+}
+.waysOfUse{
+	    padding: 5px 0px;
+}
+.insuranceOrderTitle{
+	font-size: 17px;
+    color: #333333;
+    padding: 7px 0px;
+    border-bottom: solid 1px #F0F0F0;
+    width: 90%;
+    margin-left: 5%;
+}
+.insuranceOrderNumber{
+	      float: right;
+    margin-right: 5%;
+   
+}
+.insuranceOrderTable{
+	    width: 90%;
+    margin-left: 5%;
+}
+.insuranceOrderTableContent{
+	      float: right;
+    margin-right: 10%;
+    padding: 5px 0px;
+}
+.insuranceOrderselected{
+	    margin-left: 20px;
+	        width: 8px;
+}
+.couponTitle{
+	    font-size: 17px;
+    color: #333333;
+    padding: 16px 0px;
+    margin-left: 5%;
+    float: left;
+}
+.coupon{
+	    height: 50px;
+}
+.protocol{
+    background: #F0F0F0;
+    font-size: 14px;
+    float: left;
+    padding: 3%;
+    color: #8894FF;
+    margin-bottom: 60px;
+    width: 100%;
+}
+.Settlement{
+    height: 60px;
+    line-height: 60px;
+    border-top: solid 1px #F0F0F0;
+    position: fixed;
+    bottom: 0px;
+    background: #fff;
+    width: 100%;
+	
+}
+.inall{
+    padding-left: 5px;
+    color: red;
+	
+}
+.loanBtn{
+    width: 40%;
+    float: right;
+    text-align: center;
+    background: #ff5757;
+    color: #fff;	
+}
+.word{
+	float: left;
+    color: #333333;
+    text-align: center;
+    font-size: 15px;
+    width: 60%;
+}

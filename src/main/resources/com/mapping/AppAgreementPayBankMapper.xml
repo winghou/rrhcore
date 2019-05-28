@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppAgreementPayBankMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppAgreementPayBank" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="bank_code" property="bankCode" jdbcType="VARCHAR" />
+    <result column="bank_url" property="bankUrl" jdbcType="VARCHAR" />
+    <result column="bank_num" property="bankNum" jdbcType="VARCHAR" />
+    <result column="is_use" property="isUse" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, bank_name, bank_code, bank_url, bank_num, is_use, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_agreement_pay_bank
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByAgreementPay" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_agreement_pay_bank
+    where is_use = '1'
+  </select>
+  
+  <select id="selectByCodeAndName" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_agreement_pay_bank
+    where bank_name = #{bankName} ane bank_num = #{bankNum}
+  </select>
+  
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_agreement_pay_bank
+    where bank_num = #{bankNum}
+  </select>
+  
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_agreement_pay_bank
+    where bank_name = #{bankName}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_agreement_pay_bank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppAgreementPayBank" >
+    insert into app_agreement_pay_bank (id, bank_name, bank_code, 
+      bank_url, bank_num, is_use, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, 
+      #{bankUrl,jdbcType=VARCHAR}, #{bankNum,jdbcType=VARCHAR}, #{isUse,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppAgreementPayBank" >
+    insert into app_agreement_pay_bank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>
+      <if test="bankCode != null" >
+        bank_code,
+      </if>
+      <if test="bankUrl != null" >
+        bank_url,
+      </if>
+      <if test="bankNum != null" >
+        bank_num,
+      </if>
+      <if test="isUse != null" >
+        is_use,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankUrl != null" >
+        #{bankUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNum != null" >
+        #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null" >
+        #{isUse,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppAgreementPayBank" >
+    update app_agreement_pay_bank
+    <set >
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+        bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankUrl != null" >
+        bank_url = #{bankUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNum != null" >
+        bank_num = #{bankNum,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null" >
+        is_use = #{isUse,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppAgreementPayBank" >
+    update app_agreement_pay_bank
+    set bank_name = #{bankName,jdbcType=VARCHAR},
+      bank_code = #{bankCode,jdbcType=VARCHAR},
+      bank_url = #{bankUrl,jdbcType=VARCHAR},
+      bank_num = #{bankNum,jdbcType=VARCHAR},
+      is_use = #{isUse,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,78 @@
+@CHARSET "UTF-8";
+body,html{
+	    margin: 0px;
+    background: #f7f5f5;
+}
+.head{
+	    padding-bottom: 9px;
+    padding-top: 24px;
+    height: 40px;
+    line-height: 40px;
+    background: #fff;
+}
+.returnBtn{
+        width: 12px;
+    margin-left: 5%;
+    float: left;
+    margin-top: 12px;
+}
+.titleName{
+	font-size: 20px;
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+}
+.title{
+	      height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #666666;
+    background: #f7f5f5;
+    padding-left: 5%;
+}
+.socialSecurity-logo{
+    width: 30px;
+    float: left;
+    margin-left: 5%;
+    margin-top: 20px;
+	
+}
+.account{
+    margin-left: 10%;
+    color: #333333;
+    float: left;
+    width: 57%;
+    overflow: hidden;
+}
+.addAccount{
+	height: 70px;
+    line-height: 70px;
+    font-size: 15px;
+    color: #333333;
+    background: #fff
+}
+.socialSecurity-add{
+    width: 36px;
+    margin-top: 17px;
+    margin-left: 5%;
+    float: left;
+}
+.addAccountName{
+	    margin-left: 25%;
+}
+.record{
+	    height: 70px;
+    line-height: 70px;
+    border-bottom: solid 1px #f7f6f6;
+        background: #fff
+}
+.list{
+	
+}
+.turnNext{
+    width: 10px;
+    margin-left: 5%;
+    margin-top: 25px;
+    float: right;
+    margin-right: 10%;
+}

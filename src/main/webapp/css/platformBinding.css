@@ -1,0 +1,100 @@
+@CHARSET "UTF-8";
+body,html{
+	    margin: 0px;
+}
+.head{
+	    padding-bottom: 9px;
+    padding-top: 24px;
+    height: 40px;
+    line-height: 40px;
+}
+.returnBtn{
+         width: 15px;
+    margin-left: 5%;
+    float: left;
+    margin-top: 7px;
+}
+.searchPlat{
+    width: 80%;
+    margin-left: 5%;
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    background: #ececec;
+    border-radius: 25px;
+    float: left;
+}
+.plat-search{
+	    width: 20px;
+    position: absolute;
+    top: 10px;
+    left: 5%;
+}
+.cancelBtn{
+	    float: right;
+    margin-right: 5%;
+    color: #999999;
+    font-size: 18px;
+}
+.searchPlatTxta{
+    width: 70%;
+    margin-left: 17%;
+    height: 28px;
+    border: 0px;
+    outline: none;
+    background: #ececec;
+    font-size: 17px;
+}
+input:-moz-placeholder,   
+textarea:-moz-placeholder {   
+    color: #9d9d9d;
+font-style: normal;  
+}   
+  
+input:-ms-input-placeholder,   
+textarea:-ms-input-placeholder {   
+    color: #9d9d9d;
+   font-style: normal;   
+}   
+  
+input::-webkit-input-placeholder,   
+textarea::-webkit-input-placeholder {   
+    color: #9d9d9d; 
+   font-style: normal; 
+}
+.mainContent{
+	
+}
+.listTitle{
+       margin-top: 20px;
+    padding-left: 10%;
+    color: #888888;
+    font-size: 17px;
+    border-bottom: solid 1px #e0e0e0;
+    height: 50px;
+    line-height: 50px;	
+}
+.list{
+    height: 50px;
+    line-height: 50px;
+    border-bottom: solid 1px #e0e0e0;
+    position: relative;
+}
+.list-logo{
+    margin-left: 10%;
+}
+.list-logoImages{
+	     width: 30px;
+    margin-top: 10px;
+}
+.listName{
+	      font-size: 18px;
+    margin-left: 10%;
+    color: #333333;
+        position: absolute;
+}
+.plat-cancel{
+	    position: absolute;
+    width: 12px;
+    top: 15px;
+}

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppWxSessionMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppWxSession" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="wx_apprid" property="wxApprid" jdbcType="INTEGER" />
+    <result column="session" property="session" jdbcType="VARCHAR" />
+    <result column="lg_time" property="lgTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, wx_apprid, session, lg_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_session
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectBywxToken" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_session
+    where wx_apprid = #{wx_apprid} and session = #{token}
+  </select>
+  
+  <select id="selectBywxUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_session
+    where wx_apprid = #{wx_apprid}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_wx_session
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByApprid" parameterType="java.lang.Integer" >
+    delete from app_wx_session
+    where wx_apprid = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppWxSession" >
+    insert into app_wx_session (id, wx_apprid, session, 
+      lg_time)
+    values (#{id,jdbcType=INTEGER}, #{wxApprid,jdbcType=INTEGER}, #{session,jdbcType=VARCHAR}, 
+      #{lgTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppWxSession" >
+    insert into app_wx_session
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wxApprid != null" >
+        wx_apprid,
+      </if>
+      <if test="session != null" >
+        session,
+      </if>
+      <if test="lgTime != null" >
+        lg_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="wxApprid != null" >
+        #{wxApprid,jdbcType=INTEGER},
+      </if>
+      <if test="session != null" >
+        #{session,jdbcType=VARCHAR},
+      </if>
+      <if test="lgTime != null" >
+        #{lgTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppWxSession" >
+    update app_wx_session
+    <set >
+      <if test="wxApprid != null" >
+        wx_apprid = #{wxApprid,jdbcType=INTEGER},
+      </if>
+      <if test="session != null" >
+        session = #{session,jdbcType=VARCHAR},
+      </if>
+      <if test="lgTime != null" >
+        lg_time = #{lgTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppWxSession" >
+    update app_wx_session
+    set wx_apprid = #{wxApprid,jdbcType=INTEGER},
+      session = #{session,jdbcType=VARCHAR},
+      lg_time = #{lgTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

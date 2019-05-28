@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppDownloadUrlMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppDownloadUrl" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="download_name" property="downloadName" jdbcType="VARCHAR" />
+    <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.model.AppDownloadUrl" extends="BaseResultMap" >
+    <result column="visit_num" property="visitNum" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, download_name, download_url, create_date, update_date, type
+  </sql>
+  <sql id="Blob_Column_List" >
+    visit_num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from app_download_url
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByDownloadType" resultMap="ResultMapWithBLOBs" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from app_download_url
+    where type = #{type}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_download_url
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppDownloadUrl" >
+    insert into app_download_url (id, download_name, download_url, 
+      create_date, update_date, type, 
+      visit_num)
+    values (#{id,jdbcType=INTEGER}, #{downloadName,jdbcType=VARCHAR}, #{downloadUrl,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, 
+      #{visitNum,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppDownloadUrl" >
+    insert into app_download_url
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="downloadName != null" >
+        download_name,
+      </if>
+      <if test="downloadUrl != null" >
+        download_url,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="visitNum != null" >
+        visit_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="downloadName != null" >
+        #{downloadName,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="visitNum != null" >
+        #{visitNum,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppDownloadUrl" >
+    update app_download_url
+    <set >
+      <if test="downloadName != null" >
+        download_name = #{downloadName,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="visitNum != null" >
+        visit_num = #{visitNum,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.model.AppDownloadUrl" >
+    update app_download_url
+    set download_name = #{downloadName,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER},
+      visit_num = #{visitNum,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppDownloadUrl" >
+    update app_download_url
+    set download_name = #{downloadName,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

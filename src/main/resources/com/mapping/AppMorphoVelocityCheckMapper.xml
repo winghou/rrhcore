@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppMorphoVelocityCheckMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppMorphoVelocity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="velocity_check" property="velocityCheck" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+     <sql id="Base_Column_List" >
+    id, appr_id, velocity_check, create_date, update_date
+    </sql>
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_morpho_velocity
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+    <insert id="insert" parameterType="com.model.AppMorphoVelocity" >
+    insert into app_morpho_velocity (id, velocity_check, appr_id, 
+      create_date, update_date)
+    values (#{id,jdbcType=INTEGER}, #{apprId,jdbcType=INTEGER}, #{velocityCheck,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.model.AppMorphoVelocity" >
+    insert into app_morpho_velocity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="velocityCheck != null" >
+        velocity_check,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="velocityCheck != null" >
+        #{velocityCheck,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.model.AppMorphoVelocity" >
+    update app_morpho_velocity
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=VARCHAR},
+      </if>
+      <if test="velocityCheck != null" >
+        velocity_check = #{velocityCheck,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppMorphoVelocity" >
+    update app_morpho_velocity
+    set appr_id = #{apprId,jdbcType=VARCHAR},
+      velocity_check = #{velocityCheck,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

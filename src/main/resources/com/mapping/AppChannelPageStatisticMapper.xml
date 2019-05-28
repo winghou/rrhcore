@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppChannelPageStatisticMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppChannelPageStatistic" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.model.AppChannelPageStatisticWithBLOBs" extends="BaseResultMap" >
+    <result column="total" property="total" jdbcType="LONGVARCHAR" />
+    <result column="day_statistic" property="dayStatistic" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, channel, create_date, update_date, type,status
+  </sql>
+  <sql id="Blob_Column_List" >
+    total, day_statistic
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from app_channel_page_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_channel_page_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppChannelPageStatisticWithBLOBs" >
+    insert into app_channel_page_statistic (id, channel, create_date, 
+      update_date, type, total, 
+      day_statistic)
+    values (#{id,jdbcType=INTEGER}, #{channel,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}, #{total,jdbcType=LONGVARCHAR}, 
+      #{dayStatistic,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppChannelPageStatisticWithBLOBs" >
+    insert into app_channel_page_statistic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="dayStatistic != null" >
+        day_statistic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dayStatistic != null" >
+        #{dayStatistic,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppChannelPageStatisticWithBLOBs" >
+    update app_channel_page_statistic
+    <set >
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dayStatistic != null" >
+        day_statistic = #{dayStatistic,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.model.AppChannelPageStatisticWithBLOBs" >
+    update app_channel_page_statistic
+    set channel = #{channel,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=VARCHAR},
+      total = #{total,jdbcType=LONGVARCHAR},
+      day_statistic = #{dayStatistic,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppChannelPageStatistic" >
+    update app_channel_page_statistic
+    set channel = #{channel,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByChannelType" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from app_channel_page_statistic
+    where type = #{type} and channel = #{channel}
+    <if test="date != null" >
+       and DATE_FORMAT(create_date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+    </if>
+    order by id desc
+  </select>
+  
+  <select id="selectByChannelLogin" resultType="java.util.Map" parameterType="map" >
+    select 
+     channel_uuid,channel_path
+    from app_channel_conf
+    where channel_path = #{channel}
+  </select>
+  
+</mapper>

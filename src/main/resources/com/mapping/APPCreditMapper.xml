@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.APPCreditMapper" >
+  <resultMap id="BaseResultMap" type="com.model.APPCredit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="credit_amt" property="creditAmt" jdbcType="DECIMAL" />
+    <result column="use_amt" property="useAmt" jdbcType="DECIMAL" />
+    <result column="total_consume_amt" property="totalConsumeAmt" jdbcType="DECIMAL" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="wait_pay_amt" property="wait_pay_amt" jdbcType="DECIMAL" />
+    <result column="total_add_amt" property="total_add_amt" jdbcType="DECIMAL" />
+    <result column="credit_time" property="creditTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, credit_amt, use_amt, total_consume_amt, appr_id,wait_pay_amt,total_add_amt,credit_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_credit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_credit
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_credit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.APPCredit" >
+    insert into app_credit (id, credit_amt, use_amt, 
+      total_consume_amt, appr_id,wait_pay_amt)
+    values (#{id,jdbcType=INTEGER}, #{creditAmt,jdbcType=DECIMAL}, #{useAmt,jdbcType=DECIMAL}, 
+      #{totalConsumeAmt,jdbcType=DECIMAL}, #{apprId,jdbcType=INTEGER}),#{wait_pay_amt,jdbcType=DECIMAL}
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.APPCredit" >
+    insert into app_credit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="creditAmt != null" >
+        credit_amt,
+      </if>
+      <if test="useAmt != null" >
+        use_amt,
+      </if>
+      <if test="totalConsumeAmt != null" >
+        total_consume_amt,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="wait_pay_amt != null" >
+        wait_pay_amt,
+      </if>
+      <if test="total_add_amt != null" >
+        total_add_amt,
+      </if>
+      <if test="creditTime != null" >
+        credit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="creditAmt != null" >
+        #{creditAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="useAmt != null" >
+        #{useAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="totalConsumeAmt != null" >
+        #{totalConsumeAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="wait_pay_amt != null" >
+        #{wait_pay_amt,jdbcType=DECIMAL},
+      </if>
+      <if test="total_add_amt != null" >
+		#{total_add_amt,jdbcType=DECIMAL},
+      </if>
+      <if test="creditTime != null" >
+        #{creditTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.APPCredit" >
+    update app_credit
+    <set >
+      <if test="creditAmt != null" >
+        credit_amt = #{creditAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="useAmt != null" >
+        use_amt = #{useAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="totalConsumeAmt != null" >
+        total_consume_amt = #{totalConsumeAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="wait_pay_amt != null" >
+        wait_pay_amt = #{wait_pay_amt,jdbcType=DECIMAL},
+      </if>
+      <if test="total_add_amt != null" >
+		total_add_amt = #{total_add_amt,jdbcType=DECIMAL},
+      </if>
+      <if test="creditTime != null" >
+        credit_time = #{creditTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.APPCredit" >
+    update app_credit
+    set credit_amt = #{creditAmt,jdbcType=DECIMAL},
+      use_amt = #{useAmt,jdbcType=DECIMAL},
+      total_consume_amt = #{totalConsumeAmt,jdbcType=DECIMAL},
+      appr_id = #{apprId,jdbcType=INTEGER},
+      wait_pay_amt = #{wait_pay_amt,jdbcType=DECIMAL},
+	  total_add_amt = #{total_add_amt,jdbcType=DECIMAL},
+      credit_time = #{creditTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

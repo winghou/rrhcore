@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>借款页面</title>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../css/loanPage.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../css/mobiscroll.2.13.2.css"></link>
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+     <script type="text/javascript" src="../../js/AESUtil.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/loanPage.js"></script>
+    <script type="text/javascript" src="../../js/mobiscroll.2.13.2.js"></script>
+    
+</head>
+
+<body>
+   <div class="showPanelmask hide">
+       <div class='showPanel'>
+            <div class="panelTitle">提示</div>
+            <div class="panelContent1">希望您再次确认您的借款信息</div>
+            <div class="panelContent2">金额元，期7天</div>
+            <table class="showPanelTable">
+            	<tr>
+            		<td class="cancelBtn">取消</td>
+            		<td class="sureLoanBtn">确定</td>
+            	</tr>
+            </table>
+       </div>
+   </div>
+   <div class="mask hide">
+     <select name="City" id="demo-inline2" data-enhance="false">
+     </select>
+     <div class="sureBtn">确定</div>
+ </div>
+    <div style="width: 100%;
+    background: #F0F0F0;
+    height: 5px;"></div>
+    <div class="main">
+        <div class="topSkip">
+            <table class="topTable">
+                <tr>
+                    <td>
+                        <div class="mbsc-form-group">
+                            <div class="mbsc-form-group-title">借款金额（元）</div>
+                            <div>
+                                <select name="City" id="demo-inline" data-enhance="false">
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="mbsc-form-group">
+                            <div class="mbsc-form-group-title">借款期限（天）</div>
+                            <div>
+                                <select name="City" id="demo-inline1" data-enhance="false">
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 100%;
+    background: #F0F0F0;
+    height: 10px;"></div>
+        <div class="loanInformation">
+            <div class="loanInformationTitle">借款信息</div>
+            <table class="loanInformationTable">
+                <tr>
+                    <td class="titleName">借款金额/到账金额</td>
+                    <td class="loanInformationContent loanMoney"></td>
+                </tr>
+                <tr>
+                    <td class="titleName">借款期限</td>
+                    <td class="loanInformationContent loanDay"></td>
+                </tr>
+                <tr>
+                    <td class="titleName">应还款金额</td>
+                    <td class="loanInformationContent moneyOfReturn"></td>
+                </tr>
+                <tr>
+                    <td class="titleName">借款用途</td>
+                    <td style="  text-align: center;
+    padding: 5px 0px; position: relative;" class="selectwaysOfUse">
+                        <span class="waysOfUse">请选择</span>
+                   
+                 <img src="../images/loanPageSelect.png" alt="" class="loanPageSelected" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 100%;
+    background: #F0F0F0;
+    height: 10px;margin-top: 20px;"></div>
+        <div class="insuranceOrder">
+            <div class="insuranceOrderTitle">
+                <span class='thePageText1'>购险订单</span>
+            <div class="insuranceOrderNumber"><div class="insuranceName thePageText6"></div>
+         <img src="../images/loanPageSelect.png" alt="" class="insuranceOrderselected"/>
+         </div>
+            </div>
+            <table class="insuranceOrderTable">
+                <tr>
+                	<td class="titleName thePageText2"></td>
+                	<td class="insuranceOrderTableContent consumeNumber"></td>
+                </tr>
+                <tr>
+                    <td class="titleName thePageText3">购险金额</td>
+                    <td class="insuranceOrderTableContent moneyOfInsurance"></td>
+                </tr>
+                <tr>
+                    <td class="titleName thePageText4">购险借款期限</td>
+                    <td class="insuranceOrderTableContent dayOfInsurance"></td>
+                </tr>
+                <tr>
+                    <td class="titleName thePageText5">购险应还款金额</td>
+                    <td class="insuranceOrderTableContent moneyOfBuyInsurance"></td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 100%;
+    background: #F0F0F0;
+    height: 10px;margin-top: 20px;"></div>
+        <div class="coupon">
+            <div class="couponTitle">优惠券</div>
+            <div style="float: right;padding: 4%;    margin-right: 5%;"><span class="couponNumber"></span><img src="../images/loanPageSelect.png" alt="" class="couponSelected" /></div>
+        </div>
+        <div class="protocol">
+            <img src="../images/loanPageProtocolNo.png" alt="" class="loanPagePro" />借款代表同意
+            <span class="protocolList">
+            </span>
+        </div>
+        <div style="width:100%;height:61px"></div>
+       
+        <div class="Settlement">
+            <div class="word">应还款总额:<span class="inall"></span></div>
+            <div class="loanBtn disabled">立即借款</div>
+        </div>
+        
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLoanCtmCntMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLoanCtmCnt" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cnt_type" property="cntType" jdbcType="VARCHAR" />
+    <result column="cnt_commt" property="cntCommt" jdbcType="VARCHAR" />
+    <result column="cnt_pass" property="cntPass" jdbcType="VARCHAR" />
+    <result column="cnt_desc" property="cntDesc" jdbcType="VARCHAR" />
+    <result column="cnt_lx" property="cntLx" jdbcType="VARCHAR" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="VARCHAR" />
+    <result column="postboxUUID" property="postboxUUID" jdbcType="VARCHAR" />
+    <result column="postboxType" property="postboxType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cnt_type, cnt_commt, cnt_pass, cnt_desc, cnt_lx, appr_id, mobile_phone, province, city, status, group_id,postboxUUID,postboxType
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="queryByType" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT
+    where cnt_type = #{cntType} and appr_id=#{apprId}
+  </select>
+  <select id="selectppwByapprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT t
+    where (t.appr_id=#{apprId,jdbcType=INTEGER} and t.cnt_lx='0' and t.cnt_type='0')
+  </select>
+  <select id="selecttbAccountByapprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT t
+    where t.appr_id=#{apprId,jdbcType=INTEGER} and  t.cnt_type='4'
+  </select>
+  <select id="selectjdAccountByapprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />            
+    from APP_LOAN_CTMCNT t
+    where t.appr_id=#{apprId,jdbcType=INTEGER} and t.cnt_type='3'
+  </select>
+  <select id="selectCnPassByApprId" parameterType="java.lang.Integer" resultType="java.util.Map"> 
+	select * from APP_LOAN_CTMCNT t where 
+	(t.appr_id=#{apprId,jdbcType=INTEGER} and  t.cnt_type='0') or
+	(t.appr_id=#{apprId,jdbcType=INTEGER} and  t.cnt_type='1')
+    </select>
+     <select id="selectCntCommtByApprId" parameterType="java.lang.Integer" resultType="java.util.Map"> 
+	select t.cnt_pass from APP_LOAN_CTMCNT t where 
+	(t.appr_id=#{apprId,jdbcType=INTEGER} and t.cnt_lx='1' and t.cnt_type='2') or
+	(t.appr_id=#{apprId,jdbcType=INTEGER} and t.cnt_lx='1' and t.cnt_type='3')
+    </select>
+  <select id="queryAllByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+
+  <select id="AppLoanEmailAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT where cnt_type = '5'
+  </select>
+  <select id="ctmcntEmail" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT where cnt_type = '5' AND appr_id = #{apprId,jdbcType=INTEGER} order by id
+  </select>
+  <select id="chargeEmail" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT where cnt_type = '5' AND cnt_commt = #{cntCommt,jdbcType=VARCHAR}
+  </select>
+  <select id="countEmailByApprId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(*)
+    from APP_LOAN_CTMCNT where cnt_type = '5' AND appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+
+  <select id="platformLogin" resultMap="BaseResultMap"  parameterType="com.model.AppLoanCtmCnt" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '10' and a.appr_id=#{apprId,jdbcType=INTEGER} and a.cnt_lx = #{cntLx,jdbcType=VARCHAR}
+  </select>
+  <select id="userPlatforms" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '10' and a.appr_id=#{apprId,jdbcType=INTEGER} order by a.id
+  </select>
+  <select id="countPlatformsByApprId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(*)
+    from APP_LOAN_CTMCNT where cnt_type = '10' AND appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+
+  <select id="creditCardList" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '6' and a.appr_id=#{apprId,jdbcType=INTEGER} order by a.id
+  </select>
+  <select id="creditCardInsertList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '6' and a.appr_id=#{apprId,jdbcType=INTEGER} and a.status = '1' order by a.id
+  </select>
+  <select id="creditCardAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '6'
+  </select>
+  <select id="creditCardGroup" resultMap="BaseResultMap"  parameterType="java.lang.Integer">
+    select max(id) as id,group_id from app_loan_ctmcnt where cnt_type='6' AND appr_id = #{apprId,jdbcType=INTEGER} group by group_id order by id
+  </select>
+  <select id="countCreditCardByApprId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(*)
+    from APP_LOAN_CTMCNT where cnt_type = '6' AND appr_id = #{apprId,jdbcType=INTEGER} and status = '1'
+  </select>
+
+  <select id="depositCardList" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '11' and a.appr_id=#{apprId,jdbcType=INTEGER} order by a.id
+  </select>
+  <select id="depositCardInsertList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '11' and a.appr_id=#{apprId,jdbcType=INTEGER} and a.status = '1' order by a.id
+  </select>
+  <select id="depositCardAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '11'
+  </select>
+  <select id="depositCardGroup" resultMap="BaseResultMap" parameterType="java.lang.Integer"  >
+    select max(id) as id,group_id from app_loan_ctmcnt where cnt_type='11' AND appr_id = #{apprId,jdbcType=INTEGER} group by group_id order by id
+  </select>
+  <select id="countDepositCardByApprId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(*)
+    from APP_LOAN_CTMCNT where cnt_type = '11' AND appr_id = #{apprId,jdbcType=INTEGER} and status = '1'
+  </select>
+
+  <select id="socialSecurityList" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '12' and a.appr_id=#{apprId,jdbcType=INTEGER} order by a.id
+  </select>
+  <select id="socialSecurityInsertList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '12' and a.appr_id=#{apprId,jdbcType=INTEGER} and a.status = '1' order by a.id
+  </select>
+  <select id="socialSecurityAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '12'
+  </select>
+  <select id="socialSecurityGroup" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select max(id) as id,group_id from app_loan_ctmcnt where cnt_type='12' AND appr_id = #{apprId,jdbcType=INTEGER} group by group_id order by id
+  </select>
+  <select id="countSocialSecurityByApprId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(*)
+    from APP_LOAN_CTMCNT where cnt_type = '12' AND appr_id = #{apprId,jdbcType=INTEGER} and status = '1'
+  </select>
+
+  <select id="housingFundList" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '7' and a.appr_id=#{apprId,jdbcType=INTEGER} order by a.id
+  </select>
+  <select id="housingFundInsertList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '7' and a.appr_id=#{apprId,jdbcType=INTEGER} and a.status = '1' order by a.id
+  </select>
+  <select id="housingFundAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CTMCNT a
+    where a.cnt_type= '7'
+  </select>
+  <select id="housingFundGroup" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select max(id) as id,group_id from app_loan_ctmcnt where cnt_type='7' AND appr_id = #{apprId,jdbcType=INTEGER}  group by group_id order by id
+  </select>
+  <select id="countHousingFundByApprId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(*)
+    from APP_LOAN_CTMCNT where cnt_type = '7' AND appr_id = #{apprId,jdbcType=INTEGER} and status = '1'
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from APP_LOAN_CTMCNT
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppLoanCtmCnt" >
+    insert into APP_LOAN_CTMCNT (id, cnt_type, cnt_commt, 
+      cnt_pass, cnt_desc, cnt_lx, 
+      appr_id, mobile_phone,province,city,status,group_id)
+    values (#{id,jdbcType=INTEGER}, #{cntType,jdbcType=VARCHAR}, #{cntCommt,jdbcType=VARCHAR}, 
+      #{cntPass,jdbcType=VARCHAR}, #{cntDesc,jdbcType=VARCHAR}, #{cntLx,jdbcType=VARCHAR}, 
+      #{apprId,jdbcType=INTEGER},#{mobilePhone,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{groupId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppLoanCtmCnt" >
+    insert into APP_LOAN_CTMCNT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cntType != null" >
+        cnt_type,
+      </if>
+      <if test="cntCommt != null" >
+        cnt_commt,
+      </if>
+      <if test="cntPass != null" >
+        cnt_pass,
+      </if>
+      <if test="cntDesc != null" >
+        cnt_desc,
+      </if>
+      <if test="cntLx != null" >
+        cnt_lx,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+       <if test="postboxUUID != null" >
+        postboxUUID,
+      </if>
+       <if test="postboxType != null" >
+        postboxType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cntType != null" >
+        #{cntType,jdbcType=VARCHAR},
+      </if>
+      <if test="cntCommt != null" >
+        #{cntCommt,jdbcType=VARCHAR},
+      </if>
+      <if test="cntPass != null" >
+        #{cntPass,jdbcType=VARCHAR},
+      </if>
+      <if test="cntDesc != null" >
+        #{cntDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="cntLx != null" >
+        #{cntLx,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="postboxUUID != null" >
+        #{postboxUUID,jdbcType=VARCHAR},
+      </if>
+       <if test="postboxType != null" >
+        #{postboxType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppLoanCtmCnt" >
+    update APP_LOAN_CTMCNT
+    <set >
+      <if test="cntType != null" >
+        cnt_type = #{cntType,jdbcType=VARCHAR},
+      </if>
+      <if test="cntCommt != null" >
+        cnt_commt = #{cntCommt,jdbcType=VARCHAR},
+      </if>
+      <if test="cntPass != null" >
+        cnt_pass = #{cntPass,jdbcType=VARCHAR},
+      </if>
+      <if test="cntDesc != null" >
+        cnt_desc = #{cntDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="cntLx != null" >
+        cnt_lx = #{cntLx,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="postboxUUID != null" >
+        postboxUUID=#{postboxUUID,jdbcType=VARCHAR},
+      </if>
+      <if test="postboxType != null" >
+        postboxType=#{postboxType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppLoanCtmCnt" >
+    update APP_LOAN_CTMCNT
+    set cnt_type = #{cntType,jdbcType=VARCHAR},
+      cnt_commt = #{cntCommt,jdbcType=VARCHAR},
+      cnt_pass = #{cntPass,jdbcType=VARCHAR},
+      cnt_desc = #{cntDesc,jdbcType=VARCHAR},
+      cnt_lx = #{cntLx,jdbcType=VARCHAR},
+      appr_id = #{apprId,jdbcType=INTEGER},
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      group_id = #{groupId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

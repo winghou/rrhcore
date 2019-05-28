@@ -1,0 +1,221 @@
+@CHARSET "UTF-8";
+html{
+    margin: 0px;
+    background: #ffffff;
+}
+body{
+	 margin: 0px;
+}
+.main{
+	
+}
+.top{
+	
+}
+.banner{
+	background: #47230b;
+}
+.bannerImage{
+	width: 100%;
+}
+.switch{
+    width: 100%;
+    background: url(../html/images/Valentines-text_bg.png);
+    margin-top: -8px;
+    background-size: 100% 100%;
+}
+.switchTable{
+	width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+.firstActive{
+	border-right: solid 2px #965428;
+    color: #965428;
+}
+.secondActive{
+	color:#f9ca00 ;
+}
+.middle{
+	
+}
+.title{
+	    position: relative;
+}
+.rule{
+	
+}
+.line1{
+	    font-size: 15px;
+}
+.line2{
+	    font-size: 12px;
+}
+.titleImages{
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 15px;
+}
+.firstPanelImages{
+	    width: 40%;
+    margin-left: 7%;
+    float: left;
+}
+.secondPanelImages{
+	    width: 40%;
+    margin-left: 6%;
+	
+}
+.thirdPanel{
+    width: 78%;
+    background: url(../html/images/Valentines-kuang01.png);
+    background-size: 100% 100%;
+    padding: 12px;
+    margin-left: 7%;
+    height: 130px;
+    color: #714a39;
+    font-size: 15px;
+    text-indent: 2em;
+    line-height: 1.5;
+    padding-left: 18px;
+    margin-top: 15px;
+}
+.color{
+	color: #e30003;
+}
+.ruleImages{
+	    width: 20%;
+    position: absolute;
+    top: 17px;
+    right: 0px;
+}
+.dataTileImages{
+	    width: 40%;
+    margin-left: 30%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.headName{
+	color: #714a39;
+    
+	
+}
+.dataListsImages{
+    width: 20%;
+    position: absolute;
+    top: -15px;
+    left: 10%;
+}
+.dataListsTitle{
+	font-size: 13px;
+    color: #fff;
+    margin-left: 30%;
+    margin-bottom: 10px;
+}
+}
+.datatable{
+    width: 80%;
+    text-align: center;
+    margin-left: 10%;
+    padding: 15px;
+    border: 2px solid #221611;
+    border-radius: 50px;
+    height: 260px;
+    background: #fff5eb;
+    font-size: 14px;
+}
+.dataLists{
+	    position: relative;
+}
+.account{
+	    text-align: center;
+    margin-top: 20px;
+    line-height: 25px;
+    font-size: 16px;
+    color: #fff;
+}
+.datatable td{
+	height:25px
+}
+.sureBtnTitleImageLeft{
+	    width: 10%;
+}
+.sureBtnTitleImageRight{
+	    width: 10%;
+}
+.sureBtnTitle{
+	    font-size: 15px;
+    color: #fff;
+    text-align: center;
+    margin-top: 30px;
+}
+.sureBtnTitleImage{
+	    width: 70%;
+    margin-left: 15%;
+    margin-top: 10px;
+}
+.btn{
+	    margin-bottom: 30px;
+}
+.hide{
+	display:none;
+}
+.mask{
+    width: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 1000;
+    padding-bottom: 220px;
+}
+.maskContent{
+    position: relative;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 70px;
+    border: solid 1px #fff;
+    border-radius: 15px;
+    text-indent: 2em;
+    line-height: 1.7;
+    font-size: 15px;
+}
+.maskMain{
+color: #fff;
+    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 40px;
+}
+.maskTip{
+	    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 100px;
+    line-height: 2;
+    margin-bottom: 100px;
+    
+}
+.maskClose{
+	    position: absolute;
+    top: -15px;
+    right: -3%;
+    width: 10%;
+	
+}
+.maskTitle{
+	    font-size: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+.secondActiverules{
+	position: absolute;
+    top: 15px;
+    right: 0px;
+    width: 25%;
+}
+.secondActiveImages{
+	    width: 100%;
+    margin-bottom: -5px;
+}
+.secondPanelActive{
+	position: relative;
+}

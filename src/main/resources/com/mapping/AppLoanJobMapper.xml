@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLoanJobMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLoanJob" >
+    <id column="job_id" property="jobId" jdbcType="INTEGER" />
+    <result column="module_id" property="moduleId" jdbcType="VARCHAR" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="job_from" property="jobFrom" jdbcType="VARCHAR" />
+    <result column="job_content" property="jobContent" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="finish_date" property="finishDate" jdbcType="TIMESTAMP" />
+    <result column="out_job_id" property="outJobId" jdbcType="VARCHAR" />
+    <result column="out_job_url" property="outJobUrl" jdbcType="VARCHAR" />
+    <result column="job_keywords" property="jobKeywords" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+    <result column="settle_type" property="settleType" jdbcType="VARCHAR" />
+    <result column="limit_desc" property="limitDesc" jdbcType="VARCHAR" />
+    <result column="work_time" property="workTime" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_desc" property="companyDesc" jdbcType="VARCHAR" />
+    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+    <result column="longgitude" property="longgitude" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="town" property="town" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="company_model" property="companyModel" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    job_id, module_id, subject, job_from, job_content, price, pic_url, status, create_date, 
+    finish_date, out_job_id, out_job_url, job_keywords, num, pay_type, settle_type, limit_desc, 
+    work_time, company_name, company_desc, latitude, longgitude, province, city, town, 
+    address, company_model
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_loan_job
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllJob" resultMap="BaseResultMap"  parameterType="com.model.AppLoanJob">
+    select 
+    <include refid="Base_Column_List" />
+    from app_loan_job
+    where status !='0' <if test="jobFrom != null" > and job_from=#{jobFrom}</if> 
+    <if test="createDate != null" > and create_date=#{createDate}</if>
+    <if test="settleType != null" > and settle_type=#{settleType}</if>
+    <if test="address != null" > and address=#{address}</if>
+  </select>
+  <select id="selectByjobId" resultType="java.util.Map">
+  	select t.*,t1.id from app_loan_job t 
+  	join app_user_job t1 on t.job_id=t1.job_id
+  	where t1.user_id = #{userId}
+ </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_loan_job
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppLoanJob" >
+    insert into app_loan_job (job_id, module_id, subject, 
+      job_from, job_content, price, 
+      pic_url, status, create_date, 
+      finish_date, out_job_id, out_job_url, 
+      job_keywords, num, pay_type, 
+      settle_type, limit_desc, work_time, 
+      company_name, company_desc, latitude, 
+      longgitude, province, city, 
+      town, address, company_model
+      )
+    values (#{jobId,jdbcType=INTEGER}, #{moduleId,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, 
+      #{jobFrom,jdbcType=VARCHAR}, #{jobContent,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{picUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{finishDate,jdbcType=TIMESTAMP}, #{outJobId,jdbcType=VARCHAR}, #{outJobUrl,jdbcType=VARCHAR}, 
+      #{jobKeywords,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{payType,jdbcType=VARCHAR}, 
+      #{settleType,jdbcType=VARCHAR}, #{limitDesc,jdbcType=VARCHAR}, #{workTime,jdbcType=VARCHAR}, 
+      #{companyName,jdbcType=VARCHAR}, #{companyDesc,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
+      #{longgitude,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{town,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{companyModel,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppLoanJob" >
+    insert into app_loan_job
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jobId != null" >
+        job_id,
+      </if>
+      <if test="moduleId != null" >
+        module_id,
+      </if>
+      <if test="subject != null" >
+        subject,
+      </if>
+      <if test="jobFrom != null" >
+        job_from,
+      </if>
+      <if test="jobContent != null" >
+        job_content,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="finishDate != null" >
+        finish_date,
+      </if>
+      <if test="outJobId != null" >
+        out_job_id,
+      </if>
+      <if test="outJobUrl != null" >
+        out_job_url,
+      </if>
+      <if test="jobKeywords != null" >
+        job_keywords,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="settleType != null" >
+        settle_type,
+      </if>
+      <if test="limitDesc != null" >
+        limit_desc,
+      </if>
+      <if test="workTime != null" >
+        work_time,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="companyDesc != null" >
+        company_desc,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="longgitude != null" >
+        longgitude,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="town != null" >
+        town,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="companyModel != null" >
+        company_model,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jobId != null" >
+        #{jobId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="jobFrom != null" >
+        #{jobFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="jobContent != null" >
+        #{jobContent,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null" >
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outJobId != null" >
+        #{outJobId,jdbcType=VARCHAR},
+      </if>
+      <if test="outJobUrl != null" >
+        #{outJobUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="jobKeywords != null" >
+        #{jobKeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="settleType != null" >
+        #{settleType,jdbcType=VARCHAR},
+      </if>
+      <if test="limitDesc != null" >
+        #{limitDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null" >
+        #{workTime,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyDesc != null" >
+        #{companyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="longgitude != null" >
+        #{longgitude,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="town != null" >
+        #{town,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="companyModel != null" >
+        #{companyModel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppLoanJob" >
+    update app_loan_job
+    <set >
+      <if test="moduleId != null" >
+        module_id = #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="jobFrom != null" >
+        job_from = #{jobFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="jobContent != null" >
+        job_content = #{jobContent,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null" >
+        finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outJobId != null" >
+        out_job_id = #{outJobId,jdbcType=VARCHAR},
+      </if>
+      <if test="outJobUrl != null" >
+        out_job_url = #{outJobUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="jobKeywords != null" >
+        job_keywords = #{jobKeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="settleType != null" >
+        settle_type = #{settleType,jdbcType=VARCHAR},
+      </if>
+      <if test="limitDesc != null" >
+        limit_desc = #{limitDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null" >
+        work_time = #{workTime,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyDesc != null" >
+        company_desc = #{companyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="longgitude != null" >
+        longgitude = #{longgitude,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="town != null" >
+        town = #{town,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="companyModel != null" >
+        company_model = #{companyModel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppLoanJob" >
+    update app_loan_job
+    set module_id = #{moduleId,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      job_from = #{jobFrom,jdbcType=VARCHAR},
+      job_content = #{jobContent,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      out_job_id = #{outJobId,jdbcType=VARCHAR},
+      out_job_url = #{outJobUrl,jdbcType=VARCHAR},
+      job_keywords = #{jobKeywords,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      pay_type = #{payType,jdbcType=VARCHAR},
+      settle_type = #{settleType,jdbcType=VARCHAR},
+      limit_desc = #{limitDesc,jdbcType=VARCHAR},
+      work_time = #{workTime,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      company_desc = #{companyDesc,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      longgitude = #{longgitude,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      town = #{town,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      company_model = #{companyModel,jdbcType=VARCHAR}
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </update>
+</mapper>

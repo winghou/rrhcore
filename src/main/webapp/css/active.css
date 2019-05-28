@@ -1,0 +1,296 @@
+@CHARSET "UTF-8";
+.main{
+	    background: #ffdb01;
+	    padding-bottom: 20px;
+}
+.head{
+	
+
+	}
+.topImages{
+	    width: 100%;
+
+	}
+.inviteCode{
+	
+}
+.inviteBtn{
+	    margin-top: 30px;
+}
+.invitePanelImages{
+	      width: 90%;
+    margin-left: 5%;
+    margin-top: 30px;
+}
+.codeCopy{
+	    position: relative;
+}
+
+.copycontent{
+	    color: #333333;
+    font-size: 16px;
+    margin-left: 5%;
+}
+.name{
+	    font-size: 16px;
+    color: #666666;
+    
+}
+.inviteCodeContent{
+       width: 90%;
+    height: 80px;
+    border: solid 2px #3b3a3e;
+    border-radius: 15px;
+    margin-left: 5%;
+    margin-top: 20px;
+    background: #fff;
+    line-height: 80px;
+    text-align: center;
+}
+.copyBtn{
+	        background: #ff3f26;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: 5%;
+    font-size: 15px;
+    height: 32px;
+    outline: none;
+    border: 0px;
+    line-height: 32px;
+}
+.codeCopyImages{
+	  
+}
+.commonfirst{
+	
+}
+.rope{
+	    width: 50%;
+    position: relative;
+    margin-left: 25%;
+    
+}
+.ropeimages1{
+	        width: 8px;
+    position: absolute;
+    top: -15px;
+    left: -15px;
+}
+.ropeimages2{
+	       width: 8px;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+}
+.btn1{
+	  
+}
+.btn1Images{
+	     width: 40%;
+    position: absolute;
+    top: -10px;
+    left: 5%; 
+}
+.btn2{
+	
+}
+.btn2Images{
+	      width: 40%;
+    position: absolute;
+    right: 0px;
+    top: -10px;
+    margin-right: 5%;
+}
+.firstPanel{
+	position: relative;
+    width: 90%;
+    margin-left: 5%;
+    border-radius: 5px;
+    background: #faf294;
+    margin-top: 40px;
+    padding-bottom: 15px;
+}
+.hongbaoImages{
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 15px;
+}
+.xianjinImages{
+	    width: 90%;
+    margin-left: 5%;
+    margin-top: 63px;
+
+	}
+	.explain{
+	    font-size: 12px;
+    text-align: center;
+    color: #827e7e;
+    margin: 10px 0px 0px 0px;
+	
+	}
+	.secondPanel{
+	width: 90%;
+    margin-left: 5%;
+    border-radius: 5px;
+    background: #faf294;
+    margin-top: 40px;
+    padding-bottom: 15px;
+	}
+	.title{
+	    text-align: center;
+    font-size: 16px;
+    padding-top: 10px;
+	}
+	.content{
+	    font-size: 13px;
+    padding: 0 10px;
+    line-height: 1.6;
+    color: #666666;
+	}
+	.myActive{
+	padding-bottom: 40px;
+	}
+	.hide{
+	display:none
+	}
+	.step1{
+	    padding-top: 50px;
+	}
+	.titleName{
+	    text-align: center;
+    font-size: 17px;
+    color: #333333;
+    font-weight: 600;
+	}
+	.titleName2{
+	      text-align: center;
+    font-size: 17px;
+    color: #333333;
+    font-weight: 600;
+    margin-top: 17px;
+	}
+	.inviteNumber{
+	      position: relative;
+	}
+	.backImages{
+	   width: 90%;
+    margin-left: 5%;
+    height: 75px;
+    margin-top: 8px;
+	}
+	.peopleNumber{
+	    float: left;
+  
+	}
+	.successNum{
+      position: absolute;
+    font-size: 15px;
+    color: #333333;
+    top: 13px;
+    left: 12%;
+    font-weight: 600;
+	}
+	.word{
+	       position: absolute;
+    font-size: 12px;
+    color: #666666;
+    top:37px;
+    left: 12%;
+	}
+	.earnMoney{
+	    position: absolute;
+    left: 65%;
+    top: 18px;
+    font-size: 27px;
+    color: red;
+    font-weight: 600;
+	}
+	.overplus{
+	    position: absolute;
+    left: 12%;
+    top: 63px;
+    font-size: 12px;
+    color: #666666;
+	}
+	.getReal{
+	    width: 50px;
+    position: absolute;
+    top: 65px;
+    left: 72%;
+	}
+	.littleTips{
+	    font-size: 12px;
+    padding: 0px 20px;
+    color: #666666;
+    margin-top: 5px;
+	}
+	.drawbtn{
+	width: 90%;
+    height: 40px;
+    background: #ff3f26;
+    color: #fff;
+    text-align: center;
+    margin-top: 20px;
+    border-radius: 10px;
+    line-height: 40px;
+    margin-left: 5%;
+    font-size: 16px;
+	}
+	.title2{
+	text-align: center;
+    font-size: 17px;
+    padding-top: 10px;
+    color: #333333;
+    font-weight: 600;
+	}
+	.cuccessOrder{
+	    width: 90%;
+    margin-left: 5%;
+    height: 270px;
+    background: #fff;
+    border-radius: 20px;
+    border: solid 2px black;
+    margin-top: 10px;
+       
+	}
+	.processImages{
+	    height: 266px;
+    float: right;
+	}
+	.leftpage{
+	        float: left;
+    overflow: scroll;
+    height: 265px;
+    width: 94%;
+     background: url('../html/images/split.png')  center no-repeat;
+	}
+	.rightpage{
+	
+	}
+	.list{
+	text-align: center;
+	    width: 100%;
+	}
+	.tabletitle{
+	      font-size: 15px;
+    width: 42%;
+    font-weight: 600;
+    padding: 10px 5px;
+	}
+	td{
+	height: 30px;
+	}
+	.invitenone{
+	text-align: center;
+    padding-top: 100px;
+    font-size: 18px;
+    font-weight: 600;
+        color: #333333;
+	}
+	.invitenonetip{
+	    text-align: center;
+    margin-top: 10px;
+    color: #666666;
+    font-size: 15px;
+    padding-bottom: 80px;
+	}

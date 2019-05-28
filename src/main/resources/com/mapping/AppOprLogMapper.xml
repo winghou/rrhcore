@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppOprLogMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppOprLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="module_id" property="moduleId" jdbcType="VARCHAR" />
+    <result column="opr_content" property="oprContent" jdbcType="VARCHAR" />
+    <result column="opr_time" property="oprTime" jdbcType="TIMESTAMP" />
+    <result column="userId" property="userid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, module_id, opr_content, opr_time, userId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_OPR_LOG
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_OPR_LOG
+    where userId = #{userId,jdbcType=INTEGER} order by id desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from APP_OPR_LOG
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppOprLog" >
+    insert into APP_OPR_LOG (id, module_id, opr_content, 
+      opr_time, userId)
+    values (#{id,jdbcType=INTEGER}, #{moduleId,jdbcType=VARCHAR}, #{oprContent,jdbcType=VARCHAR}, 
+      #{oprTime,jdbcType=TIMESTAMP}, #{userid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppOprLog" >
+    insert into APP_OPR_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="moduleId != null" >
+        module_id,
+      </if>
+      <if test="oprContent != null" >
+        opr_content,
+      </if>
+      <if test="oprTime == null" >
+        opr_time,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="oprContent != null" >
+        #{oprContent,jdbcType=VARCHAR},
+      </if>
+      <if test="oprTime == null" >
+        now(),
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppOprLog" >
+    update APP_OPR_LOG
+    <set >
+      <if test="moduleId != null" >
+        module_id = #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="oprContent != null" >
+        opr_content = #{oprContent,jdbcType=VARCHAR},
+      </if>
+      <if test="oprTime != null" >
+        opr_time = #{oprTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppOprLog" >
+    update APP_OPR_LOG
+    set module_id = #{moduleId,jdbcType=VARCHAR},
+      opr_content = #{oprContent,jdbcType=VARCHAR},
+      opr_time = #{oprTime,jdbcType=TIMESTAMP},
+      userId = #{userid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppYouDunResultMapper">
+	<resultMap id="BaseResultMap" type="com.model.AppYouDunResult">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="appr_id" property="apprId" jdbcType="INTEGER" />
+		<result column="partner_order_id" property="partnerOrderId" jdbcType="VARCHAR" />
+		<result column="id_number" property="idNumber" jdbcType="VARCHAR" />
+		<result column="id_name" property="idName" jdbcType="VARCHAR" />
+		<result column="idcard_front_photo" property="idcardFrontPhoto" jdbcType="VARCHAR" />
+		<result column="idcard_back_photo" property="idcardBackPhoto" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="risk_tag" property="riskTag" jdbcType="VARCHAR" />
+		<result column="similarity" property="similarity" jdbcType="VARCHAR" />
+		<result column="thresholds" property="thresholds" jdbcType="VARCHAR" />
+		<result column="verify_status" property="verifyStatus" jdbcType="VARCHAR" />
+		<result column="auth_result" property="authResult" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,appr_id,partner_order_id,id_number,id_name,idcard_front_photo,idcard_back_photo,address,risk_tag,
+		similarity,	thresholds,	verify_status,auth_result,create_date,status
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from app_youdun_result
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByOrderId" resultMap="BaseResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from app_youdun_result
+		where partner_order_id = #{partnerOrderId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByApprId" resultMap="BaseResultMap"
+		parameterType="INTEGER">
+		select
+		<include refid="Base_Column_List" />
+		from app_youdun_result
+		where appr_id = #{apprId,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		app_youdun_result
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<insert id="insertSelective" parameterType="com.model.AppYouDunResult" useGeneratedKeys="true" keyProperty="id">
+		insert into app_youdun_result
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="apprId != null">
+				appr_id,
+			</if>
+			<if test="partnerOrderId != null">
+				partner_order_id,
+			</if>
+			<if test="idNumber != null">
+				id_number,
+			</if>
+			<if test="idName != null">
+				id_name,
+			</if>
+			<if test="idcardFrontPhoto != null">
+				idcard_front_photo,
+			</if>
+			<if test="idcardBackPhoto != null">
+				idcard_back_photo,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="riskTag != null">
+				risk_tag,
+			</if>
+			<if test="similarity != null">
+				similarity,
+			</if>
+			<if test="thresholds != null">
+				thresholds,
+			</if>
+			<if test="verifyStatus != null">
+				verify_status,
+			</if>
+			<if test="authResult != null">
+				auth_result,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="apprId != null">
+				#{apprId,jdbcType=INTEGER},
+			</if>
+			<if test="partnerOrderId != null">
+				#{partnerOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="idNumber != null">
+				#{idNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="idName != null">
+				#{idName,jdbcType=VARCHAR},
+			</if>
+			<if test="idcardFrontPhoto != null">
+				#{idcardFrontPhoto,jdbcType=VARCHAR},
+			</if>
+			<if test="idcardBackPhoto != null">
+				#{idcardBackPhoto,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="riskTag != null">
+				#{riskTag,jdbcType=VARCHAR},
+			</if>
+			<if test="similarity != null">
+				#{similarity,jdbcType=VARCHAR},
+			</if>
+			<if test="thresholds != null">
+				#{thresholds,jdbcType=VARCHAR},
+			</if>
+			<if test="verifyStatus != null">
+				#{verifyStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="authResult != null">
+				#{authResult,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.model.AppYouDunResult">
+		update app_youdun_result
+		<set>
+			<if test="partnerOrderId != null">
+				partner_order_id = #{partnerOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="idNumber != null">
+				id_number = #{idNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="idName != null">
+				id_name = #{idName,jdbcType=VARCHAR},
+			</if>
+			<if test="idcardFrontPhoto != null">
+				idcard_front_photo = #{idcardFrontPhoto,jdbcType=VARCHAR},
+			</if>
+			<if test="idcardBackPhoto != null">
+				idcard_back_photo = #{idcardBackPhoto,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="riskTag != null">
+				risk_tag = #{riskTag,jdbcType=VARCHAR},
+			</if>
+			<if test="similarity != null">
+				similarity = #{similarity,jdbcType=VARCHAR},
+			</if>
+			<if test="thresholds != null">
+				thresholds = #{thresholds,jdbcType=VARCHAR},
+			</if>
+			<if test="verifyStatus != null">
+				verify_status = #{verifyStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="authResult != null">
+				auth_result = #{authResult,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

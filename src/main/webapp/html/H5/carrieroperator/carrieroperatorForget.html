@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>运营商忘记密码</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/carrieroperatorForget.css"></link>
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../js/AESUtil.js"></script>
+    <script type="text/javascript" src="../../../js/carrieroperator/carrieroperatorForget.js"></script>
+    <script type="text/javascript" src="../../../js/common.js"></script>
+    <script type="text/javascript" src="../../../js/plat/superiorLimitMask.js"></script>
+</head>
+
+<body>
+ <div class="tipsPanel hide">
+ <div class="tipstext">
+ <div class="tipscontent">
+ <div class="contentword"></div>
+ <div class="cancel">取消</div>
+ <div class="sure">确定</div>
+ </div>
+ </div>
+</div>
+    <div class="main">
+        <div class="code style hide">
+            <div class="title">短信验证码</div>
+            <div class="content">
+                <input class="codeTxt txt" type="text" placeholder="短信验证码" maxlength="6" style="padding-top: 6px;"/>
+            </div>
+            <div class="getCode" onclick="getCode()">获取验证码</div>
+        </div>
+        <div class="serviceP style">
+            <div class="title">设置服务密码</div>
+            <div class="content">
+                <input class="serTxt txt" type="password" placeholder="密码设置为6位数字" maxlength="8" onkeyup="this.value=this.value.replace(/\s+/g,'')" style="    width: 75%;"/>
+                <div class="eye">
+                    <img src="../../images/close.png" class="eyeImage" />
+                </div>
+            </div>
+        </div>
+        <div class="surebtn" onclick="forgetBtn()">
+            提交
+        </div>
+    </div>
+</body>
+
+</html>

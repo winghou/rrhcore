@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IfmLoanApplMapper" >
+  <resultMap id="BaseResultMap" type="com.model.IfmLoanAppl" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="loaning_status" property="loaningStatus" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="prvince" property="prvince" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="appr_date" property="apprDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, item_code, status, loaning_status, create_date, prvince, city, comment, appr_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from IFM_LOAN_APPL
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from IFM_LOAN_APPL
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.IfmLoanAppl" >
+    insert into IFM_LOAN_APPL (id, item_code, status, 
+      loaning_status, create_date, prvince, 
+      city, comment, appr_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{itemCode,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{loaningStatus,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{prvince,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{apprDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.IfmLoanAppl" >
+    insert into IFM_LOAN_APPL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="itemCode != null" >
+        item_code,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="loaningStatus != null" >
+        loaning_status,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="prvince != null" >
+        prvince,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="apprDate != null" >
+        appr_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="itemCode != null" >
+        #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="loaningStatus != null" >
+        #{loaningStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prvince != null" >
+        #{prvince,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="apprDate != null" >
+        #{apprDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.IfmLoanAppl" >
+    update IFM_LOAN_APPL
+    <set >
+      <if test="itemCode != null" >
+        item_code = #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="loaningStatus != null" >
+        loaning_status = #{loaningStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prvince != null" >
+        prvince = #{prvince,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="apprDate != null" >
+        appr_date = #{apprDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.IfmLoanAppl" >
+    update IFM_LOAN_APPL
+    set item_code = #{itemCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      loaning_status = #{loaningStatus,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      prvince = #{prvince,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      appr_date = #{apprDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

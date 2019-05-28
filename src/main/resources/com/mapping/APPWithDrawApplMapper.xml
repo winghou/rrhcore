@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.APPWithDrawApplMapper" >
+  <resultMap id="BaseResultMap" type="com.model.APPWithDrawAppl" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="borrow_time" property="borrowTime" jdbcType="TIMESTAMP" />
+    <result column="borrow_amt" property="borrowAmt" jdbcType="VARCHAR" />
+    <result column="borrow_perions" property="borrowPerions" jdbcType="VARCHAR" />
+    <result column="borrow_days" property="borrowDays" jdbcType="VARCHAR" />
+    <result column="borrow_use" property="borrowUse" jdbcType="VARCHAR" />
+    <result column="actual_amt" property="actualAmt" jdbcType="VARCHAR" />
+    <result column="month_pay" property="month_pay" jdbcType="VARCHAR" />
+    <result column="capital_and_interest" property="capital_and_interest" jdbcType="VARCHAR" />
+    <result column="coupon_amt" property="coupon_amt" jdbcType="VARCHAR" />
+    <result column="commission_amt" property="commissionAmt" jdbcType="VARCHAR" />
+    <result column="contract_code" property="contractCode" jdbcType="VARCHAR" />
+    <result column="contract_tempid" property="contractTempid" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="loan_status" property="loanStatus" jdbcType="VARCHAR" />
+    <result column="confirm_date" property="confirmDate" jdbcType="TIMESTAMP" />
+    <result column="loan_date" property="loanDate" jdbcType="TIMESTAMP" />
+    <result column="cooperation" property="cooperation" jdbcType="VARCHAR" />
+    <result column="tact_uuid" property="tactUuid" jdbcType="VARCHAR" />
+    <result column="is_full_scale" property="isFullScale" jdbcType="VARCHAR" />
+    <result column="full_date" property="fullDate" jdbcType="TIMESTAMP" />
+    <result column="settle_date" property="settle_date" jdbcType="TIMESTAMP" />
+    <result column="settle_amt" property="settle_amt" jdbcType="VARCHAR" />
+    <result column="nhl" property="nhl" jdbcType="VARCHAR" />
+    <result column="audio_url" property="audio_url" jdbcType="VARCHAR" />
+    <result column="contract_no" property="contract_no" jdbcType="VARCHAR" />
+    <result column="coupon_id" property="couponId" jdbcType="VARCHAR" />
+    <result column="fwf_rate" property="fwfRate" jdbcType="VARCHAR" />
+    <result column="purpose" property="purpose" jdbcType="VARCHAR" />
+    <result column="loan_source" property="loanSource" jdbcType="VARCHAR" />
+    <result column="insurance_type" property="insurance_type" jdbcType="VARCHAR" />
+    <result column="protocol_type" property="protocol_type" jdbcType="VARCHAR" />
+    <result column="day_rate" property="dayRate" jdbcType="VARCHAR" />
+    <result column="creditx_score" property="creditxScore" jdbcType="VARCHAR" />
+    <result column="consume_type" property="consumeType" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, appr_id, borrow_time, borrow_amt, borrow_perions,borrow_days, borrow_use, actual_amt, commission_amt, month_pay,capital_and_interest,coupon_amt,
+    contract_code, contract_tempid, status, loan_status, confirm_date, loan_date, cooperation, 
+    tact_uuid, is_full_scale, full_date,settle_date,settle_amt,nhl,audio_url,contract_no,coupon_id,fwf_rate,purpose,loan_source,insurance_type,protocol_type,day_rate,creditx_score,
+    consume_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_withdraw_appl
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllByapprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_WITHDRAW_APPL
+    where appr_id = #{apprId,jdbcType=INTEGER} order by borrow_time desc
+  </select>
+  <select id="selectAllByapprId7Days" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from APP_WITHDRAW_APPL
+    where loan_status in ('0','5') and appr_id=#{apprId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByapprIdAndStatus" resultType="map" parameterType="map" >
+    select  (select max(borrow_time) from APP_WITHDRAW_APPL where appr_id = #{apprId,jdbcType=INTEGER} and status in ${status}) lastLoanTime,borrow_time,borrow_amt,IFNULL(borrow_perions, '1') as borrow_perions,actual_amt,month_pay,contract_no,status,id from APP_WITHDRAW_APPL
+    where appr_id = #{apprId,jdbcType=INTEGER} and status in ${status} order by borrow_time desc
+  </select>
+  <!-- 根据还款时间正序排序待还款订单详情 -->
+  <select id="selectByByapprIdAndStatusOrderByRepayDate" resultType="map" parameterType="map" >
+    SELECT DISTINCT
+		temp.id,
+		temp.status,
+		temp.contract_no,
+		temp.borrow_amt
+	FROM
+		(
+			SELECT
+				@rownum :=@rownum + 1 AS rownum,
+				t1.*
+			FROM
+				(SELECT @rownum := 0) r,
+				app_withdraw_appl t1
+			LEFT JOIN app_repay_plan t2 ON t1.id = t2.withdraw_id
+			WHERE
+				t1.`status` IN ${status}
+			AND t1.appr_id = #{apprId} and t2.status = '0'
+			ORDER BY
+				t2.repay_date
+		) temp;
+  </select>
+  <select id="selectByapprIdAndLoanStatus" resultType="map" parameterType="map" >
+    select  (select max(borrow_time) from APP_WITHDRAW_APPL where appr_id = #{apprId,jdbcType=INTEGER} and loan_status in ${loanStatus}) lastLoanTime,borrow_time,borrow_amt,IFNULL(borrow_perions, '1') as borrow_perions,actual_amt,month_pay,contract_no,status,loan_status,id from APP_WITHDRAW_APPL
+    where appr_id = #{apprId,jdbcType=INTEGER} and loan_status in ${loanStatus} order by borrow_time desc
+  </select>
+  <!-- 查询订单记录，按逾期、审核中、还款中、结清 -->
+  <select id="selectOrderRecords" resultType="map" parameterType="java.lang.Integer" >
+    SELECT DISTINCT
+		temp.id,
+		temp.status,
+		temp.contract_no,
+		temp.borrow_amt,
+		temp.borrow_time,
+    temp.fxje,
+		temp.repay_id,
+    temp.money_pay
+	FROM
+		(
+			SELECT
+				@rownum :=@rownum + 1 AS rownum,
+				t1.*,t2.fxje,t2.id as repay_id,t2.month_pay as money_pay
+			FROM
+				(SELECT @rownum := 0) r,
+				app_withdraw_appl t1
+			LEFT JOIN app_repay_plan t2 ON t1.id = t2.withdraw_id
+			WHERE
+				  t1.appr_id = #{apprId} and t1.status != '4'
+			ORDER BY
+				FIELD(t1. STATUS, '2', '0', '1', '3'),
+				t2.repay_date
+		) temp;
+  </select>
+  <!-- 查询当日借款申请 -->
+  <select id="selectApplOrderToday" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	SELECT <include refid="Base_Column_List" /> FROM app_withdraw_appl t where t.appr_id = #{apprId,jdbcType=INTEGER} and DATE_FORMAT(t.borrow_time,'%Y/%m/%d') = DATE_FORMAT(NOW(),'%Y/%m/%d')
+  </select>
+  <!-- 根据合同号查询app_withdraw_appl -->
+  <select id="selectApplByContractNo" resultMap="BaseResultMap" parameterType="String" >
+  	select 
+    <include refid="Base_Column_List" />
+    from APP_WITHDRAW_APPL
+    where contract_no = #{contractNo,jdbcType=VARCHAR}
+  </select>
+  <!-- 根据订单状态查询app_withdraw_appl -->
+  <select id="selectByApprIdAndStatusAndLoanStatus" resultMap="BaseResultMap" parameterType="map" >
+  	select 
+    <include refid="Base_Column_List" />
+    from APP_WITHDRAW_APPL
+    where appr_id = #{apprId} and status = #{status} and loan_status = #{loanStatus}
+  </select>
+   <!-- 查询当前用户所有待签约订单 -->
+  <select id="selectAllWaitingSignByapprId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select 
+    <include refid="Base_Column_List" />
+    from app_withdraw_appl
+    where loan_status = '5' and appr_id = #{apprId,jdbcType=INTEGER} ORDER BY confirm_date
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_withdraw_appl
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.APPWithDrawAppl" >
+    insert into app_withdraw_appl (id, appr_id, borrow_time, 
+      borrow_amt, borrow_perions, borrow_use, 
+      actual_amt, commission_amt,month_pay, contract_code, 
+      contract_tempid, status, loan_status, 
+      confirm_date, loan_date, cooperation, 
+      tact_uuid, is_full_scale, full_date,
+      settle_date,settle_amt
+      )
+    values (#{id,jdbcType=INTEGER}, #{apprId,jdbcType=INTEGER}, #{borrowTime,jdbcType=TIMESTAMP}, 
+      #{borrowAmt,jdbcType=VARCHAR}, #{borrowPerions,jdbcType=VARCHAR}, #{borrowUse,jdbcType=VARCHAR}, #{month_pay,jdbcType=VARCHAR},
+      #{actualAmt,jdbcType=VARCHAR}, #{commissionAmt,jdbcType=VARCHAR}, #{contractCode,jdbcType=VARCHAR}, 
+      #{contractTempid,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{loanStatus,jdbcType=VARCHAR}, 
+      #{confirmDate,jdbcType=TIMESTAMP}, #{loanDate,jdbcType=TIMESTAMP}, #{cooperation,jdbcType=VARCHAR}, 
+      #{tactUuid,jdbcType=VARCHAR}, #{isFullScale,jdbcType=VARCHAR}, #{fullDate,jdbcType=TIMESTAMP},
+      #{settle_date,jdbcType=TIMESTAMP}, #{settle_amt,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.APPWithDrawAppl" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_withdraw_appl
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="borrowTime == null" >
+       	borrow_time,
+      </if>
+      <if test="borrowAmt != null" >
+        borrow_amt,
+      </if>
+      <if test="borrowPerions != null" >
+        borrow_perions,
+      </if>
+      <if test="borrowDays != null" >
+        borrow_days,
+      </if>
+      <if test="borrowUse != null" >
+        borrow_use,
+      </if>
+      <if test="actualAmt != null" >
+        actual_amt,
+      </if>
+      <if test="month_pay != null" >
+        month_pay,
+      </if>
+      <if test="capital_and_interest != null" >
+        capital_and_interest,
+      </if>
+      <if test="coupon_amt != null" >
+        coupon_amt,
+      </if>
+      <if test="commissionAmt != null" >
+        commission_amt,
+      </if>
+      <if test="contractCode != null" >
+        contract_code,
+      </if>
+      <if test="contractTempid != null" >
+        contract_tempid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="loanStatus != null" >
+        loan_status,
+      </if>
+      <if test="confirmDate != null" >
+        confirm_date,
+      </if>
+      <if test="loanDate != null" >
+        loan_date,
+      </if>
+      <if test="cooperation != null" >
+        cooperation,
+      </if>
+      <if test="tactUuid != null" >
+        tact_uuid,
+      </if>
+      <if test="isFullScale != null" >
+        is_full_scale,
+      </if>
+      <if test="fullDate != null" >
+        full_date,
+      </if>
+      <if test="settle_date != null" >
+        settle_date,
+      </if>
+      <if test="settle_amt != null" >
+        settle_amt,
+      </if>
+      <if test="nhl != null" >
+        nhl,
+      </if>
+      <if test="audio_url != null" >
+        audio_url,
+      </if>
+      <if test="contract_no != null" >
+        contract_no,
+      </if>
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="fwfRate != null" >
+        fwf_rate,
+      </if>
+      <if test="purpose != null" >
+        purpose,
+      </if>
+      <if test="loanSource != null" >
+        loan_source,
+      </if>
+      <if test="loanSource != null" >
+        insurance_type,
+      </if>
+      <if test="protocol_type != null" >
+        protocol_type,
+      </if>
+      <if test="dayRate != null" >
+        day_rate,
+      </if>
+      <if test="creditxScore != null" >
+        creditx_score,
+      </if>
+      <if test="consumeType != null" >
+        consume_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="borrowTime == null" >
+        now(),
+      </if>
+      <if test="borrowAmt != null" >
+        #{borrowAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowPerions != null" >
+        #{borrowPerions,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowDays != null" >
+        #{borrowDays,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowUse != null" >
+        #{borrowUse,jdbcType=VARCHAR},
+      </if>
+      <if test="actualAmt != null" >
+        #{actualAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="month_pay != null" >
+        #{month_pay,jdbcType=VARCHAR},
+      </if>
+      <if test="capital_and_interest != null" >
+        #{capital_and_interest,jdbcType=VARCHAR},
+      </if>
+      <if test="coupon_amt != null" >
+        #{coupon_amt,jdbcType=VARCHAR},
+      </if>
+      <if test="commissionAmt != null" >
+        #{commissionAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="contractCode != null" >
+        #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="contractTempid != null" >
+        #{contractTempid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="loanStatus != null" >
+        #{loanStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmDate != null" >
+        #{confirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanDate != null" >
+        #{loanDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cooperation != null" >
+        #{cooperation,jdbcType=VARCHAR},
+      </if>
+      <if test="tactUuid != null" >
+        #{tactUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="isFullScale != null" >
+        #{isFullScale,jdbcType=VARCHAR},
+      </if>
+      <if test="fullDate != null" >
+        #{fullDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settle_date != null" >
+        #{settle_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settle_amt != null" >
+        #{settle_amt,jdbcType=VARCHAR},
+      </if>
+       <if test="nhl != null" >
+        #{nhl,jdbcType=VARCHAR},
+      </if>
+      <if test="audio_url != null" >
+        #{audio_url,jdbcType=VARCHAR},
+      </if>
+      <if test="contract_no != null" >
+        #{contract_no,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="fwfRate != null" >
+        #{fwfRate,jdbcType=VARCHAR},
+      </if>
+      <if test="purpose != null" >
+        #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="loanSource != null" >
+        #{loanSource,jdbcType=VARCHAR},
+      </if>
+      <if test="insurance_type != null" >
+        #{insurance_type,jdbcType=VARCHAR},
+      </if>
+      <if test="protocol_type != null" >
+        #{protocol_type,jdbcType=VARCHAR},
+      </if>
+      <if test="dayRate != null" >
+        #{dayRate,jdbcType=VARCHAR},
+      </if>
+      <if test="creditxScore != null" >
+        #{creditxScore,jdbcType=VARCHAR},
+      </if>
+      <if test="consumeType != null" >
+        #{consumeType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.APPWithDrawAppl" >
+    update app_withdraw_appl
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="borrowTime != null" >
+        borrow_time = #{borrowTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowAmt != null" >
+        borrow_amt = #{borrowAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowPerions != null" >
+        borrow_perions = #{borrowPerions,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowUse != null" >
+        borrow_use = #{borrowUse,jdbcType=VARCHAR},
+      </if>
+      <if test="actualAmt != null" >
+        actual_amt = #{actualAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="month_pay != null" >
+        month_pay = #{month_pay,jdbcType=VARCHAR},
+      </if>
+      <if test="capital_and_interest != null" >
+        capital_and_interest = #{capital_and_interest,jdbcType=VARCHAR},
+      </if>
+      <if test="coupon_amt != null" >
+        coupon_amt = #{coupon_amt,jdbcType=VARCHAR},
+      </if>
+      <if test="commissionAmt != null" >
+        commission_amt = #{commissionAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="contractCode != null" >
+        contract_code = #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="contractTempid != null" >
+        contract_tempid = #{contractTempid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="loanStatus != null" >
+        loan_status = #{loanStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmDate != null" >
+        confirm_date = #{confirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanDate != null" >
+        loan_date = #{loanDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cooperation != null" >
+        cooperation = #{cooperation,jdbcType=VARCHAR},
+      </if>
+      <if test="tactUuid != null" >
+        tact_uuid = #{tactUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="isFullScale != null" >
+        is_full_scale = #{isFullScale,jdbcType=VARCHAR},
+      </if>
+      <if test="fullDate != null" >
+        full_date = #{fullDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settle_date != null" >
+        settle_date = #{settle_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponId != null" >
+        coupon_id = #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="fwfRate != null" >
+        fwf_rate = #{fwfRate,jdbcType=VARCHAR},
+      </if>
+      <if test="purpose != null" >
+        purpose = #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="loanSource != null" >
+        loan_source = #{loanSource,jdbcType=VARCHAR},
+      </if>
+      <if test="dayRate != null" >
+        day_rate = #{dayRate,jdbcType=VARCHAR},
+      </if>
+      <if test="creditxScore != null" >
+        creditx_score = #{creditxScore,jdbcType=VARCHAR},
+      </if>
+      <if test="consumeType != null" >
+        consume_type = #{consumeType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.APPWithDrawAppl" >
+    update app_withdraw_appl
+    set appr_id = #{apprId,jdbcType=INTEGER},
+      borrow_time = #{borrowTime,jdbcType=TIMESTAMP},
+      borrow_amt = #{borrowAmt,jdbcType=VARCHAR},
+      borrow_perions = #{borrowPerions,jdbcType=VARCHAR},
+      borrow_use = #{borrowUse,jdbcType=VARCHAR},
+      actual_amt = #{actualAmt,jdbcType=VARCHAR},
+      month_pay = #{month_pay,jdbcType=VARCHAR},
+      capital_and_interest = #{capital_and_interest,jdbcType=VARCHAR},
+      coupon_amt = #{coupon_amt,jdbcType=VARCHAR},
+      commission_amt = #{commissionAmt,jdbcType=VARCHAR},
+      contract_code = #{contractCode,jdbcType=VARCHAR},
+      contract_tempid = #{contractTempid,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      loan_status = #{loanStatus,jdbcType=VARCHAR},
+      confirm_date = #{confirmDate,jdbcType=TIMESTAMP},
+      loan_date = #{loanDate,jdbcType=TIMESTAMP},
+      cooperation = #{cooperation,jdbcType=VARCHAR},
+      tact_uuid = #{tactUuid,jdbcType=VARCHAR},
+      is_full_scale = #{isFullScale,jdbcType=VARCHAR},
+      full_date = #{fullDate,jdbcType=TIMESTAMP},
+      settle_date = #{settle_date,jdbcType=TIMESTAMP},
+      settle_amt = #{settle_amt,jdbcType=VARCHAR},
+      coupon_id = #{couponId,jdbcType=VARCHAR},
+      fwf_rate = #{fwfRate,jdbcType=VARCHAR},
+      loan_source = #{loanSource,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 活动期借款金额统计 -->
+  <select id="selectActivityOrderRecords" resultType="map" parameterType="map" >
+    select a.user_id,a.item_code,round(b.borrow_amt) borrow_amt from app_loan_appl a
+    JOIN (select sum(borrow_amt) borrow_amt,appr_id from app_withdraw_appl
+    where borrow_time <![CDATA[>=]]> #{start_time}
+    and borrow_time <![CDATA[<=]]> #{end_time}
+    and loan_status = '3'
+    GROUP BY appr_id) b
+    on a.id = b.appr_id
+    where a.item_code != ''
+    ORDER BY b.borrow_amt desc,a.create_date
+  </select>
+  
+  <update id="updateByPrimaryKeyForCreditxScore" parameterType="com.model.APPWithDrawAppl" >
+    update app_withdraw_appl
+    <set >
+      <if test="creditxScore != null" >
+        creditx_score = #{creditxScore,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

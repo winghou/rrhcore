@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppYiTuScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppYiTuScore" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="request_time" property="requestTime" jdbcType="TIMESTAMP" />
+    <result column="message" property="message" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, request_id, request_time, message, result, score, appr_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_yitu_score
+    where id = #{id,jdbcType=INTEGER} 
+  </select>
+  <select id="selectSizeOneDay" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_yitu_score
+    where appr_id = #{apprId,jdbcType=INTEGER} and DATE_FORMAT(request_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_yitu_score
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppYiTuScore" >
+    insert into app_yitu_score (id, request_id, request_time, 
+      message, result, score, 
+      appr_id)
+    values (#{id,jdbcType=INTEGER}, #{requestId,jdbcType=VARCHAR}, #{requestTime,jdbcType=TIMESTAMP}, 
+      #{message,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{score,jdbcType=VARCHAR}, 
+      #{apprId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppYiTuScore" >
+    insert into app_yitu_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="requestId != null" >
+        request_id,
+      </if>
+      <if test="requestTime == null" >
+        request_time,
+      </if>
+      <if test="message != null" >
+        message,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="requestId != null" >
+        #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="requestTime == null" >
+        now(),
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppYiTuScore" >
+    update app_yitu_score
+    <set >
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="requestTime != null" >
+        request_time = #{requestTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="message != null" >
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppYiTuScore" >
+    update app_yitu_score
+    set request_id = #{requestId,jdbcType=VARCHAR},
+      request_time = #{requestTime,jdbcType=TIMESTAMP},
+      message = #{message,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      appr_id = #{apprId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

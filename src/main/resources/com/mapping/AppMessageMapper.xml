@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppMessage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="comtent" property="comtent" jdbcType="VARCHAR" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="h5_url" property="h5Url" jdbcType="VARCHAR" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="message_type" property="messageType" jdbcType="VARCHAR" />
+    <result column="withDraw_id" property="withdrawId" jdbcType="INTEGER" />
+    <result column="little_logo_url" property="littleLogoUrl" jdbcType="VARCHAR" />
+    <result column="share_url" property="shareUrl" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="VARCHAR" />
+    <result column="end_date" property="endDate" jdbcType="VARCHAR" />
+    <result column="is_track" property="isTrack" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, appr_id, title, comtent, pic_url, h5_url, publish_time, status, message_type, 
+    withDraw_id, little_logo_url, share_url, start_date, end_date, is_track
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllMes" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_message order by id desc
+  </select>
+  
+  <select id="selectByapprIdAndType" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_message where  appr_id=#{apprId} and message_type=#{type} order by id desc
+  </select>
+  <select id="selectByapprIdAndMessId" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_message where  appr_id=#{apprId} and id=#{mesId} 
+  </select>
+  <select id="selectByapprIdAndTypeIsRead" resultType="java.util.Map" parameterType="map" >
+   select t.id,t.appr_id,t.title,t.comtent,t.pic_url,t.h5_url,t.publish_time,t.withDraw_id,IFNULL(t1.id,'0') isRead,t.little_logo_url,t.share_url,t.is_track  from app_message t 
+	left join (select tmp.id from 
+	(select t2.id from app_message t2 join app_mes_status t3 on t2.id=t3.message_id where 1=1 <if test="apprId != null" > and t3.appr_id=#{apprId}</if> <if test="phoneId != null" >and t3.phone_id=#{phoneId}</if>) tmp
+	)t1 on t.id=t1.id
+	where t.message_type=#{type}  <if test="apprId != null" >and t.appr_id=#{apprId}</if> order by t.publish_time desc ,id desc
+  </select>
+  
+  <select id="selectByapprIdAndTypeIsRead2" resultType="java.util.Map" parameterType="map" >
+   select t.id,t.appr_id,t.title,t.comtent,t.pic_url,t.h5_url,t.publish_time,t.withDraw_id,IFNULL(t1.id,'0') isRead,t.little_logo_url,t.share_url,t.is_track  from app_message t 
+	left join (select tmp.id from 
+	(select t2.id from app_message t2 join app_mes_status t3 on t2.id=t3.message_id where 1=1 <if test="apprId != null" > and t3.appr_id=#{apprId}</if> <if test="phoneId != null" >and t3.phone_id=#{phoneId}</if>) tmp
+	)t1 on t.id=t1.id
+	where t.message_type=#{type} and t.status = '0' and NOW() BETWEEN t.start_date AND t.end_date order by t.publish_time desc,id desc
+  </select>
+  
+  <select id="selectByapprIdAndTypeIsRead3" resultType="java.util.Map" parameterType="map" >
+   select t.id,t.appr_id,t.title,t.comtent,t.pic_url,t.h5_url,t.publish_time,t.withDraw_id,IFNULL(t1.id,'0') isRead,t.little_logo_url,t.share_url,t.is_track  from app_message t 
+	left join (select tmp.id from 
+	(select t2.id from app_message t2 join app_mes_status t3 on t2.id=t3.message_id where 1=1 <if test="apprId != null" > and t3.appr_id=#{apprId}</if> <if test="phoneId != null" >and t3.phone_id=#{phoneId}</if>) tmp
+	)t1 on t.id=t1.id
+	where t.message_type=#{type} and t.status = '0' and NOW() BETWEEN t.start_date AND t.end_date <if test="apprId != null" >and t.appr_id=#{apprId}</if> order by t.publish_time desc ,id desc
+  </select>
+  
+  <select id="selectByapprIdAndTypeIsRead4" resultType="java.util.Map" parameterType="map" >
+   select t.id,t.appr_id,t.title,t.comtent,t.pic_url,t.h5_url,t.publish_time,t.withDraw_id,IFNULL(t1.id,'0') isRead,t.little_logo_url,t.share_url,t.message_type,t.is_track  from app_message t 
+	left join (select tmp.id from 
+	(select t2.id from app_message t2 join app_mes_status t3 on t2.id=t3.message_id where 1=1 <if test="apprId != null" > and t3.appr_id=#{apprId}</if> <if test="phoneId != null" >and t3.phone_id=#{phoneId}</if>) tmp
+	)t1 on t.id=t1.id
+	where t.message_type in ${type}  <if test="apprId != null" >and t.appr_id=#{apprId}</if> order by t.publish_time desc ,id desc
+  </select>
+  
+  <select id="selectByType" resultMap="BaseResultMap" parameterType="string" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_message where  ISNULL(appr_id) and message_type=#{type} order by id desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppMessage" >
+    insert into app_message (id, appr_id, title, 
+      comtent, pic_url, h5_url, 
+      publish_time, status, message_type, 
+      withDraw_id,little_logo_url,share_url)
+    values (#{id,jdbcType=INTEGER}, #{apprId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{comtent,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, #{h5Url,jdbcType=VARCHAR}, 
+      #{publishTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{messageType,jdbcType=VARCHAR}, 
+      #{withdrawId,jdbcType=INTEGER},#{littleLogoUrl,jdbcType=VARCHAR},#{shareUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppMessage" >
+    insert into app_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="comtent != null" >
+        comtent,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="h5Url != null" >
+        h5_url,
+      </if>
+      <if test="publishTime == null" >
+        publish_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="messageType != null" >
+        message_type,
+      </if>
+      <if test="withdrawId != null" >
+        withDraw_id,
+      </if>
+      <if test="littleLogoUrl != null" >
+        little_logo_url,
+      </if>
+      <if test="shareUrl != null" >
+        share_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="comtent != null" >
+        #{comtent,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="h5Url != null" >
+        #{h5Url,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime == null" >
+        now(),
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="messageType != null" >
+        #{messageType,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawId != null" >
+        #{withdrawId,jdbcType=INTEGER},
+      </if>
+      <if test="littleLogoUrl != null" >
+        #{littleLogoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUrl != null" >
+        #{shareUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppMessage" >
+    update app_message
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="comtent != null" >
+        comtent = #{comtent,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="h5Url != null" >
+        h5_url = #{h5Url,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="messageType != null" >
+        message_type = #{messageType,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawId != null" >
+        withDraw_id = #{withdrawId,jdbcType=INTEGER},
+      </if>
+      <if test="littleLogoUrl != null" >
+        little_logo_url = #{littleLogoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUrl != null" >
+        share_url = #{shareUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppMessage" >
+    update app_message
+    set appr_id = #{apprId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      comtent = #{comtent,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      h5_url = #{h5Url,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      message_type = #{messageType,jdbcType=VARCHAR},
+      withDraw_id = #{withdrawId,jdbcType=INTEGER},
+      little_logo_url = #{littleLogoUrl,jdbcType=VARCHAR},
+      share_url = #{shareUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKeyAndTime" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_message
+    where id in ${ids} and NOW() BETWEEN start_date and end_date and message_type = '1' ORDER BY publish_time DESC 
+  </select>
+</mapper>

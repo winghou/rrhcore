@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppDecisionAndControlRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppDecisionAndControlRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="withdraw_id" property="withdrawId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="engine_finish_time" property="engineFinishTime" jdbcType="TIMESTAMP" />
+    <result column="engine_status" property="engineStatus" jdbcType="VARCHAR" />
+    <result column="control_finish_time" property="controlFinishTime" jdbcType="TIMESTAMP" />
+    <result column="control_status" property="controlStatus" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="credit" property="credit" jdbcType="VARCHAR" />
+    <result column="wf_id" property="wfId" jdbcType="INTEGER" />
+    <result column="wfm_log_id" property="wfmLogId" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="credit_score" property="credit_score" jdbcType="VARCHAR" />
+    <result column="ivs_score" property="ivs_score" jdbcType="VARCHAR" />
+    <result column="watchlist_matched" property="watchlist_matched" jdbcType="VARCHAR" />
+    <result column="open_id_status" property="open_id_status" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,	order_id, appr_id, withdraw_id, create_time, engine_finish_time, engine_status,control_finish_time, control_status,
+	score, level, credit, wf_id, wfm_log_id, description,credit_score,ivs_score,watchlist_matched,open_id_status
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_decision_and_control_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_decision_and_control_record
+    where order_id = #{orderId}
+  </select>
+  
+  <select id="selectByWithId" resultMap="BaseResultMap" parameterType="int" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_decision_and_control_record
+    where withdraw_id = #{withId}
+  </select>
+  
+  <select id="selectLatestPassedRecord" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_decision_and_control_record
+    where appr_id = #{apprId} and engine_status = '2' order by engine_finish_time desc limit 0,1
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_decision_and_control_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.model.AppDecisionAndControlRecord" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_decision_and_control_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="withdrawId != null" >
+        withdraw_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="engineFinishTime != null" >
+        engine_finish_time,
+      </if>
+      <if test="engineStatus != null" >
+        engine_status,
+      </if>
+      <if test="controlFinishTime != null" >
+        control_finish_time,
+      </if>
+      <if test="controlStatus != null" >
+        control_status,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="credit != null" >
+        credit,
+      </if>
+      <if test="wfId != null" >
+        wf_id,
+      </if>
+      <if test="wfmLogId != null" >
+        wfm_log_id,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="credit_score != null" >
+        credit_score,
+      </if>
+      <if test="ivs_score != null" >
+        ivs_score,
+      </if>
+      <if test="watchlist_matched != null" >
+        watchlist_matched,
+      </if>
+      <if test="open_id_status != null" >
+        open_id_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawId != null" >
+        #{withdrawId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="engineFinishTime != null" >
+        #{engineFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="engineStatus != null" >
+        #{engineStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="controlFinishTime != null" >
+        #{controlFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="controlStatus != null" >
+        #{controlStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=VARCHAR},
+      </if>
+      <if test="wfId != null" >
+        #{wfId,jdbcType=INTEGER},
+      </if>
+      <if test="wfmLogId != null" >
+        #{wfmLogId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="credit_score != null" >
+        #{credit_score,jdbcType=VARCHAR},
+      </if>
+      <if test="ivs_score != null" >
+        #{ivs_score,jdbcType=VARCHAR},
+      </if>
+      <if test="watchlist_matched != null" >
+        #{watchlist_matched,jdbcType=VARCHAR},
+      </if>
+      <if test="open_id_status != null" >
+        #{open_id_status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppDecisionAndControlRecord" >
+    update app_decision_and_control_record
+    <set >
+      <if test="engineFinishTime != null" >
+        engine_finish_time = #{engineFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="engineStatus != null" >
+        engine_status = #{engineStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="controlFinishTime != null" >
+        control_finish_time = #{controlFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="controlStatus != null" >
+        control_status = #{controlStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=VARCHAR},
+      </if>
+      <if test="wfId != null" >
+        wf_id = #{wfId,jdbcType=INTEGER},
+      </if>
+      <if test="wfmLogId != null" >
+        wfm_log_id = #{wfmLogId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="credit_score != null" >
+        credit_score = #{credit_score,jdbcType=VARCHAR},
+      </if>
+      <if test="ivs_score != null" >
+        ivs_score = #{ivs_score,jdbcType=VARCHAR},
+      </if>
+      <if test="watchlist_matched != null" >
+        watchlist_matched = #{watchlist_matched,jdbcType=VARCHAR},
+      </if>
+      <if test="open_id_status != null" >
+        open_id_status = #{open_id_status,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

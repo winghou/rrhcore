@@ -1,0 +1,64 @@
+/*.header{
+    width: 100%;
+    height: 1rem;
+    border-bottom: 1px solid #D8D8D8;
+}
+.header h2{
+    font-size: .4rem;
+    color: #333;
+    text-align: center;
+    line-height: 1rem;
+}
+.main{
+    width: 100%;
+    height: 92%;
+    padding: .3rem .68rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}*/
+.mains {
+    width: 100%;
+    height: 1.13rem;
+    border-bottom: 1px solid #f2f2f2;
+}
+.mains input{
+    display: block;
+    width: 100%;
+    height: 1.13rem;
+    padding-top: .4rem;
+    box-sizing: border-box;
+    font-size: .3rem;
+}
+.main-bankPassword{
+    position: relative;
+}
+/*
+.eye{
+    position: absolute;
+    right: .25rem;
+    top: .5rem;
+    width: .5rem;
+}
+.btn{
+    display: block;
+    margin: 1.2rem auto 0;
+    text-align: center;
+    width: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    background-image: linear-gradient(-90deg, #F26877 6%, #DD72CA 77%);
+    border-radius: .46rem;
+    font-family: PingFang-HK-Regular;
+    font-size: .4rem;
+    color: #FFFFFF;
+}
+p{
+    text-indent: 0;
+    text-align: center;
+    margin-top: .2rem;
+    color: #999;
+}
+p span{
+    border-bottom: 1px solid #999;
+}*/

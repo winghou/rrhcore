@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>API-TESTER</title>
+<style>
+input, select {
+	font-size: 12px;
+	color: #000;
+	border: 1px solid #bababa;
+	margin: 0;
+}
+</style>
+<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="js/json_beauty.js"></script>
+<script type="text/javascript" src="js/sjs-loader.js"></script>
+<script type="text/javascript" src="js/jquery.base64.js"></script>
+<script type="text/javascript" src="js/AESUtil.js"></script>
+<script type="text/sjs">
+      var ok_no=0;
+      var nok_no=0;
+      var times = 0;
+      var warnNo = 0;
+      var efenceNo = 0;
+      var detect_ms = 5000; //检测间隔时间
+      var interval_handle;
+      var beginInvokeTime=0;
+
+      //common function
+      function invoke_api(q)
+      {
+        var now = new Date();
+        beginInvokeTime=now.getHours()*60*60*1000 + now.getMinutes()*60*1000 + now.getSeconds()*1000 + now.getMilliseconds();
+
+        var url="";
+		var jsonobj=eval('('+q+')');//通过eval() 函数可以将JSON字符串转化为对象
+        url=jsonobj.cmd;	
+        $.ajax({
+              url:url,
+              type: 'post',
+              async: false,
+              dataType:'json',
+              contentType:'application/json', //很重要，没有这个就走不了fastjson解析器
+              timeout: 100000,
+              error: function(ret){deal_error(ret);},
+              success: function(xml){deal_result(xml);},
+ 				data: "{\"key\":\""+Encrypt(q)+"\"}"
+        });
+      }
+
+      function deal_result(dd)
+      {       
+		var real = Decrypt(dd.key);
+        var result=res.key;
+		var res = JSON.parse(real);
+        if(res.result == 0 || res.result == 256)
+        {
+          //$("#response").val(JSON.stringify(res));
+          set_output(JSON.stringify(res));
+          echoOk();
+          calcReturn(res);
+        }
+        else if(res.result == 511 && res.cmd=="init")
+        {
+          set_output(JSON.stringify( Decrypt(result)));
+          echoOk();
+          calcReturn(res);
+          $("#console").val($("#console").val()+res.cmd+":\t"+res.resultNote+"\n");
+        }
+        else
+        {
+          var out = JSON.stringify(res);
+          echoError();
+          set_output(out);
+          if(res.cmd)
+          {
+            $("#console").val($("#console").val()+res.cmd+":\t"+res.resultNote+"\n");
+          }
+          else
+          {
+            $("#console").val($("#console").val()+"remote invoke:\t"+res.resultNote+"\n");
+          }
+        }
+        var now = new Date();
+        finishInvokeTime=now.getHours()*60*60*1000 + now.getMinutes()*60*1000 + now.getSeconds()*1000 + now.getMilliseconds();
+        $("#console").val("["+res.cmd + "] spend " + (finishInvokeTime - beginInvokeTime) + " ms \n"+$("#console").val());
+      }
+
+      function stopTest()
+      {
+        times = 0;
+        clearInterval(interval_handle);
+      }
+
+      function calcReturn(res)
+      {
+        $("#resultNo").html("<"+res.totalRecordNum+">");
+      }
+
+      function deal_error(res)
+      {
+        set_output(JSON.stringify(res));
+        echoError();
+      }
+
+      function echoError()
+      {
+        nok_no = nok_no + 1;
+        $("#detailResult").html("<font color='green'>成功:["+ok_no+"]</font>/<font color='red'>失败:["+nok_no+"]</font>");
+      }
+
+      function echoOk()
+      {
+        ok_no = ok_no + 1;
+        $("#detailResult").html("<font color='green'>成功:["+ok_no+"]</font>/<font color='red'>失败:["+nok_no+"]</font>");
+      }
+
+      function execute(request)
+      {
+        if(request)
+        {
+          invoke_api(request);
+        }else if($("#testTime").val())
+        {
+          var now = new Date();
+          bTime=now.getHours()*60*60*1000 + now.getMinutes()*60*1000 + now.getSeconds()*1000 + now.getMilliseconds();
+          for(var i = 0; i < $("#testTime").val(); i++)
+          {
+              invoke_api($("#request").val());
+          }
+          var now = new Date();
+          eTime=now.getHours()*60*60*1000 + now.getMinutes()*60*1000 + now.getSeconds()*1000 + now.getMilliseconds();
+          $('#msgLabel').html($("#testTime").val()+" invoke spend "+(eTime-bTime)+" ms"+'<input type="button" onclick="format_input()" value="格式化代码" >');
+        }
+        else
+        {
+          invoke_api($("#request").val());
+        }
+      }
+
+      function formatJson(jsonStr)
+      {
+        var str = jsonStr.replace(/,/g,",\n").replace(/:\{/g,":\n{").replace(/\{\"/g,"{\n\"").replace(/\[\{/g,"[\n{");
+        str = str.replace(/\}/g,"\n\}").replace(/\]/g,"\n\]");
+        return str;
+      }
+      function format_input()
+      {
+        var jsontxt = js_beautify(unpacker_filter($("#request").val()), {
+            indent_size: 2,
+            indent_char: ' ',
+            preserve_newlines:true,
+            brace_style: 'expand',
+            keep_array_indentation:true,
+            space_after_anon_function:true});
+        $("#request").val(jsontxt);
+        //set_output("");
+      }
+      
+      function ui_init(request)
+      {
+        var jsontxt = js_beautify(unpacker_filter(request), {
+            indent_size: 2,
+            indent_char: ' ',
+            preserve_newlines:true,
+            brace_style: 'expand',
+            keep_array_indentation:true,
+            space_after_anon_function:true});
+        $("#request").val(jsontxt);
+        set_output("");
+      }
+
+      function set_output(response)
+      {
+        if(!response)
+        {
+          $("#response").val("");
+        }
+        else
+        {
+          var jsontxt = js_beautify(unpacker_filter(response), {
+              indent_size: 2,
+              indent_char: ' ',
+              preserve_newlines:true,
+              brace_style: 'expand',
+              keep_array_indentation:false,
+              space_after_anon_function:true});
+          $("#response").val(jsontxt);
+        }
+      }
+
+     
+      function showRequest()
+      {
+        eval($("#cmd").val());
+        continuousRun();
+      }
+
+      function continuousRun()
+      {
+        if($("#chooseBox").attr("checked"))
+        {
+          execute();
+        }
+      }
+
+      function dateString()
+      {
+        var randSuffix = Math.round(Math.random()*1000000);
+          var date = new Date();
+          var year = date.getFullYear();
+          var month = date.getMonth();
+          var dat = date.getDate();
+          var hour = date.getHours();
+          var minute = date.getMinutes();
+          var second = date.getSeconds();
+          var milisecond = date.getMilliseconds();
+          return year+""+month+""+dat+""+hour+""+minute+""+second;//+""+milisecond+"_"+randSuffix;
+      }
+
+      function autoTest()
+      {
+        $("#chooseBox").attr("checked",true);
+        times=prompt("请输入测试次数","1");
+        for(var i = 0; i < times; i++)
+        {
+          var rand = Math.round(Math.random() * 10000);
+          sendSms();continuousRun();
+          $("#msgLabel").html((i+1)+"/"+times+"轮"+'<input type="button" onclick="format_input()" value="格式化代码" >');
+          $("#detailResult").html("<font color='#005800'>成功:["+ok_no+"]</font><font color='red'>失败:["+nok_no+"]</font>");
+        }
+        $("#chooseBox").attr("checked",false);
+      }
+
+      function randCategory(randD)
+      {
+        var cates = [11,12,21,31,32,33,34,41,42,43,51,61];
+        if(randD%12==11)
+        {
+          return "";
+        }
+        else
+        {
+          return cates[randD%12];
+        }
+      }
+
+   function sysRefresh()
+      {
+        
+        var q='{"cmd":"sysRefresh","token":"","userId":"43242543543","version":"1","params":{"logLevel":"debug","refresh":true}}';
+
+        ui_init(q);
+      }
+
+
+
+function queryBaseDict()
+    {
+        var q='{"cmd":"queryBaseDict","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"dataType": "sex"}}';
+        
+        ui_init(q);
+    }
+function queryServiceUrl()
+    {
+        var q='{"cmd":"queryServiceUrl","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"version": "1.31","from": "1"}}';
+       
+        ui_init(q);
+    }
+function register()
+    {
+        var q='{"cmd":"register","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"orgId": "c0001","phone":"18913963700","valiCode":"12345", "password":"123456","type":"0","deviceType": "Android传","deviceId": "","client_ip": ""}}';
+        ui_init(q);
+    }
+function getValiCodeFromPhone()
+    {
+        var q='{"cmd":"getValiCodeFromPhone","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"phone":"18913963701","userId": "114","type":"0"}}';
+        ui_init(q);
+    }
+function login()
+    {
+        var q='{"cmd":"login","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userCode": "18913963701","passWord": "123456" }}';
+        ui_init(q);
+    }
+function registerInfoIsComplete()
+    {
+        var q='{"cmd":"registerInfoIsComplete","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114" }}';
+        ui_init(q);
+    }
+function saveOrUpdatePersonInfo()
+    {
+        var q='{"cmd":"saveOrUpdatePersonInfo","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114","customName": "张三","identityCard": "123123123123","schoolName": "就读大学名称","place": "分校","bdrAddr": "3#108","entraDate": "2016-4-90 00:00:00","grade": "一班","address": "浦口" }}';
+        ui_init(q);
+    }
+function queryPersonInfo()
+    {
+        var q='{"cmd":"queryPersonInfo","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114"}}';
+        ui_init(q);
+    }
+function querySchool()
+    {
+        var q='{"cmd":"querySchool","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"dataType": "SCHOOL_NAME","keyValue": "南"}}';
+        ui_init(q);
+    }
+function queryBankAndLog()
+    {
+        var q='{"cmd":"queryBankAndLog","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{}}';
+        ui_init(q);
+    }
+function bindBank()
+    {
+        var q='{"cmd":"bindBank","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114","bank":"1" ,"bankCard":"123123123123","valiCode":"12345"}}';
+        ui_init(q);
+    }
+function queryBnakCard()
+    {
+        var q='{"cmd":"queryBnakCard","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114"}}';
+        ui_init(q);
+    }
+function accountConfirm()
+    {
+        var q='{"cmd":"accountConfirm","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114","phonePassword": "12233" ,"tbAccount":"14045435","jdAccount":"1415344"}}';
+        ui_init(q);
+    }
+function contactsConfirm()
+    {
+        var q='{"cmd":"contactsConfirm","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "135","contacts": [{"contactType": "0","contactName": "XXX0","contactPhone": "0XXX123"},{"contactType": "1","contactName": "XXX1","contactPhone": "1XXX123"},{"contactType": "2","contactName": "XXX2","contactPhone": "2XXX123"}],"passWordList": [{"cntTybe": "0","cntPass": "12345"},{"cntTybe": "0","cntPass": "12345"}],"phoneNameList": [{"phoneName": "父亲名字","phone": "13400000000"},{"phoneName": "母亲名字","phone": "15099999999"}]}}';
+        ui_init(q);
+    }
+function queryContacts()
+    {
+        var q='{"cmd":"queryContacts","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114"}}';
+        ui_init(q);
+    }
+function userInfo()
+    {
+        var q='{"cmd":"userInfo","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114"}}';
+        ui_init(q);
+    }
+function mine()
+    {
+        var q='{"cmd":"mine","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918"}}';
+        ui_init(q);
+    }
+function queryPercent()
+    {
+        var q='{"cmd":"queryPercent","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918"}}';
+        ui_init(q);
+    }
+function queryAdvr()
+    {
+        var q='{"cmd":"queryAdvr","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{}}';
+        ui_init(q);
+    }
+function queryAdvrByModule()
+    {
+        var q='{"cmd":"queryAdvrByModule","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"module": "1"}}';
+        ui_init(q);
+    }
+function loanApply()
+    {
+        var q='{"cmd":"loanApply","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114","loanAmt": "1000","loanPerion": "1","audioUrl": "/fileUpload/upload/20161102/147807429122093.wav"}}';
+        ui_init(q);
+    }
+function QureyAudioLoan()
+    {
+        var q='{"cmd":"QureyAudioLoan","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114","loanAmt": "1000","loanPerion": "1"}}';
+        ui_init(q);
+    }
+function qureyUrlAndMonthpay()
+    {
+        var q='{"cmd":"qureyUrlAndMonthpay","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "114","loanAmt": "1000","loanPerion": "1"}}';
+        ui_init(q);
+    }
+function IneedMoney()
+    {
+        var q='{"cmd":"IneedMoney","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918","loanAmt": "300","loanPerion": "19","purposeCode":"0","couponIds": [{"couponId": "2","couponType": "0"}]}}';
+        ui_init(q);
+    }
+function myBill()
+    {
+        var q='{"cmd":"myBill","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918"}}';
+        ui_init(q);
+    }
+function queryPostDetail()
+    {
+        var q='{"cmd":"queryPostDetail","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918","type": "0"}}';
+        ui_init(q);
+    }
+function queryRepayDetail()
+    {
+        var q='{"cmd":"queryRepayDetail","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"withDrawId":"2","status":"0"}}';
+        ui_init(q);
+    }
+function updateRepaymentStatus()
+    {
+        var q='{"cmd":"updateRepaymentStatus","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"repayDetailIds": "1,2,3"}}';
+        ui_init(q);
+    }
+function updatePassword()
+    {
+        var q='{"cmd":"updatePassword","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"phone": "150","newPassword":"123456","valiCode":"12345","type":"2"}}';
+        ui_init(q);
+    }
+function queryProgress()
+    {
+        var q='{"cmd":"queryProgress","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918"}}';
+        ui_init(q);
+    }
+function embody()
+    {
+        var q='{"cmd":"embody","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918"}}';
+        ui_init(q);
+    }
+function homePage()
+    {
+        var q='{"cmd":"homePage","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918","phoneId":"5353453543"}}';
+        ui_init(q);
+    }
+function gengxinshijian()
+    {
+        var q='{"cmd":"updateDate","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918"}}';
+        ui_init(q);
+    }
+function adviceOrback()
+    {
+        var q='{"cmd":"adviceOrback","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId": "5918","advice":"我觉得这App好low","type":"1","contactWay":"11318282"}}';
+        ui_init(q);
+    }
+function selectVersionAndUrl()
+    {
+        var q='{"cmd":"selectVersionAndUrl","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{}}';
+        ui_init(q);
+    }
+function payZfb()
+    {
+        var q='{"cmd":"payZfb","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"repayIds": [{"repayId":"1"}]}}';
+        ui_init(q);
+    }
+function platformQry()
+    {
+        var q='{"cmd":"platformQry","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{}}';
+        ui_init(q);
+    }
+function platformLogin()
+    {
+        var q='{"cmd":"platformLogin","token":"245Y7BSfDHIWEie34","userId":"F45094DC3444C25EBFCDDF992DC0A003","version":"1","params":{"cntLx":"13","userId":"F45094DC3444C25EBFCDDF992DC0A003"}}';
+        ui_init(q);
+    }
+function platformLoanCtmCntSave()
+	{
+        var q='{"cmd":"platformLoanCtmCntSave","token":"245Y7BSfDHIWEie34","userId":"F45094DC3444C25EBFCDDF992DC0A003","version":"1","params":{"cntLx":"4","userId":"F45094DC3444C25EBFCDDF992DC0A003", "cntCommt":"commt1234","cntPass":"newPassword"}}';
+        ui_init(q);
+    }
+function userPlatforms()
+	{
+        var q='{"cmd":"userPlatforms","token":"245Y7BSfDHIWEie34","userId":"F45094DC3444C25EBFCDDF992DC0A003","version":"1","params":{"userId":"F45094DC3444C25EBFCDDF992DC0A003"}}';
+        ui_init(q);
+    }
+function emailLogin()
+    {
+        var q='{"cmd":"emailLogin","token":"245Y7BSfDHIWEie34","userId":"972594EF0177E4019F11FE93538CACC8","version":"1","params":{"userId":"972594EF0177E4019F11FE93538CACC8","cntCommt":"fangchenfangchen@126.com","cntPass":"cyfz2009"}}';
+        ui_init(q);
+    }
+function userEmails()
+    {
+        var q='{"cmd":"userEmails","token":"245Y7BSfDHIWEie34","userId":"972594EF0177E4019F11FE93538CACC8","version":"1","params":{"userId":"972594EF0177E4019F11FE93538CACC8"}}';
+        ui_init(q);
+    }
+function emailDetailByCode()
+	{
+        var q='{"cmd":"emailDetailByCode","token":"245Y7BSfDHIWEie34","userId":"972594EF0177E4019F11FE93538CACC8","version":"1","params":{"userId":"972594EF0177E4019F11FE93538CACC8", "emailId":"2418225"}}';
+        ui_init(q);
+    }
+function emailPwdChange()
+	{
+        var q='{"cmd":"emailPwdChange","token":"245Y7BSfDHIWEie34","userId":"972594EF0177E4019F11FE93538CACC8","version":"1","params":{"userId":"972594EF0177E4019F11FE93538CACC8", "emailId":"2418225","newPwd":"newPwdChange"}}';
+        ui_init(q);
+    }
+function creditCardList()
+	{
+        var q='{"cmd":"creditCardList","token":"245Y7BSfDHIWEie34","userId":"972594EF0177E4019F11FE93538CACC8","version":"1","params":{"userId":"972594EF0177E4019F11FE93538CACC8"}}';
+        ui_init(q);
+    }
+function creditCardDetail()
+	{
+        var q='{"cmd":"creditCardDetail","token":"245Y7BSfDHIWEie34","userId":"972594EF0177E4019F11FE93538CACC8","version":"1","params":{"userId":"972594EF0177E4019F11FE93538CACC8","creditCardId":"2"}}';
+        ui_init(q);
+    }
+function creditCardSaveOrUpdate()
+	{
+        var q='{"cmd":"creditCardSaveOrUpdate","token":"245Y7BSfDHIWEie34","userId":"F7494FA2F32A4A1592553CEC6F0A5876","version":"1","params":{"userId":"F7494FA2F32A4A1592553CEC6F0A5876","bankCardNo":"621806821725184","bankCardPwd":"000707","bankName":"中国银行","mobilePhone":"1377463194","creditCardId":"1"}}';
+        ui_init(q);
+    }
+function depositCardList()
+	{
+        var q='{"cmd":"depositCardList","token":"245Y7BSfDHIWEie34","userId":"0E83CC4F8EF218625C54CF2A670613F2","version":"1","params":{"userId":"0E83CC4F8EF218625C54CF2A670613F2"}}';
+        ui_init(q);
+    }
+function depositCardDetail()
+	{
+        var q='{"cmd":"depositCardDetail","token":"245Y7BSfDHIWEie34","userId":"0E83CC4F8EF218625C54CF2A670613F2","version":"1","params":{"userId":"0E83CC4F8EF218625C54CF2A670613F2","depositCardId":"2"}}';
+        ui_init(q);
+    }
+function depositCardSaveOrUpdate()
+	{
+        var q='{"cmd":"depositCardSaveOrUpdate","token":"245Y7BSfDHIWEie34","userId":"0E83CC4F8EF218625C54CF2A670613F2","version":"1","params":{"userId":"0E83CC4F8EF218625C54CF2A670613F2","bankCardNo":"1703427841893273","bankCardPwd":"1789320","bankName":"平安银行","mobilePhone":"15851709431","depositCardId":"1"}}';
+        ui_init(q);
+    }
+function socialSecurityList()
+	{
+        var q='{"cmd":"socialSecurityList","token":"245Y7BSfDHIWEie34","userId":"AE6617D334CC469C97D510B6FA729EA6","version":"1","params":{"userId":"AE6617D334CC469C97D510B6FA729EA6"}}';
+        ui_init(q);
+    }
+function socialSecurityDetail()
+	{
+        var q='{"cmd":"socialSecurityDetail","token":"245Y7BSfDHIWEie34","userId":"AE6617D334CC469C97D510B6FA729EA6","version":"1","params":{"userId":"AE6617D334CC469C97D510B6FA729EA6","SecurityId":"2"}}';
+        ui_init(q);
+    }
+function socialSecuritySaveOrUpdate()
+	{
+        var q='{"cmd":"socialSecuritySaveOrUpdate","token":"245Y7BSfDHIWEie34","userId":"AE6617D334CC469C97D510B6FA729EA6","version":"1","params":{"userId":"AE6617D334CC469C97D510B6FA729EA6","loginSecurityNo":"621806821725184","loginPassword":"000707","province":"江苏省","city":"南京市","SecurityId":"1"}}';
+        ui_init(q);
+    }
+function housingFundList()
+	{
+        var q='{"cmd":"housingFundList","token":"245Y7BSfDHIWEie34","userId":"D7958D767462DA64F26EC39696D54232","version":"1","params":{"userId":"D7958D767462DA64F26EC39696D54232"}}';
+        ui_init(q);
+    }
+function housingFundDetail()
+	{
+        var q='{"cmd":"housingFundDetail","token":"245Y7BSfDHIWEie34","userId":"D7958D767462DA64F26EC39696D54232","version":"1","params":{"userId":"D7958D767462DA64F26EC39696D54232","fundId":"2"}}';
+        ui_init(q);
+    }
+function housingFundSaveOrUpdate()
+	{
+        var q='{"cmd":"housingFundSaveOrUpdate","token":"245Y7BSfDHIWEie34","userId":"D7958D767462DA64F26EC39696D54232","version":"1","params":{"userId":"D7958D767462DA64F26EC39696D54232","loginFundNo":"621806821725184","loginPassword":"000707","province":"浙江省","city":"杭州市","fundId":"1"}}';
+        ui_init(q);
+    }
+function userProgressRate()
+	{
+        var q='{"cmd":"userProgressRate","token":"245Y7BSfDHIWEie34","userId":"03882594E9F7C30424F65C4C625D8180","version":"1","params":{"userId":"03882594E9F7C30424F65C4C625D8180"}}';
+        ui_init(q);
+    }
+function updateOrder()
+    {
+        var q='{"cmd":"updateOrder","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"trade_no":"3546464646467984687498","out_trade_no":"5d89abcc-14c0-48db-a509-61e783622885","buyer_email":"@raoruiwen","notify_time":"2016-09-21 10:14:48"}}';
+        ui_init(q);
+    }
+function queryContractTemplete()
+    {
+        var q='{"cmd":"queryContractTemplete","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"withDrawId":"93"}}';
+        ui_init(q);
+    }
+function upAudioService()
+    {
+        var q='{"cmd":"upAudioService","token":"245Y7BSfDHIWEie34","version":"1","params":{"userId":"93","audio":"UklGRtp+AABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAARkxMUswPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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FAAIAAcACAAHAAQADQAOABMABgD9//b/8P/v/+b/7f/0//T//v/6//X/8//2//P/8f/8/wMAAgAKAAoADAD0/+7/9P/7/wMACQATABQAIgAeAAUA/P/z/+//BAAEABkAJQAJAPv/6P/i/93/4//8/wkAEQAOAP7/+//4//b//v8NAAYAAQACAPT//f/5//T/9v/i/93/6v/8/wgAFwAWAAsA/P8BAPj/9f8EAA8AGwAiABQA/v/7//z/CgAUABEADQD8//v/BgD+//7/BgD///j/8v/s/+X/9P/7//j/+P/y//j/AQD3/wAA+P8BAAsAFAATAAAA+v/2//7/AQABAAMADAABAP//+f/+/wUAEQAMAAgA//8DAP//AAAOABUAGgALAP3/8//5/wQAAQD1/+v/9v/1/+//8v/s/+v//P8LAAsAAwD+//X/3//j//f/EAAgABoAGQALAAMAAwAHAAkABgAJAAkA///+/wYAEAACAPj/+/8GAAUA9v/m/9v/3P/k/+n/BQAUABMAEgAQAA0ACgAFAPv//v/5//f/+v8AAAsACAATABMADgANAAQA/P/y/+b/5f/7/wwADwARAA0A///6/+//6//1/+z/8f/8//v/7//p//D/EQAXACIAIQAbABUAAgDy/+n/7f/+/wgACgAZABoAFAD7/+r/9P/0//r/+P/4/wIAEQAZAA0ACgAAAPj/9P/n/9z/4P/k//D/9f/4//z/9/8DAA0ADwAPABEADwAIAAMA/v8EABEAIQAqAB4AEAD+//z/AQAAAPn/7P/2/wIABAD7////+//0/+v/3f/Z/+P/6//n/+3/+v/6//n/BAAFAAsAFgAgABkAFwAbAAsABwD9//z/DAAXAB8AHgAaAAwA+//q/+b/8P/2//3/+//7//v//P/1/+7/6f/m/+n/6//u//D/7v/v/+//9v8JABIACgD+/woAGgAgAC4AGwAOAAkABwAGABYAKgAuACEAGQAPAP3/9P/1//H/AAD4//b/8f/g/9v/3//V/9z/7P/w/+//+f/n/9z/7v/9/w8AHgAlABcAGgAhACEAFQAMAP//9//2/wAACgALAAoABQADAAIAAAD+/wEA/P/+//L/7v/x//L/8P/0//f//P////b/8P/m/+n/8v/4/wYAGwAWAA0ADAAVABUABwADAP7//P/9/wAAAwAJABMAFwAZABQAEQAPAPv/9//+//z/BAAHAAIAAwAAAOz/8P/8/wQA/v/l/9X/0f/j//7/DgASAAQABwD///n/EQARABQAFAAMAAUA8P/k//P/BAAWAB4AEAACAPb//P////v/9//6//n/8f/s//L/BgABAPv/9f/t/+T/7v/7/wcAEQARAA8AGwAaABoAEgAEAA4ADwABAPn/+v/4//j/+f/z//n/BwAKAAcADQABAPn/9//4//f/+v8BAPj/5//o/+n/5f/q//r/AQAHABUAEAAVABUAGwAcABkACQALAA0A/f////v/BgD///X/6//q//D/AgD+/wIABAAGAAsABAAAAP7/AAD9/wAABAD7//H/9f/4//3/CQAOAA4AEQAFAPD/6v/3/wMABgD4/+3/6//o//D/AgAIAAoAEQALAAcACgAMAAYABgASAB8AGAAIAP3/6P/n/+v/9P/t//H/8f/5/wkABAD9/wAABQD5/+//6//x//j//P8DAAsAAgAEAAEABQAMABAAFwAWABIAEAAFAAoAAgADAAQAAwD8//X/7f/s//L/AQASABEADgAJAAYACgAeABsAFAAFAPb/8f/1//f/9P/w//D/8P/y//j/8v/t//n/+v/0//H/8f/u/+r/9P///wIACgACAPr/BAALABkAIQAkACQAGgASAAcABwAMAAgAAgDz/+//7P/3/+7/8f/y//H/7P/4/xIAGgAWAAEA6f/i//T//f8HAAkABAD8//n//P8BABgAKQAnAB0ACgADAPv/+P/2/+//9P/s/+P/5P/p//b/+//4//L/8P/3/wYAEAARAAgAAQD6//z/BgAQAA8AAwD0/+r/7f/0/wAAEAAgACYAJwAnACMAJgAlAB4AAgDr/9j/2//v//z/5v/k/9b/1v/p////AgD4/+7/5P/i//P/CgAVABQADgAJAAUABwAUACgAMAAvACYAHAAaAAsACgANAAcA9//j/9b/1f/V/9//4//a/9f/3v/w//3/EwAhABsABgD7/wAAFgAtACYACgDj/+L/9f8IABYAFAACAPX/6v/p//7/CQATAAkA8//u//L/CAAbABwAGgD8/+//8f/7/woADAD5/+v/6f/l//X/BgAGAAYA+//6//3/DwAfACcAIgAVAPj/+P8HABQAFQAJAPH/1f/U/+L/+/8IAAEA9//4//z/DAAVAAwABgD4/9//4f/6/w0AFAAIAPz/+P/9/w4AHQAZABIABgD8/wAAAQAJAP7/6v/f/9r/5v/z//7//v/5//r///8QAB8AEwALAP7/+////wkAFwAWAAsA///s/+T/8f8HACEAHAAWAA0A/v/8/wUABgD5/+f/2P/V/9D/3P/5//z//f8IAAIACAATAA8ABgAAAPf/BAAGAAcAFgAaABEAAAD4/wgAGAAnACQACAD1//T/+v8NABUABgDp/8X/tf/D/+D/9/8KAAcA/f/4//f/CwAWABMAEQAIAPr/BAAeACcAIAANAAkAEwAdACsALgAuACUADAD8//r///8CAOr/zf/F/73/x//Z//H/8v/n/9n/zf/L/+P/5//m/+H/1//h//v/FwAmAEYAUABFAE0ASABQAFoAUgA9AC0AJQAaAAgA5//R/7X/rP+n/6T/t/+//8P/yP/W/+T/5v/l/+L/2v/i//3/FAAvADcASgBKAEsAVgBjAGEAVgBDADwAMAAQAAMAAgD6/93/sP+E/2v/df+H/6D/rv+o/6D/sP++/9r/6v/n/+v/8f8RADgAYwB7AIYAfgBuAHQAmACuAK8AnAB1AE4AOQA7ADMAIAD//7L/cv9e/3T/lP+c/5n/kv+M/43/nf+v/73/uP+n/6H/vf/l/x4AOQBPAFgAVQBRAGIAdQB5AGsAQQAXAA4AFAAXABUA+P/D/5P/iP+H/53/tP+x/6z/sv/F//D/EQAeAB8ACgAKACAATwCEAJIAgQBkAFQAZQCDAJUAlgB1AE0AFgD7/wcACQD0/8X/dv80/yz/S/+C/6r/sP+Y/4H/kP+z/9T//P8QABcAGAAtAE0AZQCHAIEAVwAoABEAFQAiAD0ASgAsAAkA9f/4/woAFgABAMz/lv9+/5H/zP8CABwACADi/8X/1v/4/xwAKAARAPb/8/8aAEYAZQBhADsAAADf/9r/8P8NACEAIAD7/+3/+P8UAC4ALQANAOb/xP+0/8L/4//w/+r/4f/C/67/w//c//z/BwAUAA8AEQAYABgAGwAjABEA///3/+7/+f8GABwAKQAWAP3/9f/7/woAIAAaAAAA2f/Q/+b/AwATABIAAwDv/+r/9v8RAC8ARwBHAEEAJwAYABQAEAAMAAIA8v/b/7//uv/N/+z/EQAZAAkA7P/e/+j//P8AAAcACAD6/+r/5//t/wIA/P/0/+P/4v/8/xkAOgBNAEEAIQAWABAADQANAP3/4v/N/8v/1P/e//j/BAAKABwAHgAfAB4AFgAOAAMA8f/g/9//3f/k//H/8P/+/wUADQAYAB0AKwAtACgAFwD+/+j/2//Z/+X/6P/o/+r/4P/g/+f/7////xMAIAAXABYAFgAWAB4AGAAMAPz/5//N/8j/3P/y/wIACQAFAAsAGwAxAEIAPwAfAAAA8v/m/+f/9//+/wIA/v/w/+f/6P///w4AGAAQAAsA/f/4//7/DwAGAPT/5//h/+T/+f8QABQAFQAFAP7/+P8PACAALAAaAPn/7P/j/+L/7//0//P/4P/Y/9L/0f/n//v/AQD+//j/AQARACsANwAuABkABwD+/wYAEgAmACUAEgD9/9r/5v8CABMAFwABAOj/5v/u/wEAFQAWAAQA5//f/9//8f8DAP7/9P/c/9b/5P8CABcAGgAaAAwABgAOABgAFAAbAB8ACwD8/+//7P/6/xEADAD9//H/9P8LABcAGQAVAAwA/P/p/+X/8P8CAAAA9f/o/+f/7P/u//X/+v/+/wcACwANABIADgAIAAwAEAANAAkA+v/s/+z/9f8GAAwAEQAIAAEABgASABMAAQDz/+z/8//1//X/8f/l/+L/5v/q////BgAFAAwACwAWACQAHAAYABMADgAOABEAEQABAPH/6P/1/wAACQAOAA0A+P/y//D/9v/5//j/8v/q//r/9f/y/+r/5v/r//D/9v8CAAwADwAWAA4AEgASAAsADgAPAP7/8//t/+v/9v/w/wEABQABAAgAEQARAA8AEgAKAA8ABwD+//H//v8GAPv/7f/n/+X/7/8HABEAFAAEAAQA/f8CAAoAFQAKAAcABQAMAAUA+f/3//z/BgD//wMA+P/0//7/DwASAAwAAwD2//H/6//s/+n/+f8CAAAA+P/z//f/AgAIAAwAAgD///3/9f8FAAoACgAPAAsADgAOAPv/7f/v//X/AwALAAIA+P/8/wAABgAAAP///////wIA/v/9//7/AQD8/wYAEwAWABYACADx/+n/8v/7/wYAGwAYAAcA9//p/+//9P/6/wQAAQD7//n/8/8BAAUA/v8IAAQAAQAEAAQABwAFAAYA/f/0////BAAAAPr/+P/q//H/+v/8/wwAFwATABAADAABAAIA/P/+//r/AAAIAAsABAD7//X/6f/t/+n/8f8FABAACAD6/+f/6f/7/w8AGQAYAAoA///v/+P/8f8JAB0AIwAXAA0ABQD8////BwAMAAMAAQD6//f//P/t/+H/6f/5/wUA+//5//7/EwAkABIA+//7//v/BgAIAP7/+f/y/+//8f/5////CAALAAAA/f8KAAkACgAGAPv///8AAPn////9//L/+P/5//7/AgAPABIADgAcABsADQD6//H/+f/3//z//P/0//D/6v/s//v/CAAKAAUA+P/0//j/CQAVAAsAAQD0/+//5f/q//P/BAAKAAMAAgADAAoAGAAoACcAGwABAPX/6f/y//v//f8KAAIA+P/x/+z/9P8HABQAEgAIAAQACwASABUABgDv/+v/5P/s//r/BQAQAAkA/f/4////EwAaAB0AFAAGAPn/6//v//L/9P/v/+P/5//e/9n/6v8IACMAIgAaAAEA+P8DAAsABQD1/+v/3//g//H/BQAbACIAIQAWAAgADgARABkAFgAQAAoA+v/r/+z/7P/v/+3/6P/b/9r/6P/9/xIAGwAiABcADQAIAAUAAwD1//b/9f/z//X/AwAQABIAEAAGAAMAEgAWABAADAD+//v/+//7/+//9P/1/+3/4v/X/+L/+v8RABgAHgATAAgAAQABAAwADQABAPb/9P/y//D/8/8BAA4AFwAQAAkABQAHAAwACwAHAP//+v/5//n/+P/y/+r/7//r//n/BAAKAAkAAwD9//f/BQAKAP3//P/1//b/9v/5//j/+P8GABEAFQAMAAAA+v8HABIAEwAFAAkABwAGAPz/8//z//P//f////7/BAAJAAkABwD///r/AwAEAP3/9v/q/+v/+f/9//v//v8GAAkACgAMAA4ABQAJABkADgANAAMA9//0//r//v/1//j/8v/2/wQA//8BAAcABQD+//f/9//y//n/+f/y/+7/8v/9///////8//3/BwAHAAYAAgAKABIAGAAJAAUACAD8//3/BwAHAAYACgAFAA0ADgAJAP//+/8CAAMA9P/t/+//7//r/+r/9f/1//j//P8CAP//+/8AABAAEgATABQADwACAPX//v/9////AQAGAAQADAANAA4ADQAHAAAA+f/6//r//v/4//P/6P/h/+//+//7//v/8v/7//7///8DAAYAEAAJAAsABwD9/wIABwAFAAsACwAAAAEADgAZABsAEAADAPr//v8HAAEA+f/x//D/9f/y//L/8P/w//P//P8DAAIAAwD5//3/BQAIAP3/+P///wAA+/////r/DgATAAYADAANABIAEwAQAAUABQAIAAMA+f/5/+n/6//v//P/7//s/+7/8/8AAPr/AgADAAwA+v/9//v///8FAAgADwAMABAAFAAIAAIADQAUAB4AEQAJAP7//P/1//b/8//q/+r/6f/v/+//8v/x//v/CwD+/wkABwAJAAwABQABAAIAAAD+/woADwD7//r//v/6/wQADQANABIAEwADAP//AAAEAAwAAAD4//T/8v/s/+//+v/4////+f/x//z/+//4//3//f/+//j/BAAJAA4ACgACAAYACAAAAAYADAATABQAEwACAAAACgAMAA0A+P/2//r/8//w/+j/6P/2//r/BQD3//T/6//7/wYACQALAAEA/P/7//3//v8AAA8AEAAEAAcABgAEAAsADQANAAwACAD///f/8//6/wAAAAACAPj//f////n/+v/+/wAAAwAMAPT/9P///wMAAAD+////+f/8/wEABAABAAIAAAD8/wEACQAPAAEAAAAKAAkADAADAAkA/f8HAAAA8f/8//n/9//v//P/7//v//j/BAAJAA4ADAAOAAYA8P/7/wcAAwAJAAsA/v/y/+n/9f/9/wcADQAAAAIA+f8HAAgADAAQAA4ACQD9//j/+v/x/wAA8//3//3/+/8HAPT/BAABAAgAAgADAAEA+v8CAPj/+P/7//L/9P/4/wwADAAKAA4AEAALABIACgATAA0AAAD0/+H/6//t//D/6f/2/wIA/P8HAAwADAALAA8ADgAWAAsADQAGAAIAAADs/+b/2v/n//X//P8OAA4AFAAbABMAFQAOABsAFAD///r/8//y/+v/+v/z/+v/8//4/w8ACgD+/wgA/v/7//v/AQAAAPj/7P/m/9r/4f/d/+n/+v8PAB4AHAAeAB8AFwAeABIADADu//f/AwDu/+7/7f/v/+z/+//+/xAAEwAQAA0ACQASAP//CQAGAAgACADv/+H/4//o//L/8v/9/wEADAAaACIAGwASABEAEQAKAAcA9v/y//X/5//2/+j/9//0/wQAIgAeABcA/f8HAPv/CAAAAAQA6//i/9z/4P/f/+H/8f/j/wUADQAWABoAIQA2ACQAKAAKABUA8f8EAP7//f/s/+H/5v/k//v/+f8TAP7/EQAPAA4ABAD5/wEA+v/9/+z/9f/a//f/6P/x//L/AgAMABsAJAAWACUADgASAAoACQAOAP3/9P/q/wQA8//m//D/5v8DAAoADgAFAP//EQAHAAcA8//2/+7/7/////P////p/+7/8/8AACAAFgAkABUAIwANAPj/9f8JABAABgAFAOv/8f/m/+3/6v/w//7/9P/9/wEAFAADAP7////3//3//P/2//v/8//7//3/+v/x/wQA+P8SAB4AKQAYAAsAAwD+/wcAHAAOAAcABwDw//n/9//5/+H//P8IABkAEQD+//j/8f8GAPT/+//m//L////+/+7/4v/i//j/CwAMAAgAGAAWAAQA/P8EAP//EgAFAA4A+v/6/wAA7v/z//L/BAD6/wUAGwATABQA//8GAPT/9P8GAPX/BwAKAP3//v8CAPT//f/1/wUAAgANAAUA7f8NAA4A7f/3/wQACQAEAAsAAADf/+z/8P8FAAUABAD5//n/EgAXABAA/P/0//P/BAAMAPr/8//8/wkA7v/8//P/CQAdACAAFAASAA8ADAD+/wYA9//4/wUA9P/9/+X/6P/w/wUAAQDv/wAAAQANAAEAAAD8/xAA/f8GAPr/BQD5//z/7v/2//f/6f8HAA8ACgAVAAAAEwAQAP7/+f8AAAYA5//n//v/+f/x/+//9v8CAAAAGAAVAAQACgAaABIACQAIAP3/EAAIAPn//P/2//X/7f/3/wgACgAQAAoAAgAHAAcA+f/g/+r/7v/4//H/9f/r/wEACgD///f/BAAJABIAIQAbABMA+//y//f///8SAAQACgADAAMA6f/L/+n/DwARAAsADwD2/+//AAD0/wsADAADAO3/8v8HAPX//f/5/+f///8RABUAGQAgABQACQAFAA0A/v/y/xcACgD8/wYA5//Y//L/CgAWABYA/P8EAOv/8P/y//D/2P/3/+n/7//0/93/5P8BAAMABQAPABsADQApABQACQAPABEADgAWABUAAQARAAoA+f/w/wQA/v/3/w4AEgAHAPj/AQDt//L/7f/V/+v/6P/u/+v/7//8//b/FAAcAPj/CwATAAIAGAAoABUAEAD//xIACwD7/wwAGAACAAcA8v/9//b//v8JAAAA+f/9//P/4P/x/9v/2//i/+f/7v/v/wYAAQABABYACgD9/yEAJQAkABYA/f8JABIAFQACAPb/9//7/wQA8v/z//v/+P///wUA8v/p//L/8v/u/+j/3f/s/+//BwD8/wQACgADACUAHAAtABoAGwAuACAAGAAGAPz/HQASAPX/BADg//X/9v/z/+z/6f8IAPP/8//+/93/7P/v/+7/4P/r//r/6v8BAPT/9/8EAAEAIAAfAA0ALQARABcAIwAUAB4ABgASAAUABAD2/+z/6//7//n/3P/y/+//AQAOAOX/BQDo//b/+//0//T/7f/9////+P8LAPr/BAAbABoAHgAYABcAMwASABMA+f8IAA0A8P/5/+j/7P/1//T/6//q/+r/9P/y/+//6P/r/+z/8f/6//3/8/8IAPz/DQARABAAEQAOAB8AGQAQABkAGQArABsACAALAAQABADs/9//9f/0/+j/6//m//D/AwD8//T/+P/8/wMABQD9/+j//P/1/xYABQAHAA0AAQD8/wMAAQATABsAHQAUAPj/AAD5//7/AgD1//X/9v/n/9//6v/t//7/DQD7//z/CQD9/xYADQD8/wcAAAAJAPr/9f/y/wEA/P///wUABAADAB0AFwARABYAEwD+//f/9/8GAAMA9f/9//j/AgD7/wsA9f/7/woA/P8CAAsAAgADAAkADQD0//L/BADt//T/6f/v//3/9//7//b/BgAQAPz/BAD7/xMACgAFAP3/9/8FAPn/+P/5/+7/+P/0/wcADwARAAwAEwAVAA4AFQACAPT//P/5/+7/8v/v//7/8v/8//f/8/8AAP//AAAMAA4ADgD7//T/BQACAAQA/P/0//n/CgAMAAUADwAIAAUAEQAaABkAEgACAPz/AwD///r/5v/t/wEAAAD8//b//v/+/wgACgAJAAAADAAJAO7/5f/p/+j/8//4/+H/8f/0//v/+//6/wgACQAKABAAHgARABEA/P/5//P//v/v/+L/9//9/xcAIgALAP7/+/8OABcAEAAJAAAA9f/8/wYA9f/x/wEABgABAO3/+P8IACAAIAAEAAUAEwAFAPT/7//6/wQA+v/p/+L/5v/6/wEA/v/+/wMADAALAPv///8LAAgAAQD+//z/AwAFAP7//v/2//b/9v/5/wEACQD9//j/BQAUAA8ACAALAP7/AAAKAP7/9v8JAAIABgAAAP//CQD5//n//P/q/wQADAD+/wEAAgD5//f/9P/5//v/+v8AAAAA+v/y//r/7v/8/w8ACQABAAYAAwAGAAIABgANAA4AGAAPAP////8MAAQA7//z//v/+P/z//z//f8LAAsA/v/y////CAD+/wEACgD9//7/AgD2//n/9//2//r/BAD5//X/9/8IAAYADAAPABIAEQAfABUAAQD3//f/+v/t//v/+v8WAAcA+f/4/wEABwAHAPn/9f/2//r/AADw//X/+f/w//b//P8DAAoA/f8JABUADQAHAAwADgAYAB0ABgD0//j/8//m/+z/6f/p/w0ADwD9//7/AQANABYA/P/o//b//f/8/+z/6v/v//T/8//6//3/DQAJAAgAIQAWAA4ABgAQABUAEwAEAPj/+P///wwABAABAAMA+f/6//b/AAALAAMACgD3//b/7f/l//b/6//t//f/9P/4//H//f8GABAAGAAZABsAKQAZABcADgATAAYADQDy/+7/6P/p//f////5//n/DgD///v/8//1/+//9P/0/+n/4P/b/9//7f/p//L/CAAUABoAHAAdAB8AKAA8ADIAKAAUAAYABwAKAAMA8f/k//f/8f/l/+n///8AAAcADgAGAPT/7//m/+H/6//l/9z/6//8//j/9f/1/wAADQATABIAEQAXACIAJwAiABwADgAHAAIA+/8DAPX/6//4//7/9v8HAAsACQD9/wMAAwD9//z/8v/w/+b/7//u/+n/6//t//v/AQD4/woAEgAUACYAJgAXAAgADAAEAP7/+f/x/+3/+//8//b//f8DAAMABgAHAAIA7//+/wUA///0/+j/5P/2/+7/7f/w//P/+v8NABEAIAAdAB0AHgAcACUAGAAOAAoAAgAJAPb/7f/r/+H/7P/t//7/AwD//wIAAQD7////9v8BAPz/8//r/+b/4f/h/97/7P8EABUAFwAiACIAJQAdABkAEQAOAAQAAgADAAcABADt/+b/5//5/wUADQAGAAcADAD9/wAA/f/4//n//f/s/+j/6P/h/+L/7P/u//v/CwALABQAHQApACAAEgAQAB4AGwAPAAYA9P/v//D/8v/u//f/AQAOABEADAD9/wEACAALAPb/7//l/+z/2v/M/9b/6P8EAAYA//8IABUAIQAYABoAIwAOAAkADAALAP3/9f/x//L/7v/t//j/9/8LABgAEgAOAAsAFwAIAAkAEAAFAPX/9P/c/9X/5f/k/+n/9f/8/wsAIgApABgAFQAbABoAFgAGAPv/+P/z/+v/6f/r//H/+v8GAAkABwAKAAcAAgABAAAA8f/3//v/+f/0/9//3//k/93/9P8AAAUADQALAA8AIAAtACkAGgARAAQACAAIAPb/7f/o/+j/7P/1//b/+/8JABQACQAJAAkADAAOAAUA8//n/+v/8//+//X/6P/r//z///8LAAYAFgAcACIAHQAXABUAHQAVAAIA9v/t/+v/6v/p/+7/+f/7//j/AAACAAsACgALAPf//f8AAP3/7v/s/+3/5//t//P/7v/y//z/BgARABkAHgAaACIAHQAKAAMAAAD9//7////2//D/8P/4/wEA/v8BAP7/BwAOAA8ABQAAAPv/+P/1//P/+f/z//j/7P/r//H/7v///wwAEgAdACEAGAAXABIADwAJAAUAAwD4//P//f8AAAQABgAAAP3/AwAFAAcAAwD3/+//7f/4//P/5//j/+n/7v/2//L/8//8//r/CgAdACEAGAAdABgAFAAUAAoABAAFAPf/+P/1//j/9f/2//z/+v8FAA4ACQACAAMABAAAAPj/7//l//D/7v/w/+v/6f/z//3/CgANABUAGwAaABIAFAAPAAUAAAAAAPr/8P/0//P/9f/z//T/AAAEAAYABQANABEADQAGAAgABAAEAPv/9v/0//j//P/1/+//+P/6/wAACwAJAAwACAAIAAoABAD+//T/9v/8//z//f8EAAoADwAHAAkABwALAAoACwAKAAIABgD+//D/6f/l/+X/8//0//f/9v/5//f////4//j/BgAEAAUAAgAJAAwAAwAAAP3///8KAAkABgAHABEAFwAPAP///v8PABoAEgADAPX/8f/6/+3/6v/v//j/+P/5//T//v8HAAMA/v8DAAsADgAMAP//+v/0//j/7f/w/wEABwD///r/CwAQAA0ABQAEAAgABQANAAUA/f/7//7/AAD4/wAA/v/7//v//f/9/wQACAABAAAAAgD8//j/+v/1//D/9//+////+f/y//T///8OAA8AEwATAAsADAAUAA8ACAAIAAEAAwD8//f/8f/4//z//v8AAPn//v8KAAIA+f/3//X/9P/4//3/9f/y//D/9v/4//v/9/8EAAwACAAHAAkABgD+/wgABgAIABAACwAFAAsABAADAAIA+f/7//7/DAAIAAQACAAHAAEA8f/v//f//f8EAPj/7v/p//P/+//9/wMACQACAAUABgADAAcA+P8BAAkADQAJAAYAAgAJABAABwAAAP3/AQAIAPr//v8CAPn/+//2/+r/8f/5//n//P/9//j/+f8AAAcABAAKAA4ACAADAAgACgAMAAYAAAAIABAADwADAPv/+f/8//v//f/+////AwAFAAIA/P/5//L/9P/9//z//v/6//H/9P/2//j////3//z/AAADAAYABgD5////BgAGAAUADgAOAAYABgALAAwACwAGAPv//P/7//r/9f/w//L//v/5//v/+P/6/wMA///7//z///8CAP3///8FAP//AAABAAMABwALAAkABwAIAAcACAAJAA0AEAAIAAAA+P/5/wIABAD9//n/+f/3//L/7//4//3//f/8//7/AwD9//7//v///wEA/f8AAAcAEAAMAAgACQAMAA4ACgAFAAMAAwAAAP7/7P/0//r/AAABAPb/+f/9//7//v8BAAgACAD7//X/+P/4/wIAAwAFAPr/+v/4//j/BQAIAA0ADgAHAAgACAD+//v/AQD///j/+f////n/AgACAPj/9//6/wUAAgD//woAAQD8//7/AQAFAPv//P/8//r//P/x//P/9f8EAAkA//8HABAADgAHAAcABwAFAAIACQAHAPn//f/6//j/+P8AAPz/8v8CAAkAAAD6//f//P///wAAAAAFAAwA/P/8/wUAAAAIAAkAEgAPAAcACwAEAAMACQAIAPz///8KAAQA8P/x/+//7//t//j/BAD4//f/BAD///j/+/8BAPr//f8IAAAA+//2//b//P///wIADwAQABAACwAIAAcAAgALAAIAAAD5/wQAAgAGAAIA+f/v//X/AgAEAPP///8OAAoA///2//b/+v/0/wUABAAFAAkABgD2/+v/AQD4/+v//P8LAAsABwD6/wkA//8AABIACAAEAPz/CAALAPL////+//T//P8IABYABwD+/wsA/P/1/wUAAwAHAPj//v/6/+v/8/////v/9//6/xIA+/8EAAYA+v/5/wcAAwD2//n/CAAHAA0ADgD6//v/9//z//z/CAANAAgACgAMAPX/+v8FAPz/BwAFAAUA4//b//T/+//x//v/GwD5/wcAEQAXAAQA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"}}';
+        ui_init(q);
+    }
+function upLoadPicture()
+    {
+        var q='{"cmd":"upLoadPicture","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"5918", "picType": "0","userName": "姓名","certId": "362531199000000","imgIo":"iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAYAAADhu0ooAAAAAXNSR0IArs4c6QAAABxpRE9UAAAAAgAAAAAAAAAdAAAAKAAAAB0AAAAdAAABkWUO6fwAAAFdSURBVGgF7Fe9FYIwEL6SJxaO4AiO4Ahs4AqMwAL2lnS2juAU1JSWTgDeJQRCQIH8SMH5Xl4gfne577sj7wLAP1aAFWAFWAFWgBVgBVgBVmBagXoHCY7MeQAcpndbCSFIxlDj7DbQR7WHx0o0prcVWfRBtBFqeseVEC1RJGsbgvDBRG3l82zHGV0gKJfuArGCQ6sYrvUWTl0ket8EUf0wQsJPq7GDEv2IhiN4CdpuoBN18tF1VqVRISV1TLh2sfXvxc6VaB3BGUm8VEa/zvIcoMwnXgJf6sSFKBJMB8So/PULgvwcuj5aEs6XxumMtyXa2nUle8MecvT2Qusj+P+SbQMgpecfRgXaySzF8Ea7k6k4lfRgDXGIJTztRfaZiQn23hwUXWkpAnNng6TInvxuiUxqBo5rkqzyH8HRxAR5t8hooTJCzYYeVEtCZktlnOa8h5MXfSVu7z8d9+v5AwAA//9hM6McAAACEElEQVTtVsF1wyAM5dhn99AROkJG6AjdwCtkhC7QHXzrtRvUI3QEj5AJ4n4JCcuEujjBfTmQ93hgEEL/fwni3Mbf1Li3qXUTtZyt58Z9s33jxtg+rLXuRDbnR/cJ/yPGA5w/WXtra+d3G28BSsHCfqJ2bt17HBQTQKQpeQ/uJbbRb9geg/2Kndrf3IegMhSdEJACRf8aHy4KMhEC4hgrqXuwfghAAVrnd+uvBppQQYIfGIAojzGlcZcCwHaSAan1onMWKI8p7X5vPda8YgmgGhgAeLWoPtUec7pOPZcBgfwvoKi1DznMA9DA/uhpnw2cgzdg2CfI4HROgOEymIFelEHs++ZvulSuBPplD0fgz+KHbtlOxnMGROkbzvVgF2pbv8XGnKbCbI7ToBDtATi7Z3EZaUbAjp8S87xI2lLtUhaN1sdu461AFymH9zEODMEfgs/G9ayuAUn2WJ+Vxn0Q+9jlOwQFdnMPQPAD9mlN96l9bBMpTnYMnJQUNUnd1P7ic1cB9fXoU88H3OcEzHWpBNG+lZv7LoBSEFCEnpCTUZYuoYs/CFKPHexoXbOAFO2Kg1lzaBXF4cOWJv9X9VLxIDQlfXqPhghdJ3L2f05i0AB2RJuZ1tQq3fszslI8jrHYt7xpm9SMlZdnp5MMmX35P/hdTg0XA1QdVQYqA5WBykBloDJQGagMVAYqA5WBu2HgB9oqRlaxrNDzAAAAAElFTkSuQmCC"}}';
+        ui_init(q);
+    }
+function queryLoanOrg()
+    {
+        var q='{"cmd":"queryLoanOrg","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{}}';
+        ui_init(q);
+    }
+function queryMyJobList()
+    {
+        var q='{"cmd":"queryMyJobList","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"5918"}}';
+        ui_init(q);
+    }
+function insterUserJob()
+    {
+        var q='{"cmd":"insterUserJob","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"5918","jobId":"1"}}';
+        ui_init(q);
+    }
+function deleteUserJob()
+    {
+        var q='{"cmd":"deleteUserJob","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"id":"1"}}';
+        ui_init(q);
+    }
+function selectAllJob()
+    {
+        var q='{"cmd":"selectAllJob","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"jobFrom":"0","createDate":"2016-10-17 00:00:00","settleType":"0","workAddr":"南京"}}';
+        ui_init(q);
+    }
+function queryJobDetail()
+    {
+        var q='{"cmd":"queryJobDetail","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"jobId":"1"}}';
+        ui_init(q);
+    }
+function checkCertificate()
+    {
+        var q='{"cmd":"checkCertificate","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"1","userName":"饶瑞文","certId":"3625311999502084512"}}';
+        ui_init(q);
+    }
+function authenticationCustom()
+    {
+        var q='{"cmd":"authenticationCustom","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"1","accont":"13456","authenType":"0","password":"123456"}}';
+        ui_init(q);
+    }
+function saveXykAndGjj()
+    {
+        var q='{"cmd":"saveXykAndGjj","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","accont":"13456","authenType":"6","password":"123456","cityOrbank":"信用卡开户行或者公积金所在城市"}}';
+        ui_init(q);
+    }
+function authenticationSchool()
+    {
+        var q='{"cmd":"authenticationSchool","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"1","schoolName":"南京大学","province":"省会","city":"城市名字","town":"城镇名字","bedRoomAddress":"东3区2栋506","xxwzh":"123456","xxwmm":"123456"}}';
+        ui_init(q);
+    }
+function queryMyStatus()
+    {
+        var q='{"cmd":"queryMyStatus","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"1","type":"0"}}';
+        ui_init(q);
+    }
+function queryTbAndJdStutus()
+    {
+        var q='{"cmd":"queryTbAndJdStutus","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183"}}';
+        ui_init(q);
+    }
+function queryXykAndYx()
+    {
+        var q='{"cmd":"queryXykAndYx","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183"}}';
+        ui_init(q);
+    }
+function saveContacts()
+    {
+        var q='{"cmd":"saveContacts","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","contacts": [{"contactType": "0","contactName": "XXX0","contactPhone": "0XXX123","familyAdress": "省市区""contactAdress": "直系亲属地址","relationship": "父/母"},{"contactType": "1","contactName": "XXX1","contactPhone": "1XXX123","relationship": "同事"}],"phoneNameList": [{"phoneName": "通讯录里面名字","phone": "13400000000"},{"phoneName": "通讯录里面名字","phone": "15099999999"}]}}';
+        ui_init(q);
+    }
+function savePhoneList()
+    {
+        var q='{"cmd":"savePhoneList","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","phoneNameList": [{"phoneName": "父亲名字","phone": "13400000000"},{"phoneName": "母亲名字","phone": "15099999999"}]}}';
+        ui_init(q);
+    }
+function authenticationCompany()
+    {
+        var q='{"cmd":"authenticationCompany","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","companyName":"公司名字","companyProvince":"公司省会","companyCity":"公司城市名字","companyTown":"公司城镇名字","CompanyJob":"职位","companyAddress":"公司东3区2栋506"}}';
+        ui_init(q);
+    }
+function authenticationFamily()
+    {
+        var q='{"cmd":"authenticationFamily","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","isMarry":"否","province":"省会","city":"城市名字","town":"城镇名字","bedRoomAddress":"东3区2栋506","companyName":"公司名字","companyProvince":"公司省会","companyCity":"公司城市名字","companyTown":"公司城镇名字","companyAddress":"公司东3区2栋506","companyPhone":"2365655","comPayDay":"15号"}}';
+        ui_init(q);
+    }
+function queryMyCertId()
+    {
+        var q='{"cmd":"queryMyCertId","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","qryType":"1"}}';
+        ui_init(q);
+    }
+function authorizeQry()
+    {
+        var q='{"cmd":"authorizeQry","token":"a35e291c46c6453b880e92931bc2e757","userId":"A20CF2BC7BD92E124BBFCDD7B554DB1B","version":"1","params":{"userId":"A20CF2BC7BD92E124BBFCDD7B554DB1B","name":"方辰","certNo":"320103198810061012"}}';
+        ui_init(q);
+    }
+function zhimaCallBack()
+    {
+        var q='{"cmd":"zhimaCallBack","token":"245Y7BSfDHIWEie34","userId":"885E03CFFF062BCADAF0E72961F30BB7","version":"1","params":{"params":"oz3ArXKYmD1D%2BhpjIS03iB%2BxcElyKJT4ppuNkGnItVcXYD7Y3%2FW6uOCr8He%2BsQkaVshcBdjEFJb5heNF1Bugy7MTkpOjLLAdeLWBJjF%2BDroImAoeMvpzMcD%2Fzg4yMT9wEQxt5VlMDtCZeI3NPx7opnuQjSzJt%2B5o1LdAUoLOPooBkdOVH3Nvza57%2B4e7CFY5ehXMYMOBbUq6%2FLLYDzkkxW8Al%2BhcjhMp7BNeq%2F09FLfJEECsacZEGQmIxKdaBdwWzuQhRbUnPCF7E8lvE0s2fEnkWAXK8FqL0GTKbE%2BUqEktKGDu5FQsXqzi18I0ayRcCU7r0aXv4FC5lCzb3K9adg%3D%3D","sign":"xUvg497ipcn7Lrll2MASlcCQyR5tEutDS246LTapeXQ%2BDyhTz98qLM%2BkHCyhOvwDwmOxhNjPDqZzg7S3PWSDlRW9xCgdZdLRzyIUK8i9VMlJ2fSlHaIItnnfgu38MiEXKqaX8By8U3vuvZkKPBi7%2FdLaZBptKE5SZe94cahZaHY%3D","userId":"885E03CFFF062BCADAF0E72961F30BB7"}}';
+        ui_init(q);
+    }
+function queryUserStatus()
+    {
+        var q='{"cmd":"queryUserStatus","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","loanPerion":"1"}}';
+        ui_init(q);
+    }
+function queryIsBorrow()
+    {
+        var q='{"cmd":"queryIsBorrow","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","loanAmt":"500","borrowDays":"19"}}';
+        ui_init(q);
+    }
+function allDataIsFull()
+    {
+        var q='{"cmd":"allDataIsFull","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183"}}';
+        ui_init(q);
+    }
+function appgoSumbit()
+    {
+        var q='{"cmd":"appgoSumbit","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183"}}';
+        ui_init(q);
+    }
+function queryOrderDetail()
+    {
+        var q='{"cmd":"queryOrderDetail","token":"481438755f1e4052b78bf9b86ad8fd95","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","withDrawId":"841427","mesId":"","isJump":"yes","status":""}}';
+        ui_init(q);
+    }
+function queryMessaheCentre()
+    {
+        var q='{"cmd":"queryMessaheCentre","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":""}}';
+        ui_init(q);
+    }
+function queryOneTypeMessage()
+    {
+        var q='{"cmd":"queryOneTypeMessage","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","mesType":"0"}}';
+        ui_init(q);
+    }
+function queryOneMessageByMesId()
+    {
+        var q='{"cmd":"queryOneMessageByMesId","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","phoneId":"183","mesId":"1"}}';
+        ui_init(q);
+    }
+function submitReviewed()
+    {
+        var q='{"cmd":"submitReviewed","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183"}}';
+        ui_init(q);
+    }
+function queryAllData()
+    {
+        var q='{"cmd":"queryAllData","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183"}}';
+        ui_init(q);
+    }
+function bankCardCheck()
+    {
+        var q='{"cmd":"bankCardCheck","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"withDrawId":"2017021900001","bankCardNo":"6228480668149287876","bankName":"中国光大银行","mobileNo":"18866668888","userId":"48907","valiCode":"8888","type":"3"}}';
+        ui_init(q);
+    }
+function yituHuoti()
+    {
+        var q='{"cmd":"yituHuoti","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"183","imgbag":"183"}}';
+        ui_init(q);
+    }
+function querySchedule()
+    {
+        var q='{"cmd":"querySchedule","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"5918"}}';
+        ui_init(q);
+    }
+function selectRewardAmt()
+    {
+        var q='{"cmd":"selectRewardAmt","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"5918"}}';
+        ui_init(q);
+    }
+function queryAnnounce()
+    {
+        var q='{"cmd":"queryAnnounce","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"5918","phoneId":"5165116544"}}';
+        ui_init(q);
+    }
+function queryShareContent()
+    {
+        var q='{"cmd":"queryShareContent","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"messageId":"5918"}}';
+        ui_init(q);
+    }
+function fastLogin()
+    {
+        var q='{"cmd":"fastLogin","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userCode":"18866668888","valiCode":"8888","type":"1"}}';
+        ui_init(q);
+    }
+function selectPersonalInfo()
+    {
+        var q='{"cmd":"selectPersonalInfo","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"5918"}}';
+        ui_init(q);
+    }
+function fastRepayment()
+    {
+        var q='{"cmd":"fastRepayment","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"5918"}}';
+        ui_init(q);
+    }
+function signContacts()
+    {
+        var q='{"cmd":"signContacts","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"withDrawId":"21881","userId":"48907"}}';
+        ui_init(q);
+    }
+function bankCardVerify()
+    {
+        var q='{"cmd":"bankCardVerify","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"customName":"秦加蒙","idetityCard":"341182199410083647","bankCard":"6214923003721794","phone":"15656574737","outOrderNo":"0a09f2e9887d46d19ad81461523c0fd4"}}';
+        ui_init(q);
+    }
+function getViewLinkByApplyNo()
+    {
+        var q='{"cmd":"getViewLinkByApplyNo","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"48907","applyNo":"APL833935593900740608"}}';
+        ui_init(q);
+    }
+function querySupportedBank()
+    {
+        var q='{"cmd":"querySupportedBank","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"43242543543"}}';
+        ui_init(q);
+    }
+ //business function
+function operator()
+    {
+        var q='{"cmd":"operator","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"phone":"","token":"","password":"","website":"","captcha":"","type":""}}';
+        ui_init(q);
+    }
+function operatorResetServiceNumber()
+    {
+        var q='{"cmd":"operatorResetServiceNumber","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"phone":"","token":"","password":"","website":"","captcha":"","reset_pwd_method":"","type":""}}';
+        ui_init(q);
+    }
+function getBasicInfo()
+    {
+        var q='{"cmd":"getBasicInfo","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"id_number":""}}';
+        ui_init(q);
+    }
+function queryAmtAndDaysAndCoupons()
+    {
+        var q='{"cmd":"queryAmtAndDaysAndCoupons","token":"481438755f1e4052b78bf9b86ad8fd95","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","couponIds":[{"couponId":"1","couponType":"0"}],"insuranceType":"2"}}';
+        ui_init(q);
+    }
+function queryCoupon()
+    {
+        var q='{"cmd":"queryCoupon","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352"}}';
+        ui_init(q);
+    }
+function payResult()
+    {
+        var q='{"cmd":"payResult","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352","outTradeNo":"ufhuhsfs","totalFee":"300.00"}}';
+        ui_init(q);
+    }
+function queryOrderRecords()
+    {
+        var q='{"cmd":"queryOrderRecords","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352"}}';
+        ui_init(q);
+    }
+function queryMessageAndAnnouncement()
+    {
+        var q='{"cmd":"queryMessageAndAnnouncement","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352","phoneId":"54546116"}}';
+        ui_init(q);
+    }
+function queryUserRewardAmt()
+    {
+        var q='{"cmd":"queryUserRewardAmt","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352"}}';
+        ui_init(q);
+    }
+function userAuthentication()
+    {
+        var q='{"cmd":"userAuthentication","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352","engineType":"","orderId":""}}';
+        ui_init(q);
+    }
+function queryServiceProrocol()
+    {
+        var q='{"cmd":"queryServiceProrocol","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352","withdrawId":"123","borrowPerion":"","borrowAmt":"","purposeCode":""}}';
+        ui_init(q);
+    }
+function getYouDunVerifyScore()
+    {
+        var q='{"cmd":"getYouDunVerifyScore","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352","verifyScore":"0.70"}}';
+        ui_init(q);
+    }
+function checkReportExsit()
+    {
+        var q='{"cmd":"checkReportExsit","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352"}}';
+        ui_init(q);
+    }
+function queryVerifyCardResult()
+    {
+        var q='{"cmd":"queryVerifyCardResult","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352","outOrderNo":"123","bankName":"中国银行"}}';
+        ui_init(q);
+    }
+function lookBindBankinfo()
+    {
+        var q='{"cmd":"lookBindBankinfo","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"432425352","type":"1"}}';
+        ui_init(q);
+    }
+function notescontact()
+    {
+        var q='{"cmd":"notescontact","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{}';
+        ui_init(q);
+    }
+function getBaseInfoToOperator()
+    {
+        var q='{"cmd":"getBaseInfoToOperator","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"","newPhone":"123124"}';
+        ui_init(q);
+    }
+function getIncreaseAmtInfoStatus()
+    {
+        var q='{"cmd":"getIncreaseAmtInfoStatus","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"","newPhone":"123124"}';
+        ui_init(q);
+    }
+function increaseAmtInfoAccredit()
+    {
+        var q='{"cmd":"increaseAmtInfoAccredit","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":"","type":"1","city":"","province":"","country":"","gender":"","name":"","image_url":"","uid":"","expires_in":"","access_toke":"","openid":""}';
+        ui_init(q);
+    }
+function getDrainagePromotionUrl()
+    {
+        var q='{"cmd":"getDrainagePromotionUrl","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":""}';
+        ui_init(q);
+    }
+function oldUserToNew()
+    {
+        var q='{"cmd":"oldUserToNew","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"startId":"","endId":""}}';
+        ui_init(q);
+    }
+function createInviteCode()
+    {
+        var q='{"cmd":"createInviteCode","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"startId":"","endId":""}}';
+        ui_init(q);
+    }
+function getWhiteKnightInfo()
+    {
+        var q='{"cmd":"getWhiteKnightInfo","token":"da1e491463954a64816bf571b5cce4e8","userId":"576A047D5F664B67023A3FBB2A0D9A48","version":"1","params":{"userId":"576A047D5F664B67023A3FBB2A0D9A48","tokenKey":"3325e4c9-4f28-4ddc-972f-9af0d275f700","mac":"","idfa":"","imei":"","ip":"122.96.42.113","longitude":"118.6424532698348","latitude":"32.06842145875768"}}';
+        ui_init(q);
+    }
+function countInterview()
+	{
+ 		var q='{"cmd":"countInterview","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"ip":"","interview_time":"","interview_type_id":"","device_type":""}}';
+        ui_init(q);
+	}
+function prizeLotteryTable()
+	{
+ 		var q='{"cmd":"prizeLotteryTable","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":""}}';
+        ui_init(q);
+	}
+function prizeLottery()
+	{
+ 		var q='{"cmd":"prizeLottery","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":""}}';
+        ui_init(q);
+	}
+function showPrizeRecord()
+	{
+ 		var q='{"cmd":"showPrizeRecord","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"userId":""}}';
+        ui_init(q);
+	}
+function setPassword()
+	{
+ 		var q='{"cmd":"setPassword","token":"073e7a6e8fca4ad8a73b0755fe9a8517","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","password":"a1234567"}}';
+        ui_init(q);
+	}
+function sumbitUserInfoToDecisionEngine()
+	{
+ 		var q='{"cmd":"sumbitUserInfoToDecisionEngine","token":"245Y7BSfDHIWEie34","userId":"FB3E46F65180CA5334D3F3ECC6604FCD","version":"1","params":{"params":"c7evOZLTAUhmFkr6BQPADTL1uCYNVxKCAH6gjNZOnBi1etlwHyrD1RYHBSuMFc31Ml8iScxh0BDwdmrVhy7QnyyaAZD0W36jQjuiHVXjFiRfWbvbi9QZyfbdO2n2K4Wx6VzidWAjBhUCtWjxXlpWLs1UcY9G%2FbO2101vnEzQYUkZTIhc%2Fs%2BOGupuBUMVy9YryJE15gyLMOAeN1B7EowvbXlwRm%2FrJ2q04vcVN4e8usIt2xh2Of%2FwWuqk42ojd1PHrHurjFLg88KaI%2FRl9Glf2qfp4rC2Ei%2FZxO0Nir%2B9GJACgwcRyScx9Bemzuskn3DTbSgst%2F3VwLAhLxA85zbjWg%3D%3D","sign":"bsmtPXb0Pt57C5S8I0vWr%2BIH%2F8OM6tJbLRJX3XrE9sAuiegMtRWjUMoRZDhvZ2JEIkDXxH5RsIIKP29eGuJ74rD%2FuGvZhCrdWhdBd6GoukacTkN85tynvb0%2FN1QUjVJccYFePZU4Y%2BzFynKInB3JfgQLm3waqSss7xyFcP29W5k%3D","userId":"FB3E46F65180CA5334D3F3ECC6604FCD","engineType":"0","withId":"574682"}}';
+        ui_init(q);
+	}
+function whiteKnightOperatorLogin()
+	{
+		var q='{"cmd":"whiteKnightOperatorLogin","token":"01f62df973484fc2960d5ff7b7a9697b","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","phone":"18279409665","password":"279720","smsCode":"","reqId":""}}';
+        ui_init(q);
+	}
+function whiteKnightOperatorSendLoginSms()
+	{
+		var q='{"cmd":"whiteKnightOperatorSendLoginSms","token":"01f62df973484fc2960d5ff7b7a9697b","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","reqId":""}}';
+        ui_init(q);
+	}
+function whiteKnightOperatorVerifyAuthSms()
+	{
+		var q='{"cmd":"whiteKnightOperatorVerifyAuthSms","token":"01f62df973484fc2960d5ff7b7a9697b","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","reqId":"","smsCode":"","phone":"","password":""}}';
+        ui_init(q);
+	}
+function whiteKnightOperatorSendAuthSms()
+	{
+		var q='{"cmd":"whiteKnightOperatorSendAuthSms","token":"01f62df973484fc2960d5ff7b7a9697b","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","reqId":""}}';
+        ui_init(q);
+	}
+function whiteKnightOperatorReportext()
+	{
+		var q='{"cmd":"whiteKnightOperatorReportext","token":"01f62df973484fc2960d5ff7b7a9697b","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853"}}';
+        ui_init(q);
+	}
+function whiteKnightOperatorResetpwd()
+	{
+		var q='{"cmd":"whiteKnightOperatorResetpwd","token":"01f62df973484fc2960d5ff7b7a9697b","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","reqId":"","password":"","smsCode":""}}';
+        ui_init(q);
+	}
+function whiteKnightOperatorSendResetpwdSms()
+	{
+		var q='{"cmd":"whiteKnightOperatorSendResetpwdSms","token":"01f62df973484fc2960d5ff7b7a9697b","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","reqId":""}}';
+        ui_init(q);
+	}
+function getInsurance()
+	{
+		var q='{"cmd":"getInsurance","token":"481438755f1e4052b78bf9b86ad8fd95","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853"}}';
+        ui_init(q);
+	}
+function getProtocolUrl()
+	{
+		var q='{"cmd":"getProtocolUrl","token":"481438755f1e4052b78bf9b86ad8fd95","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"userId":"84CC0F1789615F377E129D4AB6D8E853","protocolCode":"","withDrawId":"","borrowAmt":"","borrowPerion":"","purposeCode":"","token":"","insuranceType":""}}';
+        ui_init(q);
+	}
+
+	function loverActivity() {
+	    var q='{"cmd":"loverActivity","token":"63a774f3a7d44c229de1a47050670460","userId":"A66D29CFE0F646CCF7B7B5EB89E3DDEA","version":"1","params":{"userId":"A66D29CFE0F646CCF7B7B5EB89E3DDEA","start_time":"2016-01-01 00:00:01","end_time":"2018-01-01 00:00:01"}}';
+        ui_init(q);
+	}
+function wxShare()
+	{
+		var q='{"cmd":"wxShare","token":"481438755f1e4052b78bf9b86ad8fd95","userId":"84CC0F1789615F377E129D4AB6D8E853","version":"1","params":{"url":"84CC0F1789615F377E129D4AB6D8E853"}}';
+        ui_init(q);
+	}
+function getVoiceMsgFromPhone()
+    {
+        var q='{"cmd":"getVoiceMsgFromPhone","token":"245Y7BSfDHIWEie34","userId":"43242543543","version":"1","params":{"phone":"11111111111","type":"4:语音验证码注册 5:语音验证码快捷登录"}}';
+        ui_init(q);
+    }
+function getVoiceMsgClues()
+    {
+        var q='{"cmd":"getVoiceMsgClues","token":"","userId":"","version":"1","params":{}}';
+        ui_init(q);
+    }
+  </script>
+</head>
+<body onload="showRequest()" style="font-family: 'Courier New';">
+	<div id="command">
+		<label for="cmd">API接口</label> <select name="cmd" id="cmd"
+			onchange="showRequest()">
+			<option value="sysRefresh()">刷新系统配置(仅初始化用，不要执行）</option>
+			<option value="batchInsertDistric()">批量导入地区接口（仅初始化用，不要执行）</option>
+			<option value="init()">初始化</option>
+			<option value="queryBaseDict()">查询数据字典</option>
+			<option value="queryServiceUrl()">查询服务Url</option>
+			<option value="register()">注册</option>
+			<option value="getValiCodeFromPhone()">获取验证码</option>
+			<option value="login()">登录</option>
+			<!-- <option value="registerInfoIsComplete()">验证信息是否完整</option>
+			<option value="saveOrUpdatePersonInfo()">身份信息保存</option> -->
+			<option value="queryBankAndLog()">查询银行</option>
+			<!-- <option value="queryPersonInfo()">查询身份信息</option> -->
+			<option value="mine()">我的</option>
+			<!-- <option value="bindBank()">绑定银行卡</option>
+			<option value="queryBnakCard()">查询绑定银行卡</option> -->
+			<option value="accountConfirm()">账号验证</option>
+			<option value="contactsConfirm()">联系人验证</option>
+			<option value="queryContacts()">查询联系人</option>
+			<option value="queryAdvrByModule()">查询广告2</option>
+			<!-- <option value="loanApply()">贷款申请</option> -->
+			<option value="qureyUrlAndMonthpay()">查询月供和url</option>
+			<option value="IneedMoney()">终于他妈的能借钱啦</option>
+			<option value="myBill()">我的所有账单条数</option>
+			<option value="queryPostDetail()">查询提现明细</option>
+			<option value="updatePassword()">修改密码</option>
+			<option value="queryRepayDetail()">查询还款明细</option>
+			<option value="queryProgress()">查询进度</option>
+			<option value="homePage()">首页</option>
+			<option value="adviceOrback()">意见反馈</option>
+			<option value="payZfb()">支付宝支付</option> 
+			<option value="upLoadPicture()">图片上传</option>
+			<option value="authenticationCustom()">保存各个账号认证</option>
+			<option value="saveXykAndGjj()">保存信用卡账号或者公积金</option>
+			<option value="authenticationSchool()">保存个人信息（学生）</option>
+			<option value="authenticationFamily()">保存个人信息（成人）</option>
+			<option value="queryTbAndJdStutus()">京东或淘宝是否填写，或认证</option>
+			<option value="queryXykAndYx()">信用卡的邮箱或账号是否认证</option>
+			<option value="saveContacts()">保存联系人</option>
+			<option value="platformQry()">贷款平台查询</option>
+			<option value="platformLogin()">贷款平台用户登录</option>
+			<option value="platformLoanCtmCntSave()">用户贷款平台信息修改和保存</option>
+			<option value="userPlatforms()">用户关联贷款平台查询</option>
+			<option value="emailLogin()">邮箱有效性校验</option>
+			<option value="userEmails()">查询用户所有绑定邮箱</option>
+			<option value="emailDetailByCode()">查询用户相应邮箱详情</option>
+			<option value="emailPwdChange()">修改邮箱密码</option>
+			<option value="creditCardList()">用户绑定信用卡查询</option>
+			<option value="creditCardDetail()">查询用户绑定信用卡详情</option>
+			<option value="creditCardSaveOrUpdate()">用户信用卡的修改和保存</option>
+			<option value="depositCardList()">用户绑定储蓄卡查询</option>
+			<option value="depositCardDetail()">查询用户绑定储蓄卡详情</option>
+			<option value="depositCardSaveOrUpdate()">用户储蓄卡的修改和保存</option>
+			<option value="socialSecurityList()">用户社保查询</option>
+			<option value="socialSecurityDetail()">查询用户绑定社保详情</option>
+			<option value="socialSecuritySaveOrUpdate()">用户社保信息的修改和保存</option>
+			<option value="housingFundList()">用户公积金查询</option>
+			<option value="housingFundDetail()">查询用户绑定公积金详情</option>
+			<option value="housingFundSaveOrUpdate()">用户公积金信息的修改和保存</option>
+		    <option value="userProgressRate()">用户提额总额和各类型提额渠道绑定百分比展示</option>
+		<!-- <option value="authenticationCompany()">保存公司信息</option> -->
+			<option value="queryMyCertId()">查询基本资料</option>
+			<option value="queryIsBorrow()">查询申请贷款状态(2.3【天】)</option>
+			<option value="authorizeQry()">芝麻信用授权</option> 
+			<option value="zhimaCallBack()">芝麻信用回调</option>
+			<option value="appgoSumbit()">提交审核</option>
+			<option value="queryOrderDetail()">查询订单详情</option>
+			<option value="queryOneTypeMessage()">查询其中一种消息</option>
+			<option value="queryOneMessageByMesId()">查询一条消息</option>
+			<option value="bankCardCheck()">修改银行卡信息</option>
+			<option value="yituHuoti()">活体识别</option>
+			<option value="querySchedule()">查询资料进度</option>
+			<option value="selectRewardAmt()">查询奖励金额</option>
+			<option value="queryAnnounce()">查询公告信息</option>
+			<option value="queryShareContent()">查询分享内容</option>
+			<option value="fastLogin()">快捷登录</option>
+			<option value="selectPersonalInfo()">查询个人信息</option>
+			<option value="fastRepayment()">快速还款</option>
+			<option value="signContacts()">合同签约返回签约地址</option>
+			<!-- <option value="bankCardVerify()">银行卡验证</option> -->
+			<option value="getViewLinkByApplyNo()">根据合同号查询签约地址</option>
+			<option value="querySupportedBank()">查询银行卡是否为支持银行卡</option>
+			<option value="operator()">运营商认证获取验证码和采集报告</option>
+			<option value="operatorResetServiceNumber()">运营商认证获取验证码和重置服务密码</option>
+			<option value="getBasicInfo()">获取基本信息(同盾)</option>
+			<option value="queryAmtAndDaysAndCoupons()">点击我要借款查询借款金额、天数和优惠券</option>
+			<option value="queryCoupon()">查询用户优惠券</option>
+			<option value="payResult()">还款结果</option>
+			<option value="queryOrderRecords()">查询用户订单记录</option>
+			<option value="queryMessageAndAnnouncement()">查询订单消息和公告消息</option>
+			<option value="queryUserRewardAmt()">查询拉新活动奖励</option>
+			<option value="userAuthentication()">决策引擎授信</option>
+			<option value="queryServiceProrocol()">查询用户订单合同</option>
+			<option value="getYouDunVerifyScore()">有盾活体分数校验</option>
+			<option value="checkReportExsit()">检查是否有报告</option>
+			<option value="getBaseInfoToOperator()">获取运营商认证所需基本资料</option>
+			<option value="notescontact()">联系客服</option>
+			<option value="lookBindBankinfo()">查看绑卡信息或进入绑卡页面</option>
+			<option value="querySupportedBank()">查询支持银行卡</option>
+			<option value="queryVerifyCardResult()">查询验卡异步回调结果</option>
+			<option value="getIncreaseAmtInfoStatus()">获得提额资料状态</option>
+			<option value="increaseAmtInfoAccredit()">提额资料授权</option>
+			<option value="getDrainagePromotionUrl()">获取用户引流url</option>
+			<option value="oldUserToNew()">老用户转变为新用户</option>
+			<option value="createInviteCode()">老用户生成邀请码</option>
+			<option value="getWhiteKnightInfo()">白骑士</option>
+			<option value="countInterview()">访问统计</option>
+			<option value="prizeLotteryTable()">iPhoneX首发活动转盘</option>
+			<option value="prizeLottery()">iPhoneX首发活动抽奖</option>
+			<option value="showPrizeRecord()">iPhoneX首发活动中奖记录</option>
+			<option value="setPassword()">快捷登录设置密码</option>
+			<option value="sumbitUserInfoToDecisionEngine()">用户资料审核订单生成</option>
+			<option value="whiteKnightOperatorLogin()">白骑士运营商登录授权</option>
+			<option value="whiteKnightOperatorSendLoginSms()">白骑士运营商重发登录短信验证码</option>
+			<option value="whiteKnightOperatorVerifyAuthSms()">白骑士运营商校验二次鉴权短信验证码</option>
+			<option value="whiteKnightOperatorSendAuthSms()">白骑士运营商重发二次鉴权短信验证码</option>
+			<option value="whiteKnightOperatorReportext()">白骑士运营商上报联系人参数</option>
+			<option value="whiteKnightOperatorResetpwd()">白骑士运营商重置服务密码</option>
+			<option value="whiteKnightOperatorSendResetpwdSms()">白骑士运营商重发重置密码短信验证码</option>
+			<option value="getInsurance()">获取保险列表</option>
+			<option value="getProtocolUrl()">获取协议url</option>
+			<option value="loverActivity()">情人节活动</option>
+			<option value="wxShare()">微信二次分享</option>
+			<option value="getVoiceMsgFromPhone()">获取语音验证码</option>
+			<option value="getVoiceMsgClues()">获取语音验证码提示语</option>
+		</select> <label id="chooseBoxLabel" for="chooseBox">选中测试<input
+			type="checkbox" id="chooseBox" name="chooseBox"></label> <input
+			id="testTime" type="text"
+			style="width: 30px; height: 15px; font-family: 'Courier New';"
+			value="1"> <input type="button" onclick="execute()"
+			value="单项测试"> <input type="button" id="autoTest"
+			name="autoTest" value="自动化测试" onclick="autoTest()"> <label
+			id="detailResult"></label> <label id="resultNo"></label> <label
+			id="stopLabel" style="float: right; margin-right: 13px;"><input
+			type="button" id="autoTest" name="autoTest" value="停止检测"
+			onclick="stopTest()"></label> <label id="msgLabel"
+			style="float: right; margin-right: 10px;"><input
+			type="button" onclick="format_input()" value="格式化代码"></label>
+	</div>
+	<hr>
+	<div id="in" style="width: 310px; height: 530px; float: left">
+		<textarea id="request"
+			style="width: 300px; height: 530px; font-family: 'Courier New';"> </textarea>
+	</div>
+	<div id="out" style="width: 935px; height: 530px; float: left">
+		<textarea id="response"
+			style="width: 935px; height: 530px; font-family: 'Courier New';"
+			readonly> </textarea>
+	</div>
+	<br>
+	<div id="error_window"
+		style="width: 1230px; height: 50px; margin-top: 523px">
+		<textarea id="console" style="width: 1245px; height: 60px" readonly></textarea>
+	</div>
+</body>
+</html>

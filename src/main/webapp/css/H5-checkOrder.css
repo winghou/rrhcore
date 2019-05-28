@@ -1,0 +1,75 @@
+@CHARSET "UTF-8";
+body,html{
+	margin: 0px;
+    background: #f0f0f0;
+}
+.orderList{
+	    margin-top: 20px;
+    background: #fff;
+}
+.orderNumber{
+	    float: left;
+    width: 63%;
+    border-left: solid 3px #FD4141;
+    border-radius: 2px;
+    padding-left: 5%;
+    font-size: 16px;
+
+}
+.orderStatus{
+	text-align: right;
+   margin-right: 5%;
+    color: #FD4141;
+     font-size: 16px;
+}
+.orderLine1{
+	padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #d6d6d6;
+    font-size: 17px;
+}
+.orderLine2{
+	    height: 70px;
+ 
+}
+.date{
+     float: left;
+    font-size: 16px;
+    color: #666666;
+    line-height: 25px;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 5%;
+	
+}
+.loanDate{
+	
+}
+.returnDate{
+	
+}
+.returnAllMoney{
+	line-height: 70px;
+    text-align: right;
+    margin-right: 5%;
+    font-size: 20px;
+}
+.noCount{
+	    width: 100%;
+    height: 100%;
+    background: #fff;
+    position: fixed;
+}
+.tipImages{
+    margin-top: 50%;	
+}
+.noCountImage{
+	    width: 35%;
+    margin-left: 33%;
+}
+.tipAccount{
+	    text-align: center;
+    color: #999999;
+    font-size: 18px;
+    margin-top: 10px;
+}

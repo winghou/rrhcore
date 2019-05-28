@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppIncreaseCreditMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppIncreaseCredit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="total_increased_credit" property="totalIncreasedCredit" jdbcType="INTEGER" />
+    <result column="remaining_increased_credit" property="remainingIncreasedCredit" jdbcType="INTEGER" />
+    <result column="consumed_increased_credit" property="consumedIncreasedCredit" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,appr_id,total_increased_credit,remaining_increased_credit,consumed_increased_credit,type,status
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_increase_credit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_increase_credit
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByApprIdAndType" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_increase_credit
+    where appr_id = #{apprId} and type = #{type}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_increase_credit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.model.AppIncreaseCredit" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_increase_credit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="totalIncreasedCredit != null" >
+        total_increased_credit,
+      </if>
+      <if test="remainingIncreasedCredit != null" >
+        remaining_increased_credit,
+      </if>
+      <if test="consumedIncreasedCredit != null" >
+        consumed_increased_credit,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="totalIncreasedCredit != null" >
+        #{totalIncreasedCredit,jdbcType=INTEGER},
+      </if>
+      <if test="remainingIncreasedCredit != null" >
+        #{remainingIncreasedCredit,jdbcType=INTEGER},
+      </if>
+      <if test="consumedIncreasedCredit != null" >
+        #{consumedIncreasedCredit,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppIncreaseCredit" >
+    update app_increase_credit
+    <set >
+      <if test="totalIncreasedCredit != null" >
+        total_increased_credit = #{totalIncreasedCredit,jdbcType=INTEGER},
+      </if>
+      <if test="remainingIncreasedCredit != null" >
+        remaining_increased_credit = #{remainingIncreasedCredit,jdbcType=INTEGER},
+      </if>
+      <if test="consumedIncreasedCredit != null" >
+        consumed_increased_credit = #{consumedIncreasedCredit,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

@@ -1,0 +1,27 @@
+.mains{
+    position: relative;
+    font-size: .32rem;
+}
+
+.mains span{
+    position: absolute;
+    top: .52rem;
+    z-index: 999;
+}
+.mains input{
+    padding-left: 1.4rem;
+}
+
+.mains i {
+    width: .2rem;
+    height: .12rem;
+    background: url(../html/images/select_up@2x.png) no-repeat;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+    position: absolute;
+    right: .25rem;
+    top: .7rem;
+}
+.main-accPassword{
+    position: relative;
+}

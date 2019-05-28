@@ -1,0 +1,180 @@
+@CHARSET "UTF-8";
+body{
+     margin: 0px;
+    background: #fff;
+}
+@media screen and (min-width:360px) {
+	html {
+		font-size: 48px
+	}
+
+	body {
+		font-size: 12px
+	}
+}
+
+@media screen and (min-width:375px) {
+	html {
+		font-size: 50px
+	}
+
+	body {
+		font-size: 12px
+	}
+}
+
+@media screen and (min-width:384px) {
+	html {
+		font-size: 51.2px
+	}
+
+	body {
+		font-size: 14px
+	}
+}
+
+@media screen and (min-width:400px) {
+	html {
+		font-size: 53.33px
+	}
+
+	body {
+		font-size: 14px
+	}
+}
+
+@media screen and (min-width:414px) {
+	html {
+		font-size: 55.2px
+	}
+
+	body {
+		font-size: 14px
+	}
+}
+
+@media screen and (min-width:424px) {
+	html {
+		font-size: 56.53px
+	}
+
+	body {
+		font-size: 14px
+	}
+}
+
+@media screen and (min-width:480px) {
+	html {
+		font-size: 64px
+	}
+
+	body {
+		font-size: 15.36px
+	}
+}
+
+@media screen and (min-width:540px) {
+	html {
+		font-size: 72px
+	}
+
+	body {
+		font-size: 17.28px
+	}
+}
+
+@media screen and (min-width:720px) {
+	html {
+		font-size: 96px
+	}
+
+	body {
+		font-size: 23.04px
+	}
+}
+
+@media screen and (min-width:750px) {
+	html {
+		font-size: 100px
+	}
+
+	body {
+		font-size: 24px
+	}
+}
+.main{
+  
+}
+.top{
+    position: relative;
+    background: url(../html/images/zhuangshi@2x.png) no-repeat;
+    background-size: 100%;
+}
+.topTips1{
+    text-align: center;
+    font-size: 18px;
+    color: #666666;
+    padding-top: 30px;
+}
+.topTips2{
+    text-align: center;
+    font-size: 18px;
+    color: #666666;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.middle{
+
+}
+.waysFirst{
+    text-align: center;
+    font-size: 16px;
+    color: #666666;
+    margin-top: 5px;
+}
+.waysSecond{
+text-align: center;
+    font-size: 16px;
+    color: #666666;
+  margin-top:15px;
+  margin-bottom: 30px;
+}
+.bottom{
+
+}
+.QRCode{
+    width: 100%;	
+}
+.weChat-erweima{
+	     width: 40%;
+    margin-left: 30%;
+}
+.space{
+	    width: 100%;
+    background: #e8e8e8;
+    height: 7px;
+}
+.copy{
+        background: #FFB71C;
+    padding: 5px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    border: 0px;
+}
+.stepImage{
+	    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 40px;
+}
+.bottomTitle{
+	    width: 90%;
+    margin-left: 5%;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    border-bottom: solid 1px #ebebeb;
+    padding: 10px;
+    margin-bottom: 20px;
+}

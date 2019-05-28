@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+ <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+ <meta http-equiv="Pragma" content="no-cache" />
+ <meta http-equiv="Expires" content="0" />
+<title>平台登录</title>
+ <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+ <link rel="stylesheet" type="text/css" href="../../../css/platLogin.css"></link>
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../js/common.js"></script>
+    <script type="text/javascript" src="../../../js/AESUtil.js"></script>
+    <script type="text/javascript" src="../../../js/plat/platLogin.js"></script>
+    <script type="text/javascript" src="../../../js/plat/superiorLimitMask.js"></script>
+</head>
+<body>
+     <div class="head">
+           <div><img src="../../images/returnBtn.png" class="returnBtn"></div>
+           <div class="titleName">平台登录</div>
+     </div>
+     <div class="mainContent">
+         <div class="platLogin">
+         <img src="" alt="" class="platLogo" onerror="this.src='../../images/morenLogo1.png'"/>
+         <div class="platName"></div>
+         </div>
+         <div class="platAccount">
+         账号
+             <input type="tel" pattern="\d*" class="platAccountTxt" placeholder="请输入平台账号"/>
+         </div>
+         <div class="platPwd">
+         密码
+          <input type="password" class="platPwdTxt" placeholder="请输入登录密码" onkeyup="this.value=this.value.replace(/\s+/g,'')"/>
+          <span class="eye"><img src="../../images/close.png" class="eyeImage"></span>
+         </div>
+            <div class="sureBtn">账户授权</div>
+         <div class="protocol">授权账户表示您同意 <span class="attory">《数据采集服务协议》</span></div>
+     </div>
+</body>
+</html>

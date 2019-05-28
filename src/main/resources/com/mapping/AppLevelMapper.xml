@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLevel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="min_credit" property="minCredit" jdbcType="INTEGER" />
+    <result column="max_credit" property="maxCredit" jdbcType="INTEGER" />
+    <result column="mch_rate" property="mchRate" jdbcType="VARCHAR" />
+    <result column="fwf_rate" property="fwfRate" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,level,min_credit,max_credit,mch_rate,fwf_rate,description,status
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_level
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByLevel" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_level
+    where level = #{level}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_level
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_level
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.model.AppLevel" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="minCredit != null" >
+        min_credit,
+      </if>
+      <if test="maxCredit != null" >
+        max_credit,
+      </if>
+      <if test="mchRate != null" >
+        mch_rate,
+      </if>
+      <if test="fwfRate != null" >
+        fwf_rate,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="minCredit != null" >
+        #{minCredit,jdbcType=INTEGER},
+      </if>
+      <if test="maxCredit != null" >
+        #{maxCredit,jdbcType=INTEGER},
+      </if>
+      <if test="mchRate != null" >
+        #{mchRate,jdbcType=VARCHAR},
+      </if>
+      <if test="fwfRate != null" >
+        #{fwfRate,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppLevel" >
+    update app_level
+    <set >
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=VARCHAR},
+      </if>
+      <if test="minCredit != null" >
+        min_credit = #{minCredit,jdbcType=INTEGER},
+      </if>
+      <if test="maxCredit != null" >
+        max_credit = #{maxCredit,jdbcType=INTEGER},
+      </if>
+      <if test="fwfRate != null" >
+        fwf_rate = #{fwfRate,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.MchInterviewMapper">
+	<insert id="save" parameterType="com.model.MchInterview" >
+    	insert into app_interview_count (ip,mac,user_uuid,interview_type_id,interview_time,device_type) 
+    		  values(#{ip,jdbcType=VARCHAR},
+              #{mac,jdbcType=VARCHAR},
+              #{user_uuid,jdbcType=VARCHAR},
+              #{interview_type_id,jdbcType=INTEGER},
+              #{interview_time,jdbcType=DATE},
+              #{device_type,jdbcType=VARCHAR})
+             
+             
+   </insert>
+</mapper>

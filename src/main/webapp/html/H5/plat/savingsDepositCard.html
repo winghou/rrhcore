@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta content="telephone=no" name="format-detection">
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>储蓄卡授权</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/base.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/savingsDepositCard.css"></link>
+    <script type="text/javascript" src="../../../js/common.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../js/plat/AESUtil.js"></script>
+    <script src="../../../js/plat/savingsDepositCard.js"></script>
+</head>
+<body>
+	<div class="header">
+        <span class="returnBtn"></span>
+        <h2>储蓄卡授权</h2>
+    </div>
+    <div class="main">
+        <div class="main-name mains">
+            <input type="text" placeholder="姓名" readonly class="customName">
+        </div>
+        <div class="main-bankCar mains">
+            <input type="tel" pattern="\d*" placeholder="请输入您的储蓄卡号" class="bankCar" minlength="16" maxlength="19">
+        </div>
+        <div class="main-bankType mains">
+            <input type="text" placeholder="请输入您的储蓄卡类型" class="bankType">
+        </div>
+        <form  class="main-bankPassword mains" method="POST" action="" name="forms" onsubmit="return false" >
+            <span id="box"><input type="password" name="password" placeholder="请输入您的网银登录密码" class="bankPassword" maxlength="30" minlength="6" style="padding-right:.8rem;letter-spacing: -.5px;overflow:hidden;" onkeyup="this.value=this.value.replace(/\s+/g,'')"></span>
+            <span id="click" style="z-index:999;right:-3px;"><img src="../../images/eye-c@2x.png" alt="" class="eye"/></span>
+        </form>
+        <div class="main-phone mains">
+            <input  placeholder="请输入您的手机号" type="tel" pattern="\d*" class="phone"  maxlength="11" onpaste="return false"/>
+        </div>
+
+        <button class="btn btns">账户授权</button>
+        <p>授权账户表示您同意<a href="dataAcquisitionService.html">《数据采集服务协议》</a></p>
+    </div>
+</body>
+</html>

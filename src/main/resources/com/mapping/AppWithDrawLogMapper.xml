@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppWithDrawLogMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppWithDrawLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="withDraw_id" property="withdrawId" jdbcType="INTEGER" />
+    <result column="node_content" property="nodeContent" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="happend_time" property="happendTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, withDraw_id, node_content, detail, happend_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_withdraw_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectBywithDrawId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_withdraw_log
+    where withDraw_id = #{id,jdbcType=INTEGER} order by id desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_withdraw_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppWithDrawLog" >
+    insert into app_withdraw_log (id, withDraw_id, node_content, 
+      detail, happend_time)
+    values (#{id,jdbcType=INTEGER}, #{withdrawId,jdbcType=INTEGER}, #{nodeContent,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{happendTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppWithDrawLog" >
+    insert into app_withdraw_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="withdrawId != null" >
+        withDraw_id,
+      </if>
+      <if test="nodeContent != null" >
+        node_content,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+      <if test="happendTime == null" >
+        happend_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawId != null" >
+        #{withdrawId,jdbcType=INTEGER},
+      </if>
+      <if test="nodeContent != null" >
+        #{nodeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="happendTime == null" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppWithDrawLog" >
+    update app_withdraw_log
+    <set >
+      <if test="withdrawId != null" >
+        withDraw_id = #{withdrawId,jdbcType=INTEGER},
+      </if>
+      <if test="nodeContent != null" >
+        node_content = #{nodeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="happendTime != null" >
+        happend_time = #{happendTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppWithDrawLog" >
+    update app_withdraw_log
+    set withDraw_id = #{withdrawId,jdbcType=INTEGER},
+      node_content = #{nodeContent,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      happend_time = #{happendTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

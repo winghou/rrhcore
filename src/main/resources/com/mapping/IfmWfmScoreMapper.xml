@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IfmWfmScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.model.IfmWfmScore" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="wf_id" property="wfId" jdbcType="VARCHAR" />
+    <result column="item_id" property="itemId" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="item_desc" property="itemDesc" jdbcType="VARCHAR" />
+    <result column="credit_desc" property="creditDesc" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="other_info" property="other_info" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, wf_id, item_id, score, create_time, user_id, content, item_desc, credit_desc, 
+    status,other_info
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ifm_wfm_score
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ifm_wfm_score
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.IfmWfmScore" >
+    insert into ifm_wfm_score (id, wf_id, item_id, 
+      score, create_time, user_id, 
+      content, item_desc, credit_desc, 
+      status)
+    values (#{id,jdbcType=INTEGER}, #{wfId,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, 
+      #{score,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{itemDesc,jdbcType=VARCHAR}, #{creditDesc,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.IfmWfmScore" >
+    insert into ifm_wfm_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wfId != null" >
+        wf_id,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="itemDesc != null" >
+        item_desc,
+      </if>
+      <if test="creditDesc != null" >
+        credit_desc,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="other_info != null" >
+        other_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="wfId != null" >
+        #{wfId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDesc != null" >
+        #{itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creditDesc != null" >
+        #{creditDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="other_info != null" >
+        #{other_info,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.IfmWfmScore" >
+    update ifm_wfm_score
+    <set >
+      <if test="wfId != null" >
+        wf_id = #{wfId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDesc != null" >
+        item_desc = #{itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creditDesc != null" >
+        credit_desc = #{creditDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.IfmWfmScore" >
+    update ifm_wfm_score
+    set wf_id = #{wfId,jdbcType=VARCHAR},
+      item_id = #{itemId,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      item_desc = #{itemDesc,jdbcType=VARCHAR},
+      credit_desc = #{creditDesc,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

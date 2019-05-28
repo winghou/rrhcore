@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppRedBagWithdrawLogMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppRedBagWithdrawLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="amt" property="amt" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="activity_task_id" property="activeTaskId" jdbcType="INTEGER" />
+    <result column="red_bag_id" property="redBagId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, appr_id, title, amt, type, create_date, activity_task_id, red_bag_id
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_redbag_withdraw_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_redbag_withdraw_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.model.AppRedBagWithdrawLog" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_redbag_withdraw_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="amt != null" >
+        amt,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="activeTaskId != null" >
+        activity_task_id,
+      </if>
+      <if test="redBagId != null" >
+        red_bag_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="amt != null" >
+        #{amt,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeTaskId != null" >
+        #{activeTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="redBagId != null" >
+        #{redBagId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppRedBagWithdrawLog" >
+    update app_activity_task
+    <set >
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="amt != null" >
+        #{amt,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="qryRedEnvelopeDetail" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_redbag_withdraw_log
+    where appr_id = #{apprId,jdbcType=INTEGER} order by create_date desc;
+  </select>
+  <select id="qryUseTxSum" resultType="java.lang.Double" parameterType="java.lang.Integer" >
+  	select IFNULL(SUM(a.amt),0) from app_redbag_withdraw_log as a 
+  	 where a.type='1' and a.appr_id= #{apprId,jdbcType=INTEGER} and DATE_FORMAT(a.create_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m');
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppMorphoDeviceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppMorphoDeviceInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="withdraw_id" property="withdrawId" jdbcType="INTEGER" />
+    <result column="imei" property="imei" jdbcType="TIMESTAMP" />
+    <result column="idfa" property="idfa" jdbcType="TIMESTAMP" />
+    <result column="idfv" property="idfv" jdbcType="TIMESTAMP" />
+    <result column="keychain_uuid" property="keychainUuid" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <insert id="insertSelective" parameterType="com.model.AppMorphoDeviceInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_morpho_device_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="withdrawId != null" >
+        withdraw_id,
+      </if>
+      <if test="idfa != null" >
+        idfa,
+      </if>
+      <if test="idfv != null" >
+        idfv,
+      </if>
+      <if test="keychainUuid != null" >
+        keychain_uuid,
+      </if>
+      <if test="imei != null" >
+        imei,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawId != null" >
+        #{withdrawId,jdbcType=VARCHAR},
+      </if>
+      <if test="idfa != null" >
+        #{idfa,jdbcType=VARCHAR},
+      </if>
+         <if test="idfv != null" >
+        #{idfv,jdbcType=VARCHAR},
+      </if>
+         <if test="keychainUuid != null" >
+        #{keychainUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="imei != null" >
+        #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppWxBindMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppWxBind" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="bind_time" property="bindTime" jdbcType="TIMESTAMP" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="push_wxsms_time" property="pushWxsmsTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, appr_id, phone, open_id, bind_time, creat_time, uuid, push_wxsms_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_bind
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUuid" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_bind
+    where uuid = #{uuid}
+  </select>
+  
+  <select id="selectByopenId" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_bind
+    where open_id = #{open_id} limit 1
+  </select>
+  
+  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_bind
+    where phone = #{phone}
+  </select>
+  
+  <select id="selectByopenIdAndApprId" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_bind
+    where uuid = #{apprId} and open_id=#{openId}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_wx_bind
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.model.AppWxBind" >
+    insert into app_wx_bind
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="bindTime != null" >
+        bind_time,
+      </if>
+      <if test="creatTime != null" >
+        creat_time,
+      </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="bindTime != null" >
+        #{bindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppWxBind" >
+    update app_wx_bind
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="bindTime != null" >
+        bind_time = #{bindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatTime != null" >
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  	 <select id="queryAppWxBindbyapprid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select 
+		<include refid="Base_Column_List" />
+		 from app_wx_bind
+	    where appr_id = #{apprid,jdbcType=INTEGER}
+	 </select>
+	 
+	   <update id="updateAppWxBindbyappridSx"  parameterType="String">
+		update app_wx_bind set push_wxsms_time = now() where open_id = #{openId,jdbcType=VARCHAR}
+	 </update>
+	 
+ <select id="selectOpenId" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_wx_bind
+    where open_id = #{open_id}
+  </select>
+</mapper>

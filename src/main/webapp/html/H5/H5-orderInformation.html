@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+<title>订单信息</title>
+  <link rel="stylesheet" type="text/css" href="../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../css/orderInformation.css"></link>
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/util.js"></script>
+    <script type="text/javascript" src="../../js/orderInformation.js"></script>
+    <script type="text/javascript" src="../../js/AESUtil.js"></script>
+</head>
+<body>
+     <div class="main">
+         <div style="width: 100%;
+    background: #F0F0F0;
+    height: 5px;"></div>
+         <div class="top">
+         <div class="topTitLe">还款金额</div>
+         <div class="shouldPayMoney"></div>
+         <table class="informationTable">
+         <tr>
+         	<td style="    border-right: solid 1px #F0F0F0;">
+         	     <div class="tableTitle">借款日期</div>
+         	     <div class="loanDate"></div>
+         	</td>
+         	<td>
+         	    <div class="tableTitle">还款日期</div>
+         	    <div class="repayDate"></div>
+         	</td>
+         </tr>
+         </table>
+         </div>
+         <div class="orderAccount">
+         订单编号：<span class="orderAccountContent"></span>
+         </div>
+         <div class="loanInformation">
+                <div class="loanInformationTitle">借款信息</div>
+            <table class="loanInformationTable">
+                <tr>
+                    <td class="titleName">借款金额/到账金额</td>
+                    <td class="loanInformationContent borrowAmt"></td>
+                </tr>
+                <tr>
+                    <td class="titleName">借款期限</td>
+                    <td class="loanInformationContent curperiod"></td>
+                </tr>
+                <tr>
+                    <td class="titleName">应还款金额</td>
+                    <td class="loanInformationContent splitShouldPayAmt"></td>
+                </tr>
+                <tr>
+                    <td class="titleName">借款用途</td>
+                    <td style="  text-align: center;
+    padding: 5px 0px;">
+                        <span class="waysOfUse">
+                                       学习
+            </span>
+                    </td>
+                </tr>
+            </table>
+         </div>
+               <div style="width: 100%;
+    background: #F0F0F0;
+    height: 10px;margin-top: 20px;"></div>
+        <div class="insuranceOrder">
+            <div class="insuranceOrderTitle">
+              <span class='thePageText1'>购险订单</span>
+                <span class="insuranceOrderNumber thePageText6">
+         1份<img src="../images/loanPageSelect.png" alt="" class="insuranceOrderselected"/>
+         </span>
+            </div>
+            <table class="insuranceOrderTable">
+                   <tr>
+                	<td class="titleName thePageText2"></td>
+                	<td class="insuranceOrderTableContent consumeNumber"></td>
+                </tr>
+                <tr>
+                    <td class="titleName thePageText3">购险金额</td>
+                    <td class="insuranceOrderTableContent commissionAmt"></td>
+                </tr>
+                <tr>
+                    <td class="titleName thePageText4">购险借款期限</td>
+                    <td class="insuranceOrderTableContent curperiod"></td>
+                </tr>
+                <tr>
+                    <td class="titleName thePageText5">购险应还款金额</td>
+                    <td class="insuranceOrderTableContent insuranceShouldPayAmt"></td>
+                </tr>
+            </table>
+        </div>
+           <div style="width: 100%;
+    background: #F0F0F0;
+    height: 10px;margin-top: 20px;"></div>
+     <div class="coupon">
+            <div class="couponTitle">优惠券</div>
+            <div style="float: right;padding: 5%;    margin-right: 5%;"><span class="couponNumber"></span></div>
+        </div>
+        <div class="protocol">
+    
+        </div>
+            <div class="Settlement">
+            <div class="word">应还款总额:<span class="inall">元</span></div>
+            <div class="loanBtn">还款</div>
+        </div> 
+     </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+ 
+    <bean id="yybMsgProducer" class="com.mq.yingyingbao.YYBMsgProducer" init-method="init" destroy-method="destroy">
+        <property name="producerId" value="${mq_producerId}" />
+        <property name="accessKey" value="${mq_accessKey}" />
+        <property name="secretKey" value="${mq_secretKey}" />
+        <property name="onsAddr" value="${mq_onsAddr}" />
+    </bean>
+     
+    <bean id="yybMsgConsumer" class="com.mq.yingyingbao.YYBMsgConsumer" init-method="init" destroy-method="destroy" >
+        <property name="consumerId" value="${mq_consumerId}" />
+        <property name="accessKey" value="${mq_accessKey}" />
+        <property name="secretKey" value="${mq_secretKey}" />
+        <property name="onsAddr" value="${mq_onsAddr}" />
+        <property name="topic" value="${mq_topic}" />
+        <property name="tag" value="${mq_tag}" />
+    </bean>
+
+    <bean id="yybMsgListener" class="com.mq.yingyingbao.YYBMessageListener"/>
+    
+</beans>

@@ -1,0 +1,116 @@
+@CHARSET "UTF-8";
+body,html{
+	    margin: 0px;
+}
+.head{
+		padding-bottom: 9px;
+    border-bottom: solid 1px #ccc;
+    padding-top: 24px;
+}
+.returnBtn{
+    width: 12px;
+    margin-left: 5%;
+    float: left;
+    margin-top: 5px;
+}
+.titleName{
+	font-size: 20px;
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+}
+.title{
+	      height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #666666;
+    background: #f7f5f5;
+    padding-left: 5%;
+}
+.eyeImage{
+    width: 22px;
+    float: right;
+    padding: 5px;
+    margin-top: 20px;
+}
+.sureBtn{
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    margin-top: 50px;
+    font-size: 17px;
+    background: #7F8CFF;
+    color: #fff;
+    border-radius: 30px;
+}
+.protocol{
+	font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+    color: #999999;
+}
+.attory{
+	border-bottom: solid 1px #bbbbbb;
+}
+.platLogin{
+	    text-align: center;
+    margin-top: 30px;
+}
+.platLogo{
+	    width: 30%;
+	
+}
+.platName{
+	    font-size: 17px;
+}
+.platAccount{
+	height: 50px;
+    line-height: 50px;
+    margin-left: 10%;
+    border-bottom: solid 1px #e6e6e6;
+    width: 80%;
+}
+.platPwd{
+	width: 80%;
+    margin-left: 10%;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: solid 1px #e6e6e6;
+}
+.platAccountTxt{
+	    width: 60%;
+    height: 35px;
+    outline: none;
+    margin-left: 10%;
+        border: 0px;
+        font-size: 15px;
+    color: #333333;
+}
+.platPwdTxt{
+	    width:50%;
+    height: 35px;
+    outline: none;
+    margin-left: 10%;
+        border: 0px;
+        font-size: 15px;
+    color: #333333;
+}
+input:-moz-placeholder,   
+textarea:-moz-placeholder {   
+  
+font-style: normal;  
+}   
+  
+input:-ms-input-placeholder,   
+textarea:-ms-input-placeholder {   
+   
+   font-style: normal;   
+}   
+  
+input::-webkit-input-placeholder,   
+textarea::-webkit-input-placeholder {   
+   
+   font-style: normal; 
+}

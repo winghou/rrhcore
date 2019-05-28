@@ -1,0 +1,69 @@
+@CHARSET "UTF-8";
+html,body{
+	margin:0px
+}
+.top{
+     background: #fff;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10%;
+    border-bottom: solid 1px #f3f3f3;
+}
+.tipLogoImage{
+    float: left;
+    width: 22px;
+    margin-right: 10px;
+}
+.orderAccount{
+	    color: #333333;
+    font-size: 16px;
+}
+.loanMoney{
+	    
+    font-size: 16px;
+    color: #333333;
+    margin-top: 10px;
+}
+.middle{}
+.middleTitle{
+    margin-top: 20px;
+    margin-left: 10%;
+    color: #333333;
+    font-size: 18px;
+    margin-bottom: 35px;
+}
+.statusTable{
+	    text-align: center;
+	    border-collapse:collapse;
+}
+.statusImage{
+	    width: 35%;
+}
+.status{
+	font-size: 19px;
+    color: #333333;
+}
+td{
+	
+}
+.tips{
+	    margin-left: 10%;
+    margin-top: 30px;
+    color: #999999;
+    font-size: 15px;
+}
+.sureBtn{
+	    margin-top: 30px;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+    color: #fff;
+    background: #7F8CFF;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 30px;
+    font-size: 18px;  
+}
+.main{
+	    padding-bottom: 20px;
+}

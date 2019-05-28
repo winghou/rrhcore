@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppzfbOrderListMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppzfbOrderList" >
+    <id column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="widout_trade_no" property="widoutTradeNo" jdbcType="VARCHAR" />
+    <result column="widtotal_fee" property="widtotalFee" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="widout_subject" property="widoutSubject" jdbcType="VARCHAR" />
+    <result column="repay_plan_id" property="repayPlanId" jdbcType="VARCHAR" />
+    <result column="zfb_order_no" property="zfbOrderNo" jdbcType="VARCHAR" />
+    <result column="zfb_pay_date" property="zfbPayDate" jdbcType="TIMESTAMP" />
+    <result column="buyer_email" property="buyerEmail" jdbcType="VARCHAR" />
+    <result column="pay_source" property="paySource" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, widout_trade_no, widtotal_fee, create_date, widout_subject, repay_plan_id, 
+    zfb_order_no, zfb_pay_date, buyer_email, pay_source
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zfb_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+    <select id="selectByRepayId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zfb_order
+    where repay_plan_id = #{repayPlanId,jdbcType=INTEGER}
+  </select>
+    <select id="selectAllByRepayPlanId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zfb_order
+    where repay_plan_id = #{replanId,jdbcType=INTEGER}
+  	</select>
+    <select id="selectNotPaiedByRepayPlanId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zfb_order
+    where repay_plan_id = #{replanId,jdbcType=INTEGER} and zfb_order_no is null
+  	</select>
+  <select id="selectByUUID" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zfb_order
+    where widout_trade_no = #{uuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_zfb_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByUuid" parameterType="String" >
+    delete from app_zfb_order
+    where widout_trade_no = #{uuid}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppzfbOrderList" >
+    insert into app_zfb_order (order_id, widout_trade_no, widtotal_fee, 
+      create_date, widout_subject, repay_plan_id, 
+      zfb_order_no, zfb_pay_date, buyer_email
+      )
+    values (#{orderId,jdbcType=INTEGER}, #{widoutTradeNo,jdbcType=VARCHAR}, #{widtotalFee,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{widoutSubject,jdbcType=VARCHAR}, #{repayPlanId,jdbcType=VARCHAR}, 
+      #{zfbOrderNo,jdbcType=VARCHAR}, #{zfbPayDate,jdbcType=TIMESTAMP}, #{buyerEmail,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppzfbOrderList" >
+    insert into app_zfb_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="widoutTradeNo != null" >
+        widout_trade_no,
+      </if>
+      <if test="widtotalFee != null" >
+        widtotal_fee,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="widoutSubject != null" >
+        widout_subject,
+      </if>
+      <if test="repayPlanId != null" >
+        repay_plan_id,
+      </if>
+      <if test="zfbOrderNo != null" >
+        zfb_order_no,
+      </if>
+      <if test="zfbPayDate != null" >
+        zfb_pay_date,
+      </if>
+      <if test="buyerEmail != null" >
+        buyer_email,
+      </if>
+       <if test="paySource != null" >
+        pay_source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="widoutTradeNo != null" >
+        #{widoutTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="widtotalFee != null" >
+        #{widtotalFee,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="widoutSubject != null" >
+        #{widoutSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="repayPlanId != null" >
+        #{repayPlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="zfbOrderNo != null" >
+        #{zfbOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="zfbPayDate != null" >
+        #{zfbPayDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyerEmail != null" >
+        #{buyerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="paySource != null" >
+        #{paySource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppzfbOrderList" >
+    update app_zfb_order
+    <set >
+      <if test="widoutTradeNo != null" >
+        widout_trade_no = #{widoutTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="widtotalFee != null" >
+        widtotal_fee = #{widtotalFee,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=VARCHAR},
+      </if>
+      <if test="widoutSubject != null" >
+        widout_subject = #{widoutSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="repayPlanId != null" >
+        repay_plan_id = #{repayPlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="zfbOrderNo != null" >
+        zfb_order_no = #{zfbOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="zfbPayDate != null" >
+        zfb_pay_date = #{zfbPayDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyerEmail != null" >
+        buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="paySource != null" >
+        pay_source = #{paySource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppzfbOrderList" >
+    update app_zfb_order
+    set widout_trade_no = #{widoutTradeNo,jdbcType=VARCHAR},
+      widtotal_fee = #{widtotalFee,jdbcType=VARCHAR},
+      widout_subject = #{widoutSubject,jdbcType=VARCHAR},
+      repay_plan_id = #{repayPlanId,jdbcType=VARCHAR},
+      zfb_order_no = #{zfbOrderNo,jdbcType=VARCHAR},
+      zfb_pay_date = #{zfbPayDate,jdbcType=TIMESTAMP},
+      buyer_email = #{buyerEmail,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectZfbOrderList" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zfb_order
+    where repay_plan_id = #{repayId,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updateByPrimaryKeySelectiveAndPaySouce" parameterType="com.model.AppzfbOrderList" >
+    update app_zfb_order
+    <set >
+      <if test="widoutTradeNo != null" >
+        widout_trade_no = #{widoutTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="widtotalFee != null" >
+        widtotal_fee = #{widtotalFee,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=VARCHAR},
+      </if>
+      <if test="widoutSubject != null" >
+        widout_subject = #{widoutSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="repayPlanId != null" >
+        repay_plan_id = #{repayPlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="zfbOrderNo != null" >
+        zfb_order_no = #{zfbOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="zfbPayDate != null" >
+        zfb_pay_date = #{zfbPayDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyerEmail != null" >
+        buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="paySource != null" >
+        pay_source = #{paySource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER} and pay_source = 0
+  </update>
+  
+  <select id="selectZfbOrderListAndPaySouce" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zfb_order
+    where repay_plan_id = #{repayId,jdbcType=VARCHAR} and pay_source = 0
+  </select>
+</mapper>

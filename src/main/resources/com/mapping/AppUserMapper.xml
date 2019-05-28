@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppUserMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppUser" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="JOB_NUM" property="jobNum" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="IDENTITY_CARD" property="identityCard" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="COMPANY_EMAIL" property="companyEmail" jdbcType="VARCHAR" />
+    <result column="PERSONAL_EMAIL" property="personalEmail" jdbcType="VARCHAR" />
+    <result column="ONJOB_DATE" property="onjobDate" jdbcType="TIMESTAMP" />
+    <result column="LIVE_ADDR" property="liveAddr" jdbcType="VARCHAR" />
+    <result column="DEGREE" property="degree" jdbcType="VARCHAR" />
+    <result column="CREAT_DATE" property="creatDate" jdbcType="TIMESTAMP" />
+    <result column="LGN_ID" property="lgnId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="role_filter" property="roleFilter" jdbcType="VARCHAR" />
+    <result column="CMID" property="cmid" jdbcType="VARCHAR" />
+    <result column="mch_version" property="mch_version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userId, USER_NAME, ORG_ID, JOB_NUM, SEX, IDENTITY_CARD, PHONE, COMPANY_EMAIL, 
+    PERSONAL_EMAIL, ONJOB_DATE, LIVE_ADDR, DEGREE, CREAT_DATE, LGN_ID, STATUS, role_filter,
+    CMID, mch_version
+  </sql>
+  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    userId, USER_NAME, ORG_ID, JOB_NUM, mch_version
+    from APP_SYS_USER
+    where user_name = #{phone,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    userId, USER_NAME, ORG_ID, JOB_NUM, mch_version
+    from APP_SYS_USER
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByMchVersion" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    userId, USER_NAME, ORG_ID, JOB_NUM, mch_version
+    from APP_SYS_USER
+    where mch_version = #{version,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    userId, USER_NAME, ORG_ID, JOB_NUM, mch_version
+    from APP_SYS_USER
+    where USER_NAME = #{userName,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from APP_SYS_USER
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppUser" >
+    insert into APP_SYS_USER (userId, USER_NAME, ORG_ID, 
+      JOB_NUM, SEX, 
+      IDENTITY_CARD, PHONE, COMPANY_EMAIL, 
+      PERSONAL_EMAIL, ONJOB_DATE, LIVE_ADDR, 
+      DEGREE, CREAT_DATE, LGN_ID, 
+      STATUS, role_filter, CMID,mch_version
+      )
+    values (#{userid,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, 
+      #{jobNum,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},  
+      #{identityCard,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{companyEmail,jdbcType=VARCHAR}, 
+      #{personalEmail,jdbcType=VARCHAR}, #{onjobDate,jdbcType=TIMESTAMP}, #{liveAddr,jdbcType=VARCHAR}, 
+      #{degree,jdbcType=VARCHAR}, #{creatDate,jdbcType=TIMESTAMP}, #{lgnId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{roleFilter,jdbcType=VARCHAR}, #{cmid,jdbcType=VARCHAR}, #{mch_version,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppUser" useGeneratedKeys="true" keyProperty="userid">
+    insert into APP_SYS_USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="userName != null" >
+        USER_NAME,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="jobNum != null" >
+        JOB_NUM,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="identityCard != null" >
+        IDENTITY_CARD,
+      </if>
+      <if test="phone != null" >
+        PHONE,
+      </if>
+      <if test="companyEmail != null" >
+        COMPANY_EMAIL,
+      </if>
+      <if test="personalEmail != null" >
+        PERSONAL_EMAIL,
+      </if>
+      <if test="onjobDate != null" >
+        ONJOB_DATE,
+      </if>
+      <if test="liveAddr != null" >
+        LIVE_ADDR,
+      </if>
+      <if test="degree != null" >
+        DEGREE,
+      </if>
+      <if test="creatDate == null" >
+        CREAT_DATE,
+      </if>
+      <if test="lgnId != null" >
+        LGN_ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="roleFilter != null" >
+        role_filter,
+      </if>
+      <if test="cmid != null" >
+        CMID,
+      </if>
+      <if test="mch_version != null" >
+        mch_version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="jobNum != null" >
+        #{jobNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCard != null" >
+        #{identityCard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyEmail != null" >
+        #{companyEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="personalEmail != null" >
+        #{personalEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="onjobDate != null" >
+        #{onjobDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="liveAddr != null" >
+        #{liveAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="creatDate == null" >
+        now(),
+      </if>
+      <if test="lgnId != null" >
+        #{lgnId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="roleFilter != null" >
+        #{roleFilter,jdbcType=VARCHAR},
+      </if>
+      <if test="cmid != null" >
+        #{cmid,jdbcType=VARCHAR},
+      </if>
+      <if test="mch_version != null" >
+        #{mch_version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppUser" >
+    update APP_SYS_USER
+    <set >
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="jobNum != null" >
+        JOB_NUM = #{jobNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCard != null" >
+        IDENTITY_CARD = #{identityCard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyEmail != null" >
+        COMPANY_EMAIL = #{companyEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="personalEmail != null" >
+        PERSONAL_EMAIL = #{personalEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="onjobDate != null" >
+        ONJOB_DATE = #{onjobDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="liveAddr != null" >
+        LIVE_ADDR = #{liveAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        DEGREE = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="creatDate != null" >
+        CREAT_DATE = #{creatDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lgnId != null" >
+        LGN_ID = #{lgnId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="roleFilter != null" >
+        role_filter = #{roleFilter,jdbcType=VARCHAR},
+      </if>
+      <if test="cmid != null" >
+        CMID = #{cmid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppUser" >
+    update APP_SYS_USER
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
+      JOB_NUM = #{jobNum,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      IDENTITY_CARD = #{identityCard,jdbcType=VARCHAR},
+      PHONE = #{phone,jdbcType=VARCHAR},
+      COMPANY_EMAIL = #{companyEmail,jdbcType=VARCHAR},
+      PERSONAL_EMAIL = #{personalEmail,jdbcType=VARCHAR},
+      ONJOB_DATE = #{onjobDate,jdbcType=TIMESTAMP},
+      LIVE_ADDR = #{liveAddr,jdbcType=VARCHAR},
+      DEGREE = #{degree,jdbcType=VARCHAR},
+      CREAT_DATE = #{creatDate,jdbcType=TIMESTAMP},
+      LGN_ID = #{lgnId,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      role_filter = #{roleFilter,jdbcType=VARCHAR},
+      CMID = #{cmid,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

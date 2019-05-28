@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppZhimaScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppZhimaScore" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="zhima_credit_score" property="zhimaCreditScore" jdbcType="VARCHAR" />
+    <result column="zhima_ivs_score" property="zhimaIvsScore" jdbcType="VARCHAR" />
+    <result column="ivs_detail" property="ivsDetail" jdbcType="VARCHAR" />
+    <result column="watchlistii_is_matched" property="watchlistiiIsMatched" jdbcType="VARCHAR" />
+    <result column="watchlistii_detail" property="watchlistiiDetail" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="autic_date" property="auticDate" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, zhima_credit_score, zhima_ivs_score, ivs_detail, watchlistii_is_matched, watchlistii_detail, 
+    open_id, autic_date, user_id,status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zhima_score
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectZhimaScoreByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zhima_score
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserIdAndStatus" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_zhima_score
+    where user_id = #{userId,jdbcType=INTEGER} and status = #{status}
+  </select>
+  <select id="selectByUserId" resultType="java.util.Map" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />,datediff( DATE_FORMAT(now(),'%Y-%m-%d'), DATE_FORMAT(autic_date,'%Y-%m-%d')) days
+    from app_zhima_score
+    where user_id = #{id,jdbcType=INTEGER} and status='0'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_zhima_score
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppZhimaScore" >
+    insert into app_zhima_score (id, zhima_credit_score, zhima_ivs_score, 
+      ivs_detail, watchlistii_is_matched, watchlistii_detail, 
+      open_id, autic_date, user_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{zhimaCreditScore,jdbcType=VARCHAR}, #{zhimaIvsScore,jdbcType=VARCHAR}, 
+      #{ivsDetail,jdbcType=VARCHAR}, #{watchlistiiIsMatched,jdbcType=VARCHAR}, #{watchlistiiDetail,jdbcType=VARCHAR}, 
+      #{openId,jdbcType=VARCHAR}, #{auticDate,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppZhimaScore" useGeneratedKeys="true" keyProperty="id">
+    insert into app_zhima_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="zhimaCreditScore != null" >
+        zhima_credit_score,
+      </if>
+      <if test="zhimaIvsScore != null" >
+        zhima_ivs_score,
+      </if>
+      <if test="ivsDetail != null" >
+        ivs_detail,
+      </if>
+      <if test="watchlistiiIsMatched != null" >
+        watchlistii_is_matched,
+      </if>
+      <if test="watchlistiiDetail != null" >
+        watchlistii_detail,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="auticDate == null" >
+        autic_date,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="zhimaCreditScore != null" >
+        #{zhimaCreditScore,jdbcType=VARCHAR},
+      </if>
+      <if test="zhimaIvsScore != null" >
+        #{zhimaIvsScore,jdbcType=VARCHAR},
+      </if>
+      <if test="ivsDetail != null" >
+        #{ivsDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="watchlistiiIsMatched != null" >
+        #{watchlistiiIsMatched,jdbcType=VARCHAR},
+      </if>
+      <if test="watchlistiiDetail != null" >
+        #{watchlistiiDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="auticDate == null" >
+        now(),
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppZhimaScore" >
+    update app_zhima_score
+    <set >
+      <if test="zhimaCreditScore != null" >
+        zhima_credit_score = #{zhimaCreditScore,jdbcType=VARCHAR},
+      </if>
+      <if test="zhimaIvsScore != null" >
+        zhima_ivs_score = #{zhimaIvsScore,jdbcType=VARCHAR},
+      </if>
+      <if test="ivsDetail != null" >
+        ivs_detail = #{ivsDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="watchlistiiIsMatched != null" >
+        watchlistii_is_matched = #{watchlistiiIsMatched,jdbcType=VARCHAR},
+      </if>
+      <if test="watchlistiiDetail != null" >
+        watchlistii_detail = #{watchlistiiDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="auticDate != null" >
+        autic_date = #{auticDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppZhimaScore" >
+    update app_zhima_score
+    set zhima_credit_score = #{zhimaCreditScore,jdbcType=VARCHAR},
+      zhima_ivs_score = #{zhimaIvsScore,jdbcType=VARCHAR},
+      ivs_detail = #{ivsDetail,jdbcType=VARCHAR},
+      watchlistii_is_matched = #{watchlistiiIsMatched,jdbcType=VARCHAR},
+      watchlistii_detail = #{watchlistiiDetail,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR},
+      autic_date = #{auticDate,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

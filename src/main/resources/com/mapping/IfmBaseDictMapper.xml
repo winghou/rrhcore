@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IfmBaseDictMapper">
+	<resultMap id="BaseResultMap" type="com.model.IfmBaseDict">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="DATA_TYPE" property="dataType" jdbcType="VARCHAR" />
+		<result column="ITEM_KEY" property="itemKey" jdbcType="VARCHAR" />
+		<result column="ITEM_VALUE" property="itemValue" jdbcType="VARCHAR" />
+		<result column="XH" property="xh" jdbcType="VARCHAR" />
+		<result column="OUT_DATA_FROM" property="outDataFrom" jdbcType="VARCHAR" />
+		<result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+		<result column="DICT_DESC" property="dictDesc" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, DATA_TYPE, ITEM_KEY, ITEM_VALUE, XH, OUT_DATA_FROM, PARENT_ID,DICT_DESC
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from IFM_BASE_DICT
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectBaseDict" parameterType="String" resultType="java.util.Map">
+		select * from IFM_BASE_DICT t where t.DATA_TYPE=#{param} order by
+		xh+0
+	</select>
+	<select id="selectBankName" parameterType="String" resultType="java.util.Map">
+		select * from IFM_BASE_DICT t where t.DATA_TYPE=#{param} and t.DICT_DESC = '银行名称(MCH)' order by
+		xh+0
+	</select>
+	<select id="selectfWFAndRate" parameterType="map" resultMap="BaseResultMap">
+		select * from IFM_BASE_DICT t where t.DATA_TYPE=#{dataType} and t.ITEM_KEY=#{perion}
+	</select>
+	<select id="selectZhiMaCfg" parameterType="String" resultType="java.util.Map">
+		select * from ifm_zhima_credit t where t.id=#{dataType}
+	</select>
+	<select id="selectSchool" resultMap="BaseResultMap"
+		parameterType="com.model.IfmBaseDict">
+		select
+		<include refid="Base_Column_List" />
+		from IFM_BASE_DICT
+		where DATA_TYPE = #{dataType,jdbcType=VARCHAR} and ITEM_VALUE like
+		CONCAT('%',#{itemKey,jdbcType=VARCHAR},'%')
+	</select>
+	<select id="selectPlace" resultMap="BaseResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from IFM_BASE_DICT
+		where parent_id = #{parentId,jdbcType=VARCHAR}
+	</select>
+  <select id="selectBykey" resultMap="BaseResultMap" parameterType="com.model.IfmBaseDict" >
+    select 
+    <include refid="Base_Column_List" />
+    from IFM_BASE_DICT
+    where DATA_TYPE = #{dataType,jdbcType=VARCHAR} and ITEM_KEY = #{itemKey,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBankCode" resultMap="BaseResultMap" parameterType="com.model.IfmBaseDict" >
+    select 
+    <include refid="Base_Column_List" />
+    from IFM_BASE_DICT
+    where DATA_TYPE = #{dataType,jdbcType=VARCHAR} and ITEM_VALUE = #{itemValue,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectTypeBankCode" resultMap="BaseResultMap" parameterType="com.model.IfmBaseDict" >
+    select 
+    <include refid="Base_Column_List" />
+    from IFM_BASE_DICT
+    where DATA_TYPE = #{dataType,jdbcType=VARCHAR} and OUT_DATA_FROM = #{outDataFrom,jdbcType=VARCHAR}
+  </select>
+
+    <select id="selectByBankNo" resultMap="BaseResultMap" parameterType="string" >
+        select
+        <include refid="Base_Column_List" />
+        from IFM_BASE_DICT
+        where ITEM_KEY = #{itemKey,jdbcType=VARCHAR}
+    </select>
+    
+     <select id="fetchDictsByType" resultMap="BaseResultMap" parameterType="com.model.IfmBaseDict">
+		select 
+		<include refid="Base_Column_List" />
+		 from  ifm_base_dict
+	    where data_type = #{dataType,jdbcType=VARCHAR}
+	 </select>
+	 
+	 <select id="qryIfmBaseDict" resultMap="BaseResultMap" parameterType="com.model.IfmBaseDict">
+		select 
+		<include refid="Base_Column_List" />
+		 from  ifm_base_dict
+	    where data_type = #{dataType,jdbcType=VARCHAR}
+	 </select>
+	 <!-- 查询莫愁花资料配置项 -->
+	 <select id="qryMchPersonInfoConfiguration" resultMap="BaseResultMap" parameterType="String">
+		select 
+		<include refid="Base_Column_List" />
+		from  ifm_base_dict
+	    where DATA_TYPE = #{param,jdbcType=VARCHAR} and OUT_DATA_FROM = '1' order by (XH + 0)
+	 </select>
+	 
+	  <select id="selectbyPhython" resultMap="BaseResultMap" parameterType="String">
+		  select 
+   		 <include refid="Base_Column_List" />
+    	from IFM_BASE_DICT
+	    where DATA_TYPE = #{dataType,jdbcType=VARCHAR}
+	  </select>
+	  
+	    <select id="selectbyMention" resultMap="BaseResultMap" parameterType="String">
+		  select 
+   		 <include refid="Base_Column_List" />
+    	from IFM_BASE_DICT
+	    where DATA_TYPE = #{dataType,jdbcType=VARCHAR}
+	  </select>
+	  
+	  <select id="selectByItemKeyAndDataTypeList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from IFM_BASE_DICT
+	    where DATA_TYPE = #{dataType} and ITEM_KEY in ${itemKey}
+  	  </select>
+	  
+	  <update id="updateByDataType" parameterType="com.model.IfmBaseDict">
+	  	update IFM_BASE_DICT
+	    set ITEM_VALUE = #{itemValue,jdbcType=VARCHAR}
+	    where DATA_TYPE = #{dataType,jdbcType=VARCHAR}
+	  </update>
+</mapper>

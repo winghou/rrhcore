@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppMessageStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppMessageStatus" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="read_time" property="readTime" jdbcType="TIMESTAMP" />
+    <result column="phone_id" property="phoneId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, appr_id, message_id, type, status, read_time, phone_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_mes_status
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMessageId" resultMap="BaseResultMap"   parameterType="map" >
+    select <include refid="Base_Column_List" />
+    from app_mes_status where message_id in
+     <foreach item="item" index="index" collection="map.ids" open="(" separator="," close=")">
+     #{item,jdbcType=INTEGER} 
+     </foreach>
+     and appr_id=#{map.apprId}
+  </select>
+  <select id="selectIsRead" resultMap="BaseResultMap"  parameterType="map" >
+    select <include refid="Base_Column_List" />
+    from app_mes_status where <if test="apprId != null">  appr_id=#{apprId} and </if> <if test="phoneId != null">  phone_id=#{phoneId} and </if> message_id=#{mesId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_mes_status
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppMessageStatus" >
+    insert into app_mes_status (id, appr_id, message_id, 
+      type, status, read_time, phone_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{apprId,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{readTime,jdbcType=TIMESTAMP}, #{phoneId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppMessageStatus" >
+    insert into app_mes_status
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="messageId != null" >
+        message_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="readTime == null" >
+        read_time,
+      </if>
+      <if test="phoneId != null" >
+        phone_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="messageId != null" >
+        #{messageId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="readTime == null" >
+        now(),
+      </if>
+       <if test="phoneId != null" >
+        #{phoneId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppMessageStatus" >
+    update app_mes_status
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="messageId != null" >
+        message_id = #{messageId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="readTime != null" >
+        read_time = #{readTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phoneId != null" >
+        phone_id = #{phoneId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppMessageStatus" >
+    update app_mes_status
+    set appr_id = #{apprId,jdbcType=INTEGER},
+      message_id = #{messageId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      read_time = #{readTime,jdbcType=TIMESTAMP},
+      phone_id = #{phoneId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

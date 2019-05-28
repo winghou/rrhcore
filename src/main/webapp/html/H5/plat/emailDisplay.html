@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>邮箱展示</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/base.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/savingsCardDisplay.css"></link>
+    <script type="text/javascript" src="../../../js/common.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../js/alert.js"></script>
+    <script type="text/javascript" src="../../../js/plat/loading.js"></script>
+    <script type="text/javascript" src="../../../js/plat/emailDisplay.js"></script>
+    <script type="text/javascript" src="../../../js/plat/AESUtil.js"></script>
+	<style>
+		.reviseCar{
+			postion:relative;
+			}
+		.reviseCar b{
+			width: .27rem;
+			height: .42rem;
+			background: url("../../images/rights.jpg");
+			background-size:cover;
+			position: absolute;
+			right: .25rem;
+			top: .48rem;
+			z-index: 999
+			
+		}
+	</style>
+</head>
+<body>
+<div class="header" style="background-color: #fff">
+    <span class="returnBtn"></span>
+    <h2>邮箱展示</h2>
+</div>
+<h4>以下为邮箱展示列表</h4>
+<ul class="lis">
+    <li class="newSaveCar">
+        <i><img src="../../images/add@2x.png" alt=""></i>
+        <span>添加新邮箱</span>
+    </li>
+</ul>
+
+<div class="mask" id='mask'>
+        <div class="mask-bg"></div>
+        <div class="mask-main">
+            <img src="../../images/yuansu@2x.png" alt="" style='width: 1.22rem;margin:.3rem auto .1rem;'>
+            <p style='font-size:.3rem;color:#de5dd3;margin-top:0;padding-bottom:.1rem;letter-spacing: .28px;'>Sorry</p>
+            <p style='font-size:.26rem;color:#666;margin-top:0;padding-bottom:.1rem;letter-spacing: .18px;'>您的绑定已超过上线 ,</p>
+            <p style='font-size:.26rem;color:#666;margin-top:0;padding-bottom:.3rem;letter-spacing: .18px;'>最多3个哦!</p>
+            <button class='maskBtn'>我知道啦</button>
+        </div>
+    </div>
+</body>
+</html>

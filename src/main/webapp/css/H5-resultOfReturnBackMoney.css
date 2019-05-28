@@ -1,0 +1,54 @@
+@CHARSET "UTF-8";
+body,html{
+	margin:0px;
+}
+.main{
+    text-align: center;	
+}
+.top{
+    border-bottom: solid 1px #cccccc;
+    border-top: solid 1px #cccccc;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.tip{
+	margin-top: 10px;
+    font-size: 18px;
+    color: #333333;
+}
+.successImage{
+ width: 25%;
+}
+.middle{
+ padding-top: 30px;
+}
+.onceAgain{
+    font-size: 15px;
+    color: #333333;	
+}
+.tipWarn{
+    color: #666666;
+    margin-top: 15px;
+    font-size: 15px;	
+}
+.money{
+    margin-top: 10px;
+    font-size: 18px;
+    color: #666666;
+}
+.userTip{
+	margin-top: 40px;
+    font-size: 13px;
+    color: #999999;
+}
+.sureBtn{
+    margin-top: 20px;
+    width: 80%;
+    margin-left: 10%;
+    background: #7F8CFF;
+    color: #fff;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 35px;
+    font-size: 18px;
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>信用卡授权</title>
+     <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/credit.css"></link>
+       <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+     <script type="text/javascript" src="../../../js/common.js"></script>
+       <script type="text/javascript" src="../../../js/AESUtil.js"></script>
+    <script type="text/javascript" src="../../../js/plat/credit.js"></script>
+    <script type="text/javascript" src="../../../js/plat/superiorLimitMask.js"></script>
+</head>
+  <body>
+    <div class="main">
+      <div class="head">
+           <div><img src="../../images/returnBtn.png" class="returnBtn"></div>
+           <div class="titleName">信用卡授权</div>
+         </div>
+         <div class="mainContent">
+        <div class="userName">
+            <input type="text" class="userNameTxt" placeholder="" readonly="readonly"/>
+        </div>
+        <div class="creditAccount">
+            <input type="tel" pattern="\d*" class="creditAccountTxt"placeholder="请输入您的信用卡号" />
+        </div>
+        <div class="creditType">
+            <input type="text" class="creditTypeTxt" placeholder="请输入银行类型"/>
+        </div>
+        <div class="creditPaw">
+            <input class="creditPawTxt"  type="password" placeholder="请输入您网银登录密码" onkeyup="this.value=this.value.replace(/\s+/g,'')"/>
+            <div class="eye"><img src="../../images/close.png" class="eyeImage"></div>
+        </div>
+        <div class="userTel">
+            <input type="tel" pattern="\d*" class="userTelTxt"  placeholder="请输入您开卡绑定的手机号"  maxlength="11"/>
+        </div>
+        </div>
+          <div class="sureBtn">账户授权</div>
+         <div class="protocol">授权账户表示您同意 <span class="attory">《数据采集服务协议》</span></div>
+    </div>
+</body>
+
+</html>

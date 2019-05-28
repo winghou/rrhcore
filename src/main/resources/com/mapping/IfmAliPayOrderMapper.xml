@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IfmAliPayOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.model.IfmAliPayOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="callback_url" property="callbackUrl" jdbcType="VARCHAR" />  
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_no, callback_url
+  </sql>
+  <delete id="deleteIfmAliPayOrder" parameterType="String" >
+    delete from ifm_alipay_order
+    where order_no = #{orderNo}
+  </delete>
+  
+  <insert id="insertIfmAliPayOrder" parameterType="com.model.IfmAliPayOrder" >
+    insert into ifm_alipay_order (id, order_no, callback_url) 
+    values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{callbackUrl,jdbcType=VARCHAR})
+  </insert>
+</mapper>

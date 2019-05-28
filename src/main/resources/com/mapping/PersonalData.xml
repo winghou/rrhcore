@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.PersonalDataMapper">
+	<select id="queryPersonalData" resultType="java.util.Map" parameterType="java.lang.Integer">
+	select t2.*,t3.ship_name,t3.ship_cnt,t3.ship_addr,t3.ship_type,t4.cnt_type,t4.cnt_commt,t4.cnt_pass,t5.file_name,t5.small_pic_url,t6.zhima_ivs_score from app_loan_appl t
+left join ifm_sys_user t1 on  t.item_code=t1.USER_NAME
+left join app_loan_custom t2 on t.id=t2.appr_id
+left join app_loan_ctmship t3 on t.id=t3.appr_id
+left join app_loan_ctmcnt t4 on t4.appr_id=t.id
+left join app_loan_attch t5 on t5.appr_id=t.id
+left join app_zhima_score t6 on t1.userId=t6.user_id
+where t1.userId=#{userId} and t4.cnt_type in (0,2) and t5.file_name in(0,1,2)
+	</select>
+	<select id="queryYituParams" resultType="java.util.Map" >
+		select * from app_yitu_params
+	</select>
+	<insert id="saveImgBase" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+    insert into app_base_img (img, appr_id)
+    values (#{img},#{appr_id})
+  </insert>
+  <select id="queryImgBase" resultType="java.util.Map" parameterType="Integer">
+		select * from app_base_img where appr_id=#{apprId}
+	</select>
+  <delete id="deleteImgBase" parameterType="String" >
+    delete from app_base_img where id=#{id}
+  </delete>
+
+	<select id="selectNotwithDrawId" resultType="java.util.Map" >
+		select a.id apprId,u.userId,w.id withDrawId from app_withdraw_appl w
+		join app_loan_appl a on a.id=w.appr_id 
+		join ifm_sys_user u on a.item_code =u.user_name
+ 		where w.id not in (
+		select t1.id from app_loan_appl t
+		join app_withdraw_appl t1 on t.id=t1.appr_id
+  		join app_order_appl t2 on t1.id=t2.withDraw_id )
+	</select>
+	
+	<select id="selectRewardAmt" resultType="java.util.Map" parameterType="map" >
+		SELECT
+			t1.id,t1.item_code,t1. STATUS,t1.loaning_status,t1.create_date,t2.id AS ctm_id,t2. STATUS AS ctm_status,t2.loan_status AS ctm_loan_status,t3.custom_name,t3.schedule_status
+		FROM
+			app_loan_appl t1
+		LEFT JOIN app_withdraw_appl t2 ON t1.id = t2.appr_id
+		LEFT JOIN app_loan_custom t3 ON t1.id = t3.appr_id
+		WHERE t1.item_code IN (
+			  SELECT t.USER_NAME FROM ifm_sys_user t
+			WHERE
+				SUBSTR(t.JOB_NUM FROM 4 FOR 11) = (SELECT m.user_name FROM (SELECT user_name FROM ifm_sys_user WHERE userId = #{userId}) m)
+			AND t.org_id IN ('0', '1')
+			AND LENGTH(t.JOB_NUM) <![CDATA[>]]> 13
+		)
+		AND t3.schedule_status = '8'
+		ORDER BY t1.id desc
+	</select>
+</mapper>

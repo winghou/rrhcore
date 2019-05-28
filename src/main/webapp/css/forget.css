@@ -1,0 +1,87 @@
+@CHARSET "UTF-8";
+.main{
+	       width: 88%;
+    margin-left: 6%;
+   padding-top: 80px;
+   
+}
+.tel{
+	
+}
+.title{
+	    float: left;
+  
+}
+.content{
+	margin-left: 30%;
+    width: 50%;
+   
+}
+.serviceP{
+	
+}
+
+.serTxt{
+	
+}
+.code{
+	
+}
+.codeTxt{
+	    float: left;
+    width: 80%;
+    margin-right: 10px;
+}
+.getCode{
+	    color: #7F8CFF;
+}
+.surebtn{
+	     margin-top: 50px;
+    text-align: center;
+    height: 50px;
+    border: solid 1px;
+    line-height: 50px;
+    border-radius: 50px;
+    font-size: 17px;
+     background: linear-gradient(to right, #7F8CFF , #7F8CFF);
+         color: #fff;
+}
+.forget{
+	       float: right;
+    margin: 10px;
+    color: #666666;
+}
+.txt{
+	     border: 0px;
+    height: 35px;
+    padding-left: 3px;
+    outline: none;
+    line-height: 20px;
+    margin-top: 5px;
+}
+.style{
+    border-bottom: solid 1px #eaeaea;
+    height: 50px;
+    line-height: 50px;
+      color: #3b3a3e;
+       position: relative;
+}
+.protocol{
+	    font-size: 13px;
+    color: #999999;
+    margin-top: 50px;
+    margin-bottom: 7px;
+        text-align: center;
+}
+.link{
+	    color: #7F8CFF;
+}
+.eyeImage{
+	    width: 20px;
+}
+.eye{
+	    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin-right: 10px;
+}

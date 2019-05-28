@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppCheckcardRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppCheckcardRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="id_card" property="IdCard" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+    <result column="ext_message" property="extMessage" jdbcType="VARCHAR" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="ext_code" property="extCode" jdbcType="VARCHAR" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, appr_id, name, id_card, mobile, bank_card, ext_message, uuid, ext_code, check_time
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_checkcard_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_checkcard_record
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByBankIdCard" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_checkcard_record
+    where bank_card = #{bankCard} and id_card=#{idCard} and ext_code=#{extCode} order by check_time limit 0,1
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.model.AppCheckcardRecord" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_checkcard_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="bankCard != null" >
+        bank_card,
+      </if>
+      <if test="extMessage != null" >
+        ext_message,
+      </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="extCode != null" >
+        ext_code,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="extMessage != null" >
+        #{extMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="extCode != null" >
+        #{extCode,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectIfmBankCardCheckByUuid" parameterType="string" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from app_checkcard_record
+		where uuid = #{uuid,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectAppCheckcardRecordThisDay" parameterType="string" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from app_checkcard_record t
+		where t.id_card = #{identityNo} and
+		DATE_FORMAT(t.check_time, '%Y-%m-%d') = DATE_FORMAT(NOW(),
+		'%Y-%m-%d')
+	</select>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.model.AppCheckcardRecord" >
+    update app_checkcard_record
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extMessage != null" >
+        ext_message = #{extMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="extCode != null" >
+        ext_code = #{extCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+	
+</mapper>

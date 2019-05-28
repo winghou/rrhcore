@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>邮箱登录</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/base.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/emailLogin.css"></link>
+    <script type="text/javascript" src="../../../js/common.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="../../../js/plat/loading.js"></script>
+    <script type="text/javascript" src="../../../js/plat/emailLogin.js"></script>
+    <script type="text/javascript" src="../../../js/plat/emailAutoComplete.js"></script>
+    <script type="text/javascript" src="../../../js/plat/AESUtil.js"></script>
+</head>
+<body>
+<div class="header">
+    <span class="returnBtn"></span>
+    <h2>邮箱登录</h2>
+</div>
+<div class="main">
+    <div class="main-email mains parentCls" id="mainEmail" style="position: relative;">
+        <input type="text" placeholder="请输入您的邮箱账号" class="email inputElem" onfocus="fnShowDeleteIcon()" onkeydown="return banInputSapce(event);" onKeyup="return inputSapceTrim(event,this)">
+        <b id='clicks' class="clicks"><i class="delect"></i></b>
+    </div>
+    <form  class="main-emailPassword mains" method="POST" action="" name="forms">
+        <b id="box"><input type="password" name="password" maxlength="30" minlength="6" placeholder="请输入您的邮箱密码" class="emailPassword" onfocus="fnHideDeleteIcon()" onkeydown="return banInputSapce(event);" onKeyup="return inputSapceTrim(event,this)"></b>
+        <b id="click"><img src="../../images/eye-c@2x.png" alt="" class="eye" onclick="showps()"/></b>
+    </form>
+    <p style="color:red;text-align: left;">提示 : 请授权银行流水账单绑定的邮箱！</p>
+    <button class="btn">账户授权</button>
+    <p>授权账户表示您同意<a href="../attorney.html">《数据采集服务协议》</a></p>
+    
+</div>
+</body>
+<script>
+   
+</script>
+</html>

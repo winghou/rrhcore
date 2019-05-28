@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+ <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+ <meta http-equiv="Pragma" content="no-cache" />
+ <meta http-equiv="Expires" content="0" />
+<title>拉新活动</title>
+<link rel="stylesheet" type="text/css" href="../../css/common.css"></link>
+     <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css"></link>
+     <link rel="stylesheet" type="text/css" href="../../css/active.css"></link>
+     <script type="text/javascript" src="../../js/jquery.min.js"></script>
+       <script type="text/javascript" src="../../js/AESUtil.js"></script>
+     <script type="text/javascript" src="../../js/active.js"></script>
+     <script type="text/javascript" src="../../js/clipboard.min.js"></script>
+     <script type="text/javascript" src="../../js/common.js"></script>
+</head>
+<body style="background-color: #ffdb01;">
+      <div class="main">
+          <div class="head">
+          <img src="../images/activeTop.png" class="topImages">
+          </div>
+	          <div class="inviteCode">
+	             <div class="commonfirst">
+	             <img src="../images/invitePanel.png" class="invitePanelImages">
+	             </div>  
+	               <div class="rope">
+	               <img src="../images/rope.png" class="ropeimages1">
+	                <img src="../images/rope.png" class="ropeimages2">
+	               </div>
+	               <div class="inviteCodeContent">
+	                  <span class="copycontent" style="opacity:0;position:absolute; bottom:0;left:0"></span>
+	                  <span class="name">邀请码</span>
+	                  <span class="copycontent"></span>
+	                  <button class="copyBtn" data-clipboard-action="copy" data-clipboard-target=".copycontent">复制</button>
+	               </div>
+	          </div>
+	          <div class="myActive ">
+		          <div class="firstPanel">
+			          <div class="btn1">
+			              <img src="../images/btn1Image.png" class="btn1Images">
+			          </div>
+			          <div class="btn2">
+			              <img src="../images/btn11Image.png" class="btn2Images">
+			          </div>
+			          <div class="tips1">
+			           <img src="../images/xianjin.png" class="xianjinImages">
+			              
+			          </div>
+			           <div class="tips2">
+			              <img src="../images/hongbao.png" class="hongbaoImages">  
+			           </div>
+			           <div class="explain">每位好友交易成功即可获得30元现金红包</div>
+		          </div>
+		          <div class="secondPanel">
+		          <div class="title">活动规则</div>
+		          <div class="content">
+		            1、邀请新用户，分享专属链接给好友，或给好友发送邀请码。<br>
+					2、好友通过专属链接注册或下载“随心花”app使用您的邀请码进行注册，邀请好友认证成功，您即可获得30元现金红包及提额抽奖机会。邀请越多奖励越多。<br>
+					3、点击“我的邀请”可查看邀请明细，并参与抽奖提额活动，首次领取现金红包需完善银行卡信息。<br>
+					4、提现成功后，奖金将在3个工作日内发放到您绑定的银行卡上，如遇法定节假日，提现进度顺延。<br>
+					5、如有问题请咨询“随心花”微信公众号。<br>
+					6、用户通过欺诈,造假等非法手段参与活动的,随心花不予奖励，已发放的奖励随心花有权要求返还,并依法追究相应的法律责任，最终解释权在法律范围内归随心花所有。<br>
+		          </div>
+		          </div>
+	          </div>
+	          <div class="myinvite hide">
+	           <div class="firstPanel">
+			          <div class="btn1">
+			              <img src="../images/btn2Image.png" class="btn1Images">
+			          </div>
+			          <div class="btn2">
+			              <img src="../images/btn22Image.png" class="btn2Images">
+			          </div>
+			          <div class="juage">
+			          <div class="step1">
+			              <div class="titleName">
+			                                    现金红包
+			              </div>
+			              <div class="inviteNumber">
+			                <img src="../images/back.png" class="backImages"> 
+			                <div class="peopleNumber">
+			                <div class="successNum firstNum">邀请成功0位</div>
+			                <div class="word word1">已获得</div>
+			                </div> 
+			                <div class="earnMoney">
+			                <h4 style="float:left">￥</h4><span class="rewardAmt">0.00</span>
+			                </div> 
+			                <div class="overplus">红包剩余0元</div>
+			               <img src="../images/getReal.png" class="getReal">
+			              </div>
+			          </div>
+			            <div class="step2">
+			              <div class="titleName2">
+			                                    提额抽奖
+			              </div>
+			              <div class="inviteNumber">
+			                <img src="../images/back.png" class="backImages"/> 
+			                <div class="peopleNumber">
+			                <div class="successNum secondNum">剩余提额额度</div>
+			                <div class="word word2">已获得0元额度</div>
+			                </div> 
+			                <div class="earnMoney">
+			              <h4 style="float:left">￥</h4><span class="unknowmomey">0.00</span>
+			                </div> 
+			               
+			              </div>
+			          </div>
+			          <div class="littleTips">
+			         Tip:每月月底进行整百提额，[3]个工作日内提升到您的可用金额内
+			          </div>
+			          <div class="drawbtn">提额抽奖（0次）</div>
+			          </div>
+		          </div>
+		           <div class="secondPanel Panel2">
+		          <div class="title2">好友动态</div>
+		             <div class="cuccessOrder">
+			             <div class="leftpage">
+			                <table class="list">
+			                <tr>
+			                <td class="tabletitle">被分享的好友</td>
+			                <td class="tabletitle">当前进度</td>
+			                </tr>
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>注册</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+<!-- 			                 <tr> -->
+<!-- 			                <td>137****2654</td> -->
+<!-- 			                <td>认证成功</td> -->
+<!-- 			                </tr> -->
+			                </table>
+			             </div>
+			             <div class="rightpage">
+			               <img src="../images/process.png" class="processImages"/>
+			             </div>
+		             </div>
+		          </div>
+	          </div>
+          </div>
+      
+</body>
+</html>

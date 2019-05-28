@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+body, html {
+    height: 100%;
+    margin: 0px;
+}
+.personOfInsuranced{
+	    height: 50px;
+    line-height: 50px;
+    margin-left: 5%;
+    width: 90%;
+    border-bottom: solid 1px #f0f0f0;
+    font-size: 18px;
+color: #333333;
+letter-spacing: -0.48px;
+}
+.insuranceImage{
+        float: left;
+    width: 17px;
+    padding-top: 11px;
+    padding-right: 11px;
+    padding-bottom: 11px;
+}
+.insurance-question{
+	width: 14px;
+    margin-left: 5px;
+}
+.insuranceList{
+	width: 80%;
+    margin-left: 10%;
+    margin-top: 20px;
+}
+.insuranceName{
+        font-size: 18px;
+    color: #333333;
+    letter-spacing: -0.39px;
+    padding-top: 7px;
+    float: left;
+    width: 65%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.personInf{
+	    height: 35px;
+}
+.payfor{
+	       float: right;
+    padding-top: 7px;
+    font-size: 18px;
+    color: #333333;
+    letter-spacing: -0.39px;
+}
+.insuranceAccount{
+font-size: 12px;
+    color: #999999;
+    letter-spacing: -0.29px;
+    margin-left: 10%;
+}

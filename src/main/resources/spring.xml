@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.0.xsd
+">
+
+	<context:annotation-config />
+
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:config.properties" />
+
+	<!-- 自动扫描(自动注入) -->
+	<context:component-scan base-package="com.service" />
+	<context:component-scan base-package="com.wxService" />
+
+
+	<!-- 配置quartz -->
+	<!-- 启动触发器的配置开始 -->
+	<!-- <bean name="startQuertz" lazy-init="false" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="myJobTrigger" />
+			</list>
+		</property>
+	</bean> -->
+	<!-- 启动触发器的配置结束 -->
+
+	<!-- quartz-2.x的配置 -->
+	<!-- <bean id="myJobTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="myJobDetail" />
+		</property>
+		<property name="cronExpression">
+			每天凌晨10分执行
+			<value>0 10 0 * * ?</value>
+		</property>
+	</bean> -->
+	<!-- 调度的配置结束 -->
+
+	<!-- job的配置开始 -->
+	<!-- <bean id="myJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="myJob" />
+		</property>
+		<property name="targetMethod">
+			<value>orderMonitor</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean> -->
+	<!-- job的配置结束 -->
+	
+	
+
+</beans>

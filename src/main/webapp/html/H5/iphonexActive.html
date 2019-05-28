@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>莫愁花抽奖活动</title>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../css/parallax.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../css/iphonexActive.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../css/animate.css"></link>
+    <script type="text/javascript" src="../../js/zepto.js"></script>
+    <script type="text/javascript" src="../../js/parallax.js"></script>
+    <script type="text/javascript" src="../../js/iPhonexActive.js"></script>
+    <script type="text/javascript" src="../../js/kinerLottery.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/AESUtil.js"></script>
+ 
+
+</head>
+
+<body style="    background: #5c40ae;">
+<div class="mask hide">
+      <img src="../images/gift-close.png" class="maskClose" />
+     <div class="maskContent">
+     <div class="Contentline"><span class="giftName"></span>已经被你</div>
+      <div class="Contentline">纳入囊中啦！</div>
+     <img src="../images/lucky-common.png" class="luckyImage">
+     </div>
+     <div class="maskTip">活动期间成功提现，还可以再抽奖喔！</div>
+     <div> 
+     <img src="../images/lucky-writeInfo.png" class=" writeInfoBtn writeInfoBtn0 hide">
+     </div>
+</div>
+<div class="mask1 hide">
+ <img src="../images/gift-close.png" class="maskClose" />
+ <div class="maskContent1">
+ <div class="Contentline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;活动期间成功提现</div>
+ <div class="Contentline">还可以再抽奖喔！</div>
+  <img src="../images/lucky-nothing.png" class=lucky-nothing>
+ </div>
+</div>
+<div class="mask2 hide">
+ <img src="../images/gift-close.png" class="maskClose" />
+  <div class="maskContent2">
+  <img src="../images/lucky-iphonex.png" class=lucky-iphonex>
+ <div class="Contentline">恭喜<span style="margin-left: 5px;margin-right: 5px;color: red;">IPHONE&nbsp;&nbsp;&nbsp; X</span>已经被您</div>
+ <div class="Contentline">纳入囊中啦！</div>
+ </div>
+ <div class="maskTip">活动期间成功提现，还可以再抽奖喔！</div>
+ <div><img src="../images/lucky-writeInfo.png" class=" writeInfoBtn writeInfoBtn1 hide"></div>
+</div>
+<div class="mask3 hide">
+<div class="mask3Tip">您的个人信息已</div>
+<div class="mask3Tip">提交成功！</div>
+</div>
+    <!-- 这里的每个标签和每个类都是必须的 -->
+    <div class="wrapper">
+        <div class="pages">
+            <!-- 第一屏 -->
+            <div class="page pageOne">
+                <div class="top">
+                    <img src="../images/pageOneTitle.png" class="pageOneTitle" data-animation="slideToTop" data-delay="200" data-timing-function="ease-out">
+                </div>
+                <div class="middle" style="    position: relative;">
+                    <img src="../images/pageOneTop.png" class="pageOneTop" data-animation="slideToRight" data-delay="500" data-timing-function="cubic-bezier(.12,.73,.62,1.38)">
+                    <div class="appleTip" style="text-align: center;
+    position: absolute;
+    bottom: 1rem;
+    color: #333333;
+    font-size: 13px;
+    width: 80%;
+    margin-left: 10%;text-align: center;"
+    >本活动与苹果公司（Apple Inc.）无关</div>
+                </div>
+                <div class="bottom">
+                    <img src="../images/pageOneButtom.png" class="pageOneBottom">
+                    <img src="../images/pageOneMoney.png" class="pageOneMoney" data-animation="slideToLeft" data-delay="700" data-timing-function="ease-out">
+                </div>
+            </div>
+            <!-- 第二屏 -->
+            <div class="page pageTwo">
+                <img src="../images/pageTwoIphonr.png" class="pageTwoIphone" data-animation="slideToLeft" data-delay="200" data-timing-function="ease-out">
+                <div class="top">
+                    <img src="../images/pageTwoTop.png" class="pageTwoTop">
+                </div>
+                <div class="title" data-animation="slideToRight" data-delay="200" data-timing-function="cubic-bezier(.12,.73,.62,1.38)">
+                    <img src="../images/pageTwoTitle.png" class="pageTwoTitle">
+                </div>
+                <div class="pageTwomiddle" data-animation="slideToLeft" data-delay="400" data-timing-function="ease-out">
+                    <img src="../images/pageTwoMoneyTwo.png" class="pageTwoMoneyTwo">
+                    <img src="../images/pageTwoMoney.png" class="pageTwoMoney">
+                    <div class="time" data-animation="slideToTop" data-delay="700" data-timing-function="ease-out">时间：2017年10月27日——11月3日</div>
+                    <div class="active rule line1" data-animation="slideToTop" data-delay="700" data-duration="1000">活动规则：</div>
+                    <div class="active rule line2" data-animation="slideToTop" data-delay="900" data-duration="1000">
+                        <img src="../images/pageTwoJia.png" class="pageTwoJia">
+                        <div>1.注册用户每天一次抽奖机会</div>
+                    </div>
+                    <div class="active rule line3" data-animation="slideToTop" data-delay="1100" data-duration="1000">
+                        <div>提现一笔增加一次抽奖机会，上不封顶</div>
+                    </div>
+                    <div class="active rule line4" data-animation="slideToTop" data-delay="1300" data-duration="1000">
+                        <img src="../images/pageTwoJia.png" class="pageTwoJia1">
+                        <div>2.活动结束后</div>
+                    </div>
+                    <div class="active rule line5" data-animation="slideToTop" data-delay="1500" data-duration="1000">
+                        <div>现金红包自动流转至“我的红包”</div>
+                    </div>
+                    <div class="active rule line6" data-animation="slideToTop" data-delay="1700" data-duration="1000">
+                        <div>其他奖品一个月内陆续发出</div>
+                    </div>
+                    <div class="active rule line7" data-animation="slideToTop" data-delay="1900" data-duration="1000">
+                        <img src="../images/pageTwoJia.png" class="pageTwoJia2">
+                        <div>3.活动咨询请联系莫愁花微信公众号</div>
+                    </div>
+                    <div class="active rule line8" data-animation="slideToTop" data-delay="2100" data-duration="1000" style="    font-size: 2.4vh;">
+                        <div>*本活动最终解释权归莫愁花所有</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 第三屏 -->
+            <div class="page pageThree">
+                <img src="../images/pageThreeTitle.png" class="pageThreeTitle" data-animation="slideToLeft" data-delay="200" data-timing-function="ease-out">
+                <div class="panel" style="    height: 57vh;">
+                    <div id="box" class="box" data-animation="slideToRight" data-delay="400" data-timing-function="ease-out">
+                        <div class="outer KinerLottery KinerLotteryContent"><img src="../images/pageThreePanel.png"></div>
+                        <!--         大专盘分为三种状态：活动未开始（no-start）、活动进行中(start)、活动结束(completed),可通过切换class进行切换状态，js会根据这3个class进行匹配状态 -->
+                        <div class="inner KinerLotteryBtn start "></div>
+                    </div>
+                </div>
+                <div class="appleTip" style="    width: 80%;
+    margin-left: 10%;
+    font-size: 13px;
+    color: #D4D3D3;    margin-top: 5px;text-align: center;">本活动与苹果公司（Apple Inc.）无关</div>
+                <div class="record" data-animation="slideToRight" data-delay="600" data-timing-function="ease-out">
+                    <ul class="recordul">
+                    </ul>
+                </div>
+                <div class="chance" data-animation="slideToLeft" data-delay="800" data-timing-function="ease-out">
+                    <img src="../images/pageThreeMoney.png" style="    position: absolute; width: 6%; right: 10%;top: -9vh;" data-animation="slideToLeft" data-delay="200" data-timing-function="ease-out"> 您还剩余
+                    <span class="chanceNumber"></span>次抽奖机会！
+                </div>
+                <div class="theRecordOfRewordBtn" data-animation="slideToLeft" data-delay="800" data-timing-function="ease-out">
+                    <img src="../images/pageThreeDisabled.png" class="imagesBtn disabled">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gift hide">
+        <div class="gift-title">
+            <img src="../images/gift-title.png" style="width: 66%;margin-left: 17%;margin-top: 1.1rem;">
+        </div>
+        <img src="../images/gift-iphone.png" style="position: absolute; width: 18%;top: 1%;left: 3%;">
+        <img src="../images/gift-close.png" class="gift-close">
+        <div class="display">
+            <table class="displayTable">
+            </table>
+        </div>
+        <div class="information">
+            <div class="name personal">
+              <span class="nametxt">  姓名&nbsp;&nbsp;&nbsp;：</span>
+                <input type="text" class="nameTxt personalTxt" />
+            </div>
+            <div class="tel personal">
+                <span class="nametxt">手机号：</span>
+                <input  class="telTxt personalTxt"   maxlength="11"   type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"  />
+            </div>
+            <div class="addr personal">
+                <span class="nametxt">地址&nbsp;&nbsp;&nbsp;：</span><span><textarea class="addrArea"></textarea></span>
+            </div>
+                <div class="tips">
+        *请填写个人信息
+    </div>
+        <div class="gift-submit">
+            <img src="../images/gift-sub.png" class="gift-submitImages">
+        </div>
+        </div>
+    
+    </div>
+
+    <script type="text/javascript" src="../../js/iphonexRule.js"></script>
+</body>
+
+</html>

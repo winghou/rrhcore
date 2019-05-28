@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppPhoneValicodeMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppPhoneValicode" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="valicode" property="valicode" jdbcType="VARCHAR" />
+    <result column="creat_Time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, valicode, creat_Time, status, count
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_PHONE_VALICODE
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+    <select id="selectByPhone" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_PHONE_VALICODE
+    where phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPhoneAndStatus" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_PHONE_VALICODE
+    where phone = #{phone} and status = #{status}
+  </select>
+  
+  <select id="selectByPhoneInStatus" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_PHONE_VALICODE
+    where phone = #{phone} and status in <foreach  item="item" collection="status" index="index"  open="(" separator="," close=")">#{item}</foreach> order by creat_Time desc limit 0,1
+  </select>
+  <select id="selectByPhoneAndStatusCode" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_PHONE_VALICODE
+    where phone = #{phone} and status in <foreach  item="item" collection="status" index="index"  open="(" separator="," close=")">#{item}</foreach> and valicode=#{valicode} order by creat_Time desc limit 0,1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from APP_PHONE_VALICODE
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppPhoneValicode" >
+    insert into APP_PHONE_VALICODE (id, phone, valicode, 
+      creat_Time, status,count)
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{valicode,jdbcType=VARCHAR}, 
+      #{creatTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppPhoneValicode" >
+    insert into APP_PHONE_VALICODE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="valicode != null" >
+        valicode,
+      </if>
+      <if test="creatTime != null" >
+        creat_Time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="valicode != null" >
+        #{valicode,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppPhoneValicode" >
+    update APP_PHONE_VALICODE
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="valicode != null" >
+        valicode = #{valicode,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null" >
+        creat_Time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppPhoneValicode" >
+    update APP_PHONE_VALICODE
+    set phone = #{phone,jdbcType=VARCHAR},
+      valicode = #{valicode,jdbcType=VARCHAR},
+      creat_Time = #{creatTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

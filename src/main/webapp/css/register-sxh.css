@@ -1,0 +1,144 @@
+@CHARSET "UTF-8";
+.main{
+	width:100%;
+     padding-bottom: 20px;
+height: 100%;
+}
+html{	
+    background-image: url(../html/images/register/register-sxh-bg.png);
+    background-size: cover;
+}
+html,body{
+	   margin:0px;  
+	    position:relative;
+	    min-height:100%;
+	    height:auto !important;
+}
+.middle{
+	    padding-top: 80%;
+}
+.txtdiv {
+    height: 40px;
+    line-height: 40px;
+ 
+    margin-top: 30px;
+}
+.telName{
+    float: left;
+  
+    color: #fff;
+    font-size: 16px;
+    margin-left: 6%;
+    width: 20%;
+}
+.telTxt {
+    width: 62%;
+    height: 20px;
+    border-radius: 7px;
+    border: 0px;
+    float: right;
+    margin-right: 7%;
+    padding:10px 0px 10px 3%;
+    font-size: 16px;
+    color: #333333;
+}
+.txt{
+
+}
+.imgcodeTxt{
+	
+}
+.codeTxt {
+    width: 29%;
+    height: 20px;
+    border-radius: 7px;
+    border: 0px;
+    float: left;
+    margin-left: 2%;
+    padding: 10px 0px 10px 3%;
+    font-size: 16px;
+    color: #333333;
+  
+}
+.getcode{
+    float: right;
+    width: 25%;
+    margin-right: 7%;
+    color: #ff1300;
+    background: #fcdc59;
+    padding: 0 2%;
+    border-radius: 7px;
+    text-align: center;
+           height: 40px;
+    line-height: 40px;
+   
+}
+.imgcode {
+	    position: relative
+}
+.codeimage{
+	position: absolute;
+       top: 6px;
+    right: 0px;
+    margin-right: 10%;
+}
+.dangerpro ,.registerpro{
+	color:#fff;
+}
+.protocol {
+    font-size: 12px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #fff;
+    margin-left: 5%;
+   position: relative;
+   padding-left: 30px;
+}
+.sureBtnWord{
+	
+}
+.btnImg{
+	    width: 90%;
+    margin-left: 5%;
+}
+.pointImage{
+	    position: absolute;
+    width: 4%;
+    left: 6%;
+    top: 5px;
+}
+.sureBtn{
+	margin-top: 30px;
+    margin-bottom: 25px;
+}
+.codeName{
+	    float: left;
+    color: #fff;
+    font-size: 16px;
+    margin-left: 6%;
+    width: 20%;
+   text-align: center;
+}
+.iosDownload{
+ 
+}
+.AndroidDownload{
+
+}
+.ios{
+	    margin-left: 7%;
+    margin-right: 5%;
+}
+.Android,.ios {
+    width: 40%;
+}
+.downLoadTip{
+	    font-size: 14px;
+    color: #fff;
+    margin-left: 5px;
+}
+.selectImg{
+	width: 18px;
+    position: absolute;
+    left: 0px;
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.InsertDataMapper">
+	<insert id="insertAppOrderAppl" parameterType="map" >
+    	insert into app_order_appl (select *,#{withDrawId} from app_loan_appl t where t.id=#{apprId})
+  	</insert>
+  
+  	<insert id="insertAppOrderAttch" parameterType="map" >
+   		insert into app_order_attch (select *,#{withDrawId} from app_loan_attch t where t.appr_id=#{apprId})
+  	</insert>
+  
+  	<insert id="insertAppOrderBook" parameterType="map" >
+    	insert into app_order_book (select *,#{withDrawId} from app_phone_book t where t.appr_id=#{apprId})
+  	</insert>
+  
+  	<insert id="insertAppOrderCtmCnt" parameterType="map" >
+   		insert into app_order_ctmcnt (select *,#{withDrawId} from app_loan_ctmcnt t where t.appr_id=#{apprId})
+  	</insert>
+  
+  	<insert id="insertAppOrderCtmship" parameterType="map" >
+    	insert into app_order_ctmship (select *,#{withDrawId} from app_loan_ctmship t where t.appr_id=#{apprId})
+  	</insert>
+  
+  	<insert id="insertAppOrderCustom" parameterType="map" >
+    	insert into app_order_custom (select *,#{withDrawId} from app_loan_custom t where t.appr_id=#{apprId})
+  	</insert>
+  
+  	<insert id="insertAppOrderZhimaScore" parameterType="map" >
+    	insert into app_order_zhima_score (select *,#{withDrawId} from app_zhima_score t where t.user_id=#{userId})
+  	</insert>
+
+
+</mapper>

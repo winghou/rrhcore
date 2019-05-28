@@ -1,0 +1,90 @@
+@CHARSET "UTF-8";
+html,body{
+	margin:0px;
+}
+.main{
+	    background: #f0f0f0;
+}
+.tips{
+	    font-size: 14px;
+    color: #999999;
+    padding: 20px;
+    border-top: solid 1px #d0d0d0;
+}
+.selectImg{
+	    width: 25%;
+}
+.partOne{
+	float: left;
+    width: 30%;
+    text-align: center;  
+    line-height: 58px;
+    
+}
+.partTwo{
+    float: left;
+    width: 30%;
+    line-height: 25px;
+}
+.date{
+	    font-size: 16px;
+}
+.allDate{
+	    font-size: 14px;
+    color: #666666;
+
+	}
+	.money{
+	    color: red;
+	}
+	
+.partThree{
+	line-height: 25px;
+}
+.dateOfReturnMoney{
+	
+}
+.dateOfReturnMoneyTip{
+	    color: #666666;
+}
+ ul li{  
+list-style-type:none;  
+}  
+.orderLists{
+	
+}
+.orderList{
+	    height: 50px;
+    padding: 10px 0px;
+    background: #fff;
+}
+.bottom{
+	width: 100%;
+    height: 60px;
+    background: #fff;
+}
+.returnMoney{
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    position: fixed;
+    bottom: 0px;
+    background: #fff;
+    border-top: solid 1px #f3f3f3;
+}
+.moneyNum{
+	color: red;
+}
+.inall{
+    float: left;
+    margin-left: 7%;
+    font-size: 17px;
+}
+.returnBtn{
+	float: right;
+    width: 40%;
+    text-align: center;
+    background: #ff5757;
+    color: #fff;
+    font-size: 17px;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+ <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+ <meta http-equiv="Pragma" content="no-cache" />
+ <meta http-equiv="Expires" content="0" />
+<title>社保授权</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/socialSecurity.css"></link>
+     <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+        <script type="text/javascript" src="../../../js/common.js"></script>
+    <script type="text/javascript" src="../../../js/AESUtil.js"></script>
+     <script type="text/javascript" src="../../../js/plat/socialSecurity.js"></script>
+        <script type="text/javascript" src="../../../js/plat/superiorLimitMask.js"></script>
+
+</head>
+<body>
+     <div class="main">
+         <div class="head">
+           <div><img src="../../images/returnBtn.png" class="returnBtn"></div>
+           <div class="titleName">社保授权</div>
+         </div>
+         <div class="address">
+         <div class="addressName">省市</div>
+         <div class="addressTxt"><input type="text" class="addressContent" placeholder="请选择省市" readonly="readonly"></div>
+         <div class="addressSelect"><img src="../../images/selectCity.png" class="selectCityImage"  ></div>
+         </div>
+         <div class="account">
+         <div class="accountName">账号</div>
+         <div class="accountTxt"><input type="tel" pattern="\d*" class="accountContent" placeholder="请输入社保账号"></div>
+         </div>
+         <div class="password">
+         <div class="passwordName">密码</div>
+         <div class="passwordTxt"><input type="password" class="passwordContent" placeholder="请输入登录密码"  onkeyup="this.value=this.value.replace(/\s+/g,'')"></div>
+         <div class="eye"><img src="../../images/close.png" class="eyeImage"></div>
+         </div>
+         <div class="sureBtn">账户授权</div>
+         <div class="protocol">授权账户表示您同意 <span class="attory">《数据采集服务协议》</span></div>
+     </div>
+          <script type="text/javascript" src="../../../js/plat/citySelect.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>运营商认证</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/carrieroperatorPage.css"></link>
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../js/common.js"></script>
+    <script type="text/javascript" src="../../../js/AESUtil.js"></script>
+    <script type="text/javascript" src="../../../js/carrieroperator/carrieroperatorPage.js"></script>
+    <script type="text/javascript" src="../../../js/plat/superiorLimitMask.js"></script>
+<script>
+  (function() {
+    window.CreditXAgent=window.CreditXAgent||function(){(CreditXAgent.q=CreditXAgent.q||[]).push(arguments)};
+    window.CreditX_SDK_VERSION_CODE = 9;
+    var jssdk = document.createElement("script");
+    jssdk.type = "text/javascript";
+    jssdk.async = true;
+    jssdk.src = ('https:'==document.location.protocol?'https':'http')+"//sdkjs.oss-cn-shanghai.aliyuncs.com/hybrid_jssdk.js?v="+window.CreditX_SDK_VERSION_CODE;
+    var sc = document.getElementsByTagName("script")[0];
+    sc.parentNode.insertBefore(jssdk,sc);
+  })();
+
+$(function(){
+	window.CreditXAgent('onInputChange', 'input_operator_mobile_number', {
+    el: $(".telTxt")[0],
+  
+	});
+	window.CreditXAgent('onInputChange', 'input_operator_service_password', {
+	    el: $(".serTxt")[0],
+	  
+		});
+})
+</script>
+</head>
+
+<body data-cx-pagename="operator">
+ <div class="tipsPanel hide">
+ <div class="tipstext">
+ <div class="tipscontent">
+ <div class="contentword"></div>
+ <div class="cancel">取消</div>
+ <div class="sure">确定</div>
+ </div>
+ </div>
+</div>
+    <div class="main">
+        <div class="tel style">
+            <div class="title">手机号</div>
+            <div class="content">
+                <input class="telTxt txt" type="tel" placeholder="请输入11位手机号码" maxlength="11" validate="n" minLen="11" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            </div>
+        </div>
+        <div class="serviceP style">
+            <div class="title">服务密码</div>
+            <div class="content">
+                <input class="serTxt txt" type="password" placeholder="请输入服务密码" maxlength="11" validate="n" minLen="6" onkeyup="this.value=this.value.replace(/\s+/g,'')">
+                <div class="eye">
+                    <img src="../../images/close.png" class="eyeImage" />
+                </div>
+            </div>
+        </div>
+        <div class="code style hide">
+            <div class="title">短信验证码</div>
+            <div class="content">
+                <input class="codeTxt txt" type="text" placeholder="请输入短信验证码" maxlength="6" style="padding-top: 20px;padding-left: 5px;" />
+            </div>
+            <div class="getCode" onclick="getForgetCode()">获取验证码</div>
+        </div>
+        <div class="protocol">提交代表您已同意<span class="link">《用户信息收集授权协议》</span></div>
+        <div class="surebtn" onclick="submitInformation()" style="margin-top:0px">
+            提交
+        </div>
+        <div class="forget" onclick="forget()">忘记密码</div>
+    </div>
+    <div class="mianPageTwo hide">
+        <div class="tel"></div>
+        <div class="code style" style=" height: 50px;
+    line-height: 50px;">
+            <div class="title">短信密码</div>
+            <div class="content">
+                <input class="codeTxt txt" type="text" placeholder="请输入短信验证码" maxlength="8" validate="n" minLen="4">
+            </div>
+            <div class="getCode" onclick="getCode()">获取验证码</div>
+        </div>
+        <div class="surebtn" onclick="submitInformation()">
+            提交
+        </div>
+    </div>
+</body>
+
+</html>

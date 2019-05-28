@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IfmWfmStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.model.IfmWfmStatus" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tpid" property="tpid" jdbcType="INTEGER" />
+    <result column="appluser" property="appluser" jdbcType="VARCHAR" />
+    <result column="applname" property="applname" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="bizid" property="bizid" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tpid, appluser, applname, status, createdate, bizid, comment, cust_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ifm_wfm_instance
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectIfmWfmStatus" resultMap="BaseResultMap" parameterType="Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from ifm_wfm_instance
+    where tpid=#{tpid,jdbcType=VARCHAR} and bizid=#{appr_id,jdbcType=VARCHAR} and status='0'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ifm_wfm_instance
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.model.IfmWfmStatus" >
+    insert into ifm_wfm_instance (id, tpid, appluser, 
+      applname, status, createdate, 
+      bizid, comment, cust_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{tpid,jdbcType=INTEGER}, #{appluser,jdbcType=VARCHAR}, 
+      #{applname,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{bizid,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{custId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.IfmWfmStatus" useGeneratedKeys="true" keyProperty="id">
+    insert into ifm_wfm_instance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tpid != null" >
+        tpid,
+      </if>
+      <if test="appluser != null" >
+        appluser,
+      </if>
+      <if test="applname != null" >
+        applname,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+      <if test="bizid != null" >
+        bizid,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="custId != null" >
+        cust_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tpid != null" >
+        #{tpid,jdbcType=INTEGER},
+      </if>
+      <if test="appluser != null" >
+        #{appluser,jdbcType=VARCHAR},
+      </if>
+      <if test="applname != null" >
+        #{applname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizid != null" >
+        #{bizid,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="custId != null" >
+        #{custId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.IfmWfmStatus" >
+    update ifm_wfm_instance
+    <set >
+      <if test="tpid != null" >
+        tpid = #{tpid,jdbcType=INTEGER},
+      </if>
+      <if test="appluser != null" >
+        appluser = #{appluser,jdbcType=VARCHAR},
+      </if>
+      <if test="applname != null" >
+        applname = #{applname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizid != null" >
+        bizid = #{bizid,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="custId != null" >
+        cust_id = #{custId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.IfmWfmStatus" >
+    update ifm_wfm_instance
+    set tpid = #{tpid,jdbcType=INTEGER},
+      appluser = #{appluser,jdbcType=VARCHAR},
+      applname = #{applname,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      bizid = #{bizid,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      cust_id = #{custId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

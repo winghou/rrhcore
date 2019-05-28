@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLoanPlatformMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLoanPlatform" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="platform_name" property="platformName" jdbcType="VARCHAR" />
+    <result column="logoimage_url" property="logoimageUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, platform_name,logoimage_url
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_loan_platform
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectPlatformList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_loan_platform
+  </select>
+  
+</mapper>

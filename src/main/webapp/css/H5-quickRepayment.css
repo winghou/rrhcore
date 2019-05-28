@@ -1,0 +1,76 @@
+@CHARSET "UTF-8";
+html,body{
+    margin: 0px;
+    background: #f0f0f0;
+}
+.main{
+	    padding-bottom: 20px;
+}
+.top{
+	    height: 115px;
+	    background: #fff;
+}
+.topimg{
+	background: url(../html/images/H5-top.png) repeat;
+    width: 100%;
+    height: 5px;
+    background-size: contain;
+}
+.leftInformation{
+    float: left;
+    margin-left: 5%;
+    margin-top: 20px;
+    line-height: 23px;
+    color: #333333;
+    font-size: 16px;
+}
+.rightStatus{
+	float: right;
+    margin-right: 5%;
+    margin-top: 40px;
+    font-size: 20px;
+    color: #333333;
+}
+.middle{
+    background: #f0f0f0;	
+}
+.orderLists{
+	
+}
+.orderList{
+    background: url(../html/images/H5-daikuan.png) repeat;
+    height: 150px;
+    background-size: 100% 100%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 20px;
+    position: relative;
+}
+.infoTable{
+    width: 90%;
+    margin-left: 5%;
+    padding-top: 20px;
+    line-height: 24px;
+    text-align: center;
+}
+.moneyNum{
+	color: #333333;
+    font-size: 20px;
+}
+.moneyTip{
+	    font-size: 17px;
+    color: #333333;
+}
+.dateOfStatus{
+	
+}
+.returnMoney{
+	    width: 40%;
+}
+.orderStatus{
+    margin-top: 28px;
+    font-size: 17px;
+    color: red;
+    width: 100%;
+    text-align: center;
+}

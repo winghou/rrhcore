@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.APPPayPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.model.APPPayPlan" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="withdraw_id" property="withdrawId" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="repay_date" property="repayDate" jdbcType="TIMESTAMP" />
+    <result column="prin_pay" property="prinPay" jdbcType="DECIMAL" />
+    <result column="inter_pay" property="interPay" jdbcType="DECIMAL" />
+    <result column="month_pay" property="monthPay" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="is_compent" property="isCompent" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="curperiods" property="curperiods" jdbcType="INTEGER" />
+    <result column="loan_status" property="loanStatus" jdbcType="VARCHAR" />
+    <result column="days" property="days" jdbcType="INTEGER" />
+    <result column="fxje" property="fxje" jdbcType="DECIMAL" />
+    <result column="ht_amt" property="ht_amt" jdbcType="DECIMAL" />
+    <result column="reduc_amt" property="reducAmt" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, withdraw_id, appr_id,repay_date, prin_pay,month_pay, inter_pay,status, is_compent, pay_date, curperiods, 
+    loan_status, days, fxje,ht_amt,reduc_amt
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_REPAY_PLAN
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectBywithDrawId" resultMap="BaseResultMap" parameterType="com.model.APPPayPlan" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_REPAY_PLAN
+    where withdraw_id = #{withdrawId,jdbcType=INTEGER} and status=#{status,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_REPAY_PLAN
+    where appr_id = #{apprId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByApprIdAndStatus" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_REPAY_PLAN
+    where appr_id = #{apprId,jdbcType=INTEGER} and status = #{status,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCurperiodsBywithDrawId" resultType="java.lang.Integer"  parameterType="java.lang.Integer" >
+    select 
+   	count(*)
+    from APP_REPAY_PLAN
+    where withdraw_id = #{withdrawId,jdbcType=INTEGER} 
+  </select>
+  <select id="selectAllByWithDrawId" resultMap="BaseResultMap"  parameterType="java.lang.Integer" >
+    select 
+   	<include refid="Base_Column_List" />
+    from APP_REPAY_PLAN
+    where withdraw_id = #{withdrawId,jdbcType=INTEGER} 
+  </select>
+  <select id="selectSumAmtByApprid" resultType="java.lang.Double" parameterType="com.model.APPPayPlan" >
+    select 
+    sum(prin_pay)
+    from APP_REPAY_PLAN
+    where appr_id = #{apprId,jdbcType=INTEGER} and status=#{status,jdbcType=VARCHAR}
+  </select>
+   <!-- 查询当月应还款 -->
+  <select id="selectShouldPayThisMonth" resultType="map" parameterType="map" >
+	SELECT
+		(
+			t.month_pay + IFNULL(t.fxje, 0)
+		) AS should_pay_amt
+	FROM
+		app_repay_plan t
+	WHERE
+		t.appr_id = #{apprId}
+	AND t. STATUS = #{status}
+	AND DATE_FORMAT(t.repay_date, '%Y-%m') <![CDATA[<=]]> DATE_FORMAT(NOW(), '%Y-%m')
+	ORDER BY
+		t.repay_date
+  </select>
+  <!-- 查询下个当前日期之前还款情况 -->
+  <select id="selectShouldPayNextMonth" resultType="map" parameterType="map" >
+	SELECT
+		t.id,
+		(
+			t.month_pay + IFNULL(t.fxje, 0)
+		) AS should_pay_amt,
+		CASE
+	WHEN (IFNULL(t.days, 0) + 0) = 0 THEN
+		4
+	ELSE
+		6
+	END AS status,
+	DATEDIFF(t.repay_date, NOW()) AS days,
+	DATE_FORMAT(t.repay_date, '%Y-%m-%d') AS should_pay_date
+	FROM
+		app_repay_plan t
+	WHERE
+		t.appr_id = #{apprId}
+	AND t. STATUS = #{status}
+	AND DATE_FORMAT(t.repay_date, '%Y-%m-%d') <![CDATA[<]]> (
+		SELECT
+			DATE_ADD(
+				DATE_FORMAT(NOW(), '%Y-%m-%d'),
+				INTERVAL 1 MONTH
+			)
+	)
+	ORDER BY
+		t.repay_date
+  </select>
+  <!-- 查询已逾期 -->
+  <select id="selectAllOverdue" parameterType="Integer" resultType="Double">
+  	SELECT ROUND(IFNULL(SUM(t.month_pay + t.fxje), 0),2) FROM `app_repay_plan` t where t.appr_id = #{apprId,jdbcType=INTEGER} and t.`status` = '0' and (IFNULL(t.days,0)+0) >0
+  </select>
+  <!-- 查询用户是否还有逾期 -->
+  <select id="selectOverduleByApprIdAndStatus" parameterType="Integer" resultType="map" >
+  	SELECT id from app_repay_plan t where t.status = '0' and t.days &gt; 0 and t.appr_id = #{apprId,jdbcType=INTEGER};
+  </select>
+  <!-- 查询当前订单是否全部结清 -->
+  <select id="selectOtherPayplanByWithId" resultType="map" >
+  	SELECT id from app_repay_plan t where t.withdraw_id = #{withId,jdbcType=INTEGER} and id != #{repayId,jdbcType=INTEGER};
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from APP_REPAY_PLAN
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.APPPayPlan" >
+    insert into APP_REPAY_PLAN (id, withdraw_id, appr_id,repay_date, prin_pay,inter_pay,
+      month_pay, status, is_compent, 
+      pay_date, curperiods, loan_status, 
+      days, fxje,ht_amt,reduc_amt)
+    values (#{id,jdbcType=INTEGER}, #{withdrawId,jdbcType=INTEGER},#{appr_id,jdbcType=INTEGER},
+      #{repayDate,jdbcType=TIMESTAMP}, #{prinPay,jdbcType=DECIMAL},#{interPay,jdbcType=DECIMAL},
+      #{monthPay,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{isCompent,jdbcType=VARCHAR}, 
+      #{payDate,jdbcType=TIMESTAMP}, #{curperiods,jdbcType=INTEGER}, #{loanStatus,jdbcType=VARCHAR}, 
+      #{days,jdbcType=INTEGER}, #{fxje,jdbcType=DECIMAL},#{ht_amt,jdbcType=DECIMAL},#{reducAmt,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.APPPayPlan" >
+    insert into APP_REPAY_PLAN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="withdrawId != null" >
+        withdraw_id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="repayDate != null" >
+        repay_date,
+      </if>
+      <if test="prinPay != null" >
+        prin_pay,
+      </if>
+      <if test="interPay != null" >
+        inter_pay,
+      </if>
+      <if test="monthPay != null" >
+        month_pay,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isCompent != null" >
+        is_compent,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="curperiods != null" >
+        curperiods,
+      </if>
+      <if test="loanStatus != null" >
+        loan_status,
+      </if>
+      <if test="days != null" >
+        days,
+      </if>
+      <if test="fxje != null" >
+        fxje,
+      </if>
+      <if test="ht_amt != null" >
+        ht_amt,
+      </if>
+      <if test="reducAmt != null" >
+        reduc_amt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawId != null" >
+        #{withdrawId,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="repayDate != null" >
+        #{repayDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prinPay != null" >
+        #{prinPay,jdbcType=DECIMAL},
+      </if>
+      <if test="interPay != null" >
+        #{interPay,jdbcType=DECIMAL},
+      </if>
+      <if test="monthPay != null" >
+        #{monthPay,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isCompent != null" >
+        #{isCompent,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="curperiods != null" >
+        #{curperiods,jdbcType=INTEGER},
+      </if>
+      <if test="loanStatus != null" >
+        #{loanStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="days != null" >
+        #{days,jdbcType=INTEGER},
+      </if>
+      <if test="fxje != null" >
+        #{fxje,jdbcType=DECIMAL},
+      </if>
+      <if test="ht_amt != null" >
+        #{ht_amt,jdbcType=DECIMAL},
+      </if>
+      <if test="reducAmt != null" >
+        #{reducAmt,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.APPPayPlan" >
+    update APP_REPAY_PLAN
+    <set >
+      <if test="withdrawId != null" >
+        withdraw_id = #{withdrawId,jdbcType=INTEGER},
+      </if>
+       <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="repayDate != null" >
+        repay_date = #{repayDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prinPay != null" >
+        prin_pay = #{prinPay,jdbcType=DECIMAL},
+      </if>
+      <if test="interPay != null" >
+        inter_pay = #{interPay,jdbcType=DECIMAL},
+      </if>
+      <if test="monthPay != null" >
+        month_pay = #{monthPay,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isCompent != null" >
+        is_compent = #{isCompent,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="curperiods != null" >
+        curperiods = #{curperiods,jdbcType=INTEGER},
+      </if>
+      <if test="loanStatus != null" >
+        loan_status = #{loanStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="days != null" >
+        days = #{days,jdbcType=INTEGER},
+      </if>
+      <if test="fxje != null" >
+        fxje = #{fxje,jdbcType=DECIMAL},
+      </if>
+      <if test="ht_amt != null" >
+        ht_amt = #{ht_amt,jdbcType=DECIMAL},
+      </if>
+      <if test="reducAmt != null" >
+        reduc_amt = #{reducAmt,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.APPPayPlan" >
+    update APP_REPAY_PLAN
+    set withdraw_id = #{withdrawId,jdbcType=INTEGER},
+      appr_id = #{apprId,jdbcType=INTEGER},
+      repay_date = #{repayDate,jdbcType=TIMESTAMP},
+      prin_pay = #{prinPay,jdbcType=DECIMAL},
+      inter_pay = #{interPay,jdbcType=DECIMAL},
+      month_pay = #{monthPay,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      is_compent = #{isCompent,jdbcType=VARCHAR},
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      curperiods = #{curperiods,jdbcType=INTEGER},
+      loan_status = #{loanStatus,jdbcType=VARCHAR},
+      days = #{days,jdbcType=INTEGER},
+      fxje = #{fxje,jdbcType=DECIMAL},
+      reduc_amt = #{reducAmt,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

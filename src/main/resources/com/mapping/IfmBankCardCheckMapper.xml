@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.dao.IfmBankCardCheckMapper">
+	<resultMap id="BaseResultMap" type="com.model.IfmBankCardCheck">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="out_order_no" property="out_order_no" jdbcType="VARCHAR" />
+		<result column="real_name" property="real_name" jdbcType="VARCHAR" />
+		<result column="phone_no" property="phone_no" jdbcType="VARCHAR" />
+		<result column="identity_card" property="identity_card" jdbcType="VARCHAR" />
+		<result column="bank_name" property="bank_name" jdbcType="VARCHAR" />
+		<result column="bank_no" property="bank_no" jdbcType="VARCHAR" />
+		<result column="bank_code" property="bank_code" jdbcType="VARCHAR" />
+		<result column="bank_card_type" property="bank_card_type" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="error_code" property="error_code" jdbcType="VARCHAR" />
+		<result column="memo" property="memo" jdbcType="VARCHAR" />
+		<result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, out_order_no,
+		real_name,phone_no,identity_card,bank_name,bank_no,bank_code,bank_card_type,status,error_code,memo,create_time
+	</sql>
+
+	<select id="selectIfmBankCardCheckByOutOrderNo" parameterType="string" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ifm_bankcard_check
+		where out_order_no = #{outOrderNo,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectIfmBankCardByCertNoThisDay" parameterType="string" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ifm_bankcard_check t
+		where t.identity_card = #{identityNo} and
+		DATE_FORMAT(t.create_time, '%Y-%m-%d') = DATE_FORMAT(NOW(),
+		'%Y-%m-%d')
+	</select>
+</mapper>

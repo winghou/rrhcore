@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLoanCtmMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLoanCtm" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="custom_name" property="customName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="identity_card" property="identityCard" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="town" property="town" jdbcType="VARCHAR" />
+    <result column="school_name" property="schoolName" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
+    <result column="stu_card" property="stuCard" jdbcType="VARCHAR" />
+    <result column="entra_date" property="entraDate" jdbcType="TIMESTAMP" />
+    <result column="bdr_addr" property="bdrAddr" jdbcType="VARCHAR" />
+    <result column="bank" property="bank" jdbcType="VARCHAR" />
+    <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+    <result column="bank_phone" property="bankPhone" jdbcType="VARCHAR" />
+    <result column="monthly_amt" property="monthlyAmt" jdbcType="VARCHAR" />
+    <result column="is_marry" property="isMarry" jdbcType="VARCHAR" />
+    <result column="school_job" property="schoolJob" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="jg" property="jg" jdbcType="VARCHAR" />
+    <result column="educational" property="educational" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
+    <result column="compay_pay_day" property="compayPayDay" jdbcType="VARCHAR" />
+    <result column="comm_province" property="commProvince" jdbcType="VARCHAR" />
+    <result column="comm_city" property="commCity" jdbcType="VARCHAR" />
+    <result column="comm_town" property="commTown" jdbcType="VARCHAR" />
+    <result column="comm_job" property="commJob" jdbcType="VARCHAR" />
+    <result column="identity_status" property="identity_status" jdbcType="VARCHAR" />
+    <result column="school_status" property="school_status" jdbcType="VARCHAR" />
+    <result column="bank_status" property="bank_status" jdbcType="VARCHAR" />
+    <result column="company_status" property="company_status" jdbcType="VARCHAR" />
+    <result column="family_status" property="family_status" jdbcType="VARCHAR" />
+    <result column="lxr_status" property="lxr_status" jdbcType="VARCHAR" />
+    <result column="schedule_status" property="schedule_status" jdbcType="VARCHAR" />
+    <result column="is_pass" property="is_pass" jdbcType="VARCHAR" />
+    <result column="company_phone" property="companyPhone" jdbcType="VARCHAR" />
+    <result column="is_modify" property="is_modify" jdbcType="VARCHAR" />
+    <result column="verify_time" property="verify_time" jdbcType="VARCHAR" />
+    <result column="bind_card_time" property="bind_card_time" jdbcType="VARCHAR" />
+    <result column="operator_time" property="operatorTime" jdbcType="TIMESTAMP" />
+    <result column="phone_and_id_md5" property="phoneAndIdMd5" jdbcType="VARCHAR" />
+    <result column="car" property="car" jdbcType="VARCHAR" />
+    <result column="profession" property="profession" jdbcType="VARCHAR" />
+    <result column="social_security" property="social_security" jdbcType="VARCHAR" />
+    <result column="work_years" property="work_years" jdbcType="VARCHAR" />
+    <result column="income" property="income" jdbcType="VARCHAR" />
+    <result column="live_way" property="live_way" jdbcType="VARCHAR" />
+    <result column="merch_order_no" property="merch_order_no" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, appr_id, custom_name, sex, identity_card, birthday, place, province, city, town, 
+    school_name, grade, stu_card, entra_date, bdr_addr, bank, bank_card, bank_phone, 
+    monthly_amt, is_marry, school_job, address, jg, educational, status, company_name, 
+    company_address, compay_pay_day, comm_province, comm_city, comm_town,comm_job,identity_status,
+    school_status,bank_status,company_status,family_status,lxr_status,schedule_status,is_pass,is_modify,
+    company_phone,verify_time,bind_card_time,operator_time,phone_and_id_md5,car,profession,social_security,work_years,income,live_way,merch_order_no
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_loan_custom
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByapprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CUSTOM
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByIdentityCard" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CUSTOM
+    where identity_card = #{identityCard}
+  </select>
+  <select id="selectOthersByIdentityNo" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from APP_LOAN_CUSTOM
+    where identity_card = #{identityCard} and appr_id != #{apprId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_loan_custom
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppLoanCtm" >
+    insert into app_loan_custom (id, appr_id, custom_name, 
+      sex, identity_card, birthday, 
+      place, province, city, 
+      town, school_name, grade, 
+      stu_card, entra_date, bdr_addr, 
+      bank, bank_card, bank_phone, 
+      monthly_amt, is_marry, school_job, 
+      address, jg, educational, 
+      status, company_name, company_address, 
+      compay_pay_day, comm_province, comm_city, 
+      comm_town,operator_time,phone_and_id_md5,
+      car,profession,social_security,work_years,income,live_way)
+    values (#{id,jdbcType=INTEGER}, #{apprId,jdbcType=INTEGER}, #{customName,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{identityCard,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
+      #{place,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{town,jdbcType=VARCHAR}, #{schoolName,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
+      #{stuCard,jdbcType=VARCHAR}, #{entraDate,jdbcType=TIMESTAMP}, #{bdrAddr,jdbcType=VARCHAR}, 
+      #{bank,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}, #{bankPhone,jdbcType=VARCHAR}, 
+      #{monthlyAmt,jdbcType=VARCHAR}, #{isMarry,jdbcType=VARCHAR}, #{schoolJob,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{jg,jdbcType=VARCHAR}, #{educational,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, 
+      #{compayPayDay,jdbcType=VARCHAR}, #{commProvince,jdbcType=VARCHAR}, #{commCity,jdbcType=VARCHAR}, 
+      #{commTown,jdbcType=VARCHAR},#{operatorTime,jdbcType=TIMESTAMP},#{phoneAndIdMd5,jdbcType=VARCHAR},
+      #{car,jdbcType=VARCHAR},#{profession,jdbcType=VARCHAR},#{social_security,jdbcType=VARCHAR},
+      #{work_years,jdbcType=VARCHAR},#{income,jdbcType=VARCHAR},#{live_way,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppLoanCtm" >
+    insert into app_loan_custom
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="customName != null" >
+        custom_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="identityCard != null" >
+        identity_card,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="place != null" >
+        place,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="town != null" >
+        town,
+      </if>
+      <if test="schoolName != null" >
+        school_name,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="stuCard != null" >
+        stu_card,
+      </if>
+      <if test="entraDate != null" >
+        entra_date,
+      </if>
+      <if test="bdrAddr != null" >
+        bdr_addr,
+      </if>
+      <if test="bank != null" >
+        bank,
+      </if>
+      <if test="bankCard != null" >
+        bank_card,
+      </if>
+      <if test="bankPhone != null" >
+        bank_phone,
+      </if>
+      <if test="monthlyAmt != null" >
+        monthly_amt,
+      </if>
+      <if test="isMarry != null" >
+        is_marry,
+      </if>
+      <if test="schoolJob != null" >
+        school_job,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="jg != null" >
+        jg,
+      </if>
+      <if test="educational != null" >
+        educational,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="companyAddress != null" >
+        company_address,
+      </if>
+      <if test="compayPayDay != null" >
+        compay_pay_day,
+      </if>
+      <if test="commProvince != null" >
+        comm_province,
+      </if>
+      <if test="commCity != null" >
+        comm_city,
+      </if>
+      <if test="commTown != null" >
+        comm_town,
+      </if>
+      <if test="commJob != null" >
+        comm_job,
+      </if>
+      <if test="identity_status != null" >
+        identity_status,
+      </if>
+      <if test="school_status != null" >
+        school_status,
+      </if>
+      <if test="bank_status != null" >
+        bank_status,
+      </if>
+      <if test="company_status != null" >
+        company_status,
+      </if>
+      <if test="family_status != null" >
+        family_status,
+      </if>
+      <if test="lxr_status != null" >
+        lxr_status,
+      </if>
+      <if test="schedule_status != null" >
+        schedule_status,
+      </if>
+      <if test="is_pass != null" >
+        is_pass,
+      </if>
+      <if test="is_modify != null" >
+        is_modify,
+      </if>
+      <if test="companyPhone != null" >
+        company_phone,
+      </if>
+      <if test="verify_time != null" >
+        verify_time,
+      </if>
+      <if test="operatorTime != null" >
+        operator_time,
+      </if>
+      <if test="phoneAndIdMd5 != null" >
+        phone_and_id_md5,
+      </if>
+      <if test="car != null" >
+        car,
+      </if>
+      <if test="profession != null" >
+        profession,
+      </if>
+      <if test="social_security != null" >
+        social_security,
+      </if>
+      <if test="work_years != null" >
+        work_years,
+      </if>
+      <if test="income != null" >
+        income,
+      </if>
+      <if test="live_way != null" >
+        live_way,
+      </if>
+      <if test="merch_order_no != null" >
+        merch_order_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="customName != null" >
+        #{customName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCard != null" >
+        #{identityCard,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="place != null" >
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="town != null" >
+        #{town,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolName != null" >
+        #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="stuCard != null" >
+        #{stuCard,jdbcType=VARCHAR},
+      </if>
+      <if test="entraDate != null" >
+        #{entraDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bdrAddr != null" >
+        #{bdrAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null" >
+        #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="bankPhone != null" >
+        #{bankPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlyAmt != null" >
+        #{monthlyAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="isMarry != null" >
+        #{isMarry,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolJob != null" >
+        #{schoolJob,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="jg != null" >
+        #{jg,jdbcType=VARCHAR},
+      </if>
+      <if test="educational != null" >
+        #{educational,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="compayPayDay != null" >
+        #{compayPayDay,jdbcType=VARCHAR},
+      </if>
+      <if test="commProvince != null" >
+        #{commProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="commCity != null" >
+        #{commCity,jdbcType=VARCHAR},
+      </if>
+      <if test="commTown != null" >
+        #{commTown,jdbcType=VARCHAR},
+      </if>
+      <if test="commJob != null" >
+        #{commJob,jdbcType=VARCHAR},
+      </if>
+      <if test="identity_status != null" >
+        #{identity_status,jdbcType=VARCHAR},
+      </if>
+      <if test="school_status != null" >
+        #{school_status,jdbcType=VARCHAR},
+      </if>
+      <if test="bank_status != null" >
+        #{bank_status,jdbcType=VARCHAR},
+      </if>
+      <if test="company_status != null" >
+        #{company_status,jdbcType=VARCHAR},
+      </if>
+      <if test="family_status != null" >
+        #{family_status,jdbcType=VARCHAR},
+      </if>
+      <if test="lxr_status != null" >
+        #{lxr_status,jdbcType=VARCHAR},
+      </if>
+      <if test="schedule_status != null" >
+        #{schedule_status,jdbcType=VARCHAR},
+      </if>
+      <if test="is_pass != null" >
+        #{is_pass,jdbcType=VARCHAR},
+      </if>
+      <if test="is_modify != null" >
+        #{is_modify,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPhone != null" >
+        #{companyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="verify_time != null" >
+        #{verify_time,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorTime != null" >
+        #{operatorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phoneAndIdMd5 != null" >
+        #{phoneAndIdMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="car != null" >
+        #{car,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null" >
+        #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="social_security != null" >
+        #{social_security,jdbcType=VARCHAR},
+      </if>
+      <if test="work_years != null" >
+        #{work_years,jdbcType=VARCHAR},
+      </if>
+      <if test="income != null" >
+        #{income,jdbcType=VARCHAR},
+      </if>
+      <if test="live_way != null" >
+        #{live_way,jdbcType=VARCHAR},
+      </if>
+      <if test="merch_order_no != null" >
+        #{merch_order_no,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppLoanCtm" >
+    update app_loan_custom
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="customName != null" >
+        custom_name = #{customName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCard != null" >
+        identity_card = #{identityCard,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="place != null" >
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="town != null" >
+        town = #{town,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolName != null" >
+        school_name = #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="stuCard != null" >
+        stu_card = #{stuCard,jdbcType=VARCHAR},
+      </if>
+      <if test="entraDate != null" >
+        entra_date = #{entraDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bdrAddr != null" >
+        bdr_addr = #{bdrAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null" >
+        bank = #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="bankPhone != null" >
+        bank_phone = #{bankPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlyAmt != null" >
+        monthly_amt = #{monthlyAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="isMarry != null" >
+        is_marry = #{isMarry,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolJob != null" >
+        school_job = #{schoolJob,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="jg != null" >
+        jg = #{jg,jdbcType=VARCHAR},
+      </if>
+      <if test="educational != null" >
+        educational = #{educational,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="compayPayDay != null" >
+        compay_pay_day = #{compayPayDay,jdbcType=VARCHAR},
+      </if>
+      <if test="commProvince != null" >
+        comm_province = #{commProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="commCity != null" >
+        comm_city = #{commCity,jdbcType=VARCHAR},
+      </if>
+      <if test="commTown != null" >
+        comm_town = #{commTown,jdbcType=VARCHAR},
+      </if>
+      <if test="commJob != null" >
+        comm_job = #{commJob,jdbcType=VARCHAR},
+      </if>
+      <if test="identity_status != null" >
+        identity_status = #{identity_status,jdbcType=VARCHAR},
+      </if>
+      <if test="school_status != null" >
+        school_status = #{school_status,jdbcType=VARCHAR},
+      </if>
+      <if test="bank_status != null" >
+        bank_status = #{bank_status,jdbcType=VARCHAR},
+      </if>
+      <if test="company_status != null" >
+        company_status = #{company_status,jdbcType=VARCHAR},
+      </if>
+      <if test="family_status != null" >
+        family_status = #{family_status,jdbcType=VARCHAR},
+      </if>
+      <if test="lxr_status != null" >
+        lxr_status = #{lxr_status,jdbcType=VARCHAR},
+      </if>
+      <if test="schedule_status != null" >
+        schedule_status = #{schedule_status,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPhone != null" >
+        company_phone = #{companyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="is_pass != null" >
+       	is_pass= #{is_pass,jdbcType=VARCHAR},
+      </if>
+      <if test="is_modify != null" >
+        is_modify =#{is_modify,jdbcType=VARCHAR},
+      </if>
+      <if test="verify_time != null" >
+        verify_time =#{verify_time,jdbcType=VARCHAR},
+      </if>
+      <if test="bind_card_time != null" >
+        bind_card_time =#{bind_card_time,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorTime != null" >
+        operator_time = #{operatorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phoneAndIdMd5 != null" >
+        phone_and_id_md5 = #{phoneAndIdMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="car != null" >
+        car = #{car,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null" >
+        profession = #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="social_security != null" >
+        social_security = #{social_security,jdbcType=VARCHAR},
+      </if>
+      <if test="work_years != null" >
+        work_years = #{work_years,jdbcType=VARCHAR},
+      </if>
+      <if test="income != null" >
+        income = #{income,jdbcType=VARCHAR},
+      </if>
+      <if test="live_way != null" >
+        live_way = #{live_way,jdbcType=VARCHAR},
+      </if>
+      <if test="merch_order_no != null" >
+        merch_order_no = #{merch_order_no,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppLoanCtm" >
+    update app_loan_custom
+    set appr_id = #{apprId,jdbcType=INTEGER},
+      custom_name = #{customName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      identity_card = #{identityCard,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      place = #{place,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      town = #{town,jdbcType=VARCHAR},
+      school_name = #{schoolName,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      stu_card = #{stuCard,jdbcType=VARCHAR},
+      entra_date = #{entraDate,jdbcType=TIMESTAMP},
+      bdr_addr = #{bdrAddr,jdbcType=VARCHAR},
+      bank = #{bank,jdbcType=VARCHAR},
+      bank_card = #{bankCard,jdbcType=VARCHAR},
+      bank_phone = #{bankPhone,jdbcType=VARCHAR},
+      monthly_amt = #{monthlyAmt,jdbcType=VARCHAR},
+      is_marry = #{isMarry,jdbcType=VARCHAR},
+      school_job = #{schoolJob,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      jg = #{jg,jdbcType=VARCHAR},
+      educational = #{educational,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      compay_pay_day = #{compayPayDay,jdbcType=VARCHAR},
+      comm_province = #{commProvince,jdbcType=VARCHAR},
+      comm_city = #{commCity,jdbcType=VARCHAR},
+      comm_town = #{commTown,jdbcType=VARCHAR},
+      company_phone = #{companyPhone,jdbcType=VARCHAR},
+      verify_time = #{verify_time,jdbcType=VARCHAR},
+      operator_time = #{operatorTime,jdbcType=TIMESTAMP},
+      phone_and_id_md5 = #{phoneAndIdMd5,jdbcType=VARCHAR},
+      car = #{car,jdbcType=VARCHAR},
+      profession = #{profession,jdbcType=VARCHAR},
+      social_security = #{social_security,jdbcType=VARCHAR},
+      work_years = #{work_years,jdbcType=VARCHAR},
+      income = #{income,jdbcType=VARCHAR},
+      live_way = #{live_way,jdbcType=VARCHAR},
+      merch_order_no = #{merch_order_no,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

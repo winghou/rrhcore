@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta content="telephone=no" name="format-detection">
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>公积金授权</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/common.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/base.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../../css/accumulationFund.css"></link>
+    <script type="text/javascript" src="../../../js/common.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>  
+    <script type="text/javascript" src="../../../js/plat/AESUtil.js"></script>
+    <script type="text/javascript" src="../../../js/plat/accumulationFund.js"></script>     
+	
+	
+</head>
+<body>
+    <div class="header">
+        <span class="returnBtn"></span>
+        <h2>公积金授权</h2>
+    </div>
+    <div class="main">
+        <div class="main-province mains">
+            <span>省市</span>
+            <input type="text" class="select-value" placeholder="请选择省市" style="padding-right:.75rem;"/>
+            <i></i>
+        </div>
+        <div class="main-accountNumber mains">
+            <span>账号</span>
+            <input type="tel" pattern="\d*" class="accountNumbe" placeholder="请输入公积金账号" minlength="6" maxlength="14"/>
+        </div>
+        <form  class="main-accPassword mains" method="POST" action="" name="forms">
+            <span>密码</span>
+            <b id="box" style="width:100%;display:block;"><input type="password" name="password" placeholder="请输入登录密码" class="bankPassword" maxlength="30" minlength="6" style="width:85%;letter-spacing: -.7px;overflow:hidden;" onkeyup="this.value=this.value.replace(/\s+/g,'')"></b>
+            <b id="click"><img src="../../images/eye-c@2x.png" alt="" class="eye"/></b>
+        </form>
+        <button class="btn">账户授权</button>
+        <p>授权账户表示您同意<a href="dataAcquisitionService.html">《数据采集服务协议》</a></p>
+    </div>
+</body>
+<script type="text/javascript" src="../../../js/plat/index.js"></script>
+</html>

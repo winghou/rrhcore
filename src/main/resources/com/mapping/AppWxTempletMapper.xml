@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppWxTempletMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppWxTemplet" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="templet_code" property="templet_code" jdbcType="VARCHAR" />
+    <result column="templet_tille" property="templet_tille" jdbcType="VARCHAR" />
+    <result column="templet_coment" property="templet_coment" jdbcType="VARCHAR" />
+    <result column="templet_ending" property="templet_ending" jdbcType="VARCHAR" />
+    <result column="templet_head" property="templet_head" jdbcType="VARCHAR" />
+    <result column="tem_desc" property="tem_desc" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, templet_code, templet_tille, templet_coment, templet_ending, templet_head, tem_desc, type, status
+  </sql>
+	<select id="qryWxtempletByid" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+	 select
+	 <include refid="Base_Column_List" />  
+	 from app_wx_templet where
+		id=#{id,jdbcType=INTEGER}
+	 </select> 
+</mapper>

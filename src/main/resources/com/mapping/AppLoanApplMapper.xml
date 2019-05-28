@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLoanApplMapper">
+	<resultMap id="BaseResultMap" type="com.model.AppLoanAppl">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="loaning_status" property="loaningStatus" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="prvince" property="prvince" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="comment" property="comment" jdbcType="VARCHAR" />
+		<result column="credit_amt" property="creditAmt" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="level" property="level" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="zhima_credit_score" property="zhimaCreditScore" jdbcType="VARCHAR" />
+		<result column="zhima_ivs_score" property="zhimaIvsScore" jdbcType="VARCHAR" />
+		<result column="watchlistii_is_matched" property="watchlistiiIsMatched" jdbcType="VARCHAR" />
+		<result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
+		<result column="inviter_invite_code" property="inviterInviteCode" jdbcType="VARCHAR" />
+		<result column="authen_time" property="authenTime" jdbcType="TIMESTAMP" />
+		<result column="operator_status" property="operatorStatus" jdbcType="VARCHAR" />
+		<result column="zhima_status" property="zhimaStatus" jdbcType="VARCHAR" />
+		<result column="base_info_status" property="baseInfoStatus" jdbcType="VARCHAR" />
+		<result column="contact_info_status" property="contactInfoStatus" jdbcType="VARCHAR" />
+		<result column="account_status" property="accountStatus" jdbcType="INTEGER" />
+		<result column="abnormal_number" property="abnormalNumber" jdbcType="INTEGER" />
+		<result column="upgrade_account_time" property="upgradeAccountTime" jdbcType="TIMESTAMP" />
+		<result column="recover_account_time" property="recoverAccountTime" jdbcType="TIMESTAMP" />
+		<result column="ssq_apply_status" property="ssqApplyStatus" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, item_code, status, loaning_status, create_date, prvince, city,
+		comment,credit_amt,update_time,level,user_id,zhima_credit_score,
+		zhima_ivs_score,watchlistii_is_matched,invite_code,inviter_invite_code,authen_time,
+		operator_status,zhima_status,base_info_status,contact_info_status,account_status,abnormal_number,
+		upgrade_account_time,recover_account_time,ssq_apply_status
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from APP_LOAN_APPL
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByitemCode" resultMap="BaseResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from APP_LOAN_APPL
+		where item_code = #{itemCode,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByUserId" resultMap="BaseResultMap"
+		parameterType="INTEGER">
+		select
+		<include refid="Base_Column_List" />
+		from APP_LOAN_APPL
+		where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+	<select id="selectByInviter" resultMap="BaseResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from APP_LOAN_APPL
+		where inviter_invite_code = #{inviterInviteCode}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from APP_LOAN_APPL
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.model.AppLoanAppl">
+		insert into APP_LOAN_APPL (id, item_code, status,
+		loaning_status, create_date, prvince,
+		city, comment,credit_amt,update_time,user_id,zhima_credit_score,zhima_ivs_score,
+		watchlistii_is_matched,invite_code,inviter_invite_code,authen_time,operator_status,zhima_status,base_info_status,contact_info_status,account_status,abnormal_number,upgrade_account_time,recover_account_time
+		)
+		values (#{id,jdbcType=INTEGER}, #{itemCode,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{loaningStatus,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{prvince,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},
+		#{creditAmt,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP},
+		#{userId,jdbcType=INTEGER},#{zhimaCreditScore,jdbcType=VARCHAR},#{zhimaIvsScore,jdbcType=VARCHAR},#{watchlistiiIsMatched,jdbcType=VARCHAR},
+		#{inviteCode,jdbcType=VARCHAR},#{inviterInviteCode,jdbcType=VARCHAR},#{authenTime,jdbcType=TIMESTAMP},
+		#{operatorStatus,jdbcType=VARCHAR},#{zhimaStatus,jdbcType=VARCHAR},#{baseInfoStatus,jdbcType=VARCHAR},#{contactInfoStatus,jdbcType=VARCHAR},#{accountStatus,jdbcType=INTEGER},#{abnormalNumber,jdbcType=INTEGER},
+		#{upgradeAccountTime,jdbcType=TIMESTAMP},#{recoverAccountTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.model.AppLoanAppl"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into APP_LOAN_APPL
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="itemCode != null">
+				item_code,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="loaningStatus != null">
+				loaning_status,
+			</if>
+			<if test="createDate == null">
+				create_date,
+			</if>
+			<if test="prvince != null">
+				prvince,
+			</if>
+			<if test="city != null">
+				city,
+			</if>
+			<if test="comment != null">
+				comment,
+			</if>
+			<if test="creditAmt != null">
+				credit_amt,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="level != null">
+				level,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="zhimaCreditScore != null">
+				zhima_credit_score,
+			</if>
+			<if test="zhimaIvsScore != null">
+				zhima_ivs_score,
+			</if>
+			<if test="watchlistiiIsMatched != null">
+				watchlistii_is_matched,
+			</if>
+			<if test="inviteCode != null">
+				invite_code,
+			</if>
+			<if test="inviterInviteCode != null">
+				inviter_invite_code,
+			</if>
+			<if test="authenTime != null">
+				authen_time,
+			</if>
+			<if test="operatorStatus != null">
+				operator_status,
+			</if>
+			<if test="zhimaStatus != null">
+				zhima_status,
+			</if>
+			<if test="baseInfoStatus != null">
+				base_info_status,
+			</if>
+			<if test="contactInfoStatus != null">
+				contact_info_status,
+			</if>
+			<if test="accountStatus != null">
+				account_status,
+			</if>
+			<if test="abnormalNumber != null">
+				abnormal_number,
+			</if>
+			<if test="upgradeAccountTime != null">
+				upgrade_account_time,
+			</if>
+			<if test="recoverAccountTime != null">
+				recover_account_time,
+			</if>
+			<if test="ssqApplyStatus != null">
+				ssq_apply_status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="itemCode != null">
+				#{itemCode,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="loaningStatus != null">
+				#{loaningStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate == null">
+				now(),
+			</if>
+			<if test="prvince != null">
+				#{prvince,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				#{city,jdbcType=VARCHAR},
+			</if>
+			<if test="comment != null">
+				#{comment,jdbcType=VARCHAR},
+			</if>
+			<if test="creditAmt != null">
+				#{creditAmt,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="level != null">
+				#{level,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="zhimaCreditScore != null">
+				#{zhimaCreditScore,jdbcType=VARCHAR},
+			</if>
+			<if test="zhimaIvsScore != null">
+				#{zhimaIvsScore,jdbcType=VARCHAR},
+			</if>
+			<if test="watchlistiiIsMatched != null">
+				#{watchlistiiIsMatched,jdbcType=VARCHAR},
+			</if>
+			<if test="inviteCode != null">
+				#{inviteCode,jdbcType=VARCHAR},
+			</if>
+			<if test="inviterInviteCode != null">
+				#{inviterInviteCode,jdbcType=VARCHAR},
+			</if>
+			<if test="authenTime != null">
+				#{authenTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="operatorStatus != null">
+				#{operatorStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="zhimaStatus != null">
+				#{zhimaStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="baseInfoStatus != null">
+				#{baseInfoStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="contactInfoStatus != null">
+				#{contactInfoStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="accountStatus != null">
+				#{account_status,jdbcType=INTEGER},
+			</if>
+			<if test="abnormalNumber != null">
+				#{abnormal_number,jdbcType=INTEGER},
+			</if>
+			<if test="upgradeAccountTime != null">
+				#{upgrade_account_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="recoverAccountTime != null">
+				#{recover_account_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ssqApplyStatus != null">
+				#{ssqApplyStatus,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.model.AppLoanAppl">
+		update APP_LOAN_APPL
+		<set>
+			<if test="itemCode != null">
+				item_code = #{itemCode,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="loaningStatus != null">
+				loaning_status = #{loaningStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="prvince != null">
+				prvince = #{prvince,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				city = #{city,jdbcType=VARCHAR},
+			</if>
+			<if test="comment != null">
+				comment = #{comment,jdbcType=VARCHAR},
+			</if>
+			<if test="creditAmt != null">
+				credit_amt = #{creditAmt,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime == null">
+				update_time = now(),
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="zhimaCreditScore != null">
+				zhima_credit_score = #{zhimaCreditScore,jdbcType=VARCHAR},
+			</if>
+			<if test="zhimaIvsScore != null">
+				zhima_ivs_score = #{zhimaIvsScore,jdbcType=VARCHAR},
+			</if>
+			<if test="watchlistiiIsMatched != null">
+				watchlistii_is_matched = #{watchlistiiIsMatched,jdbcType=VARCHAR},
+			</if>
+			<if test="inviteCode != null">
+				invite_code = #{inviteCode,jdbcType=VARCHAR},
+			</if>
+			<if test="authenTime != null">
+				authen_time = #{authenTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operatorStatus != null">
+				operator_status = #{operatorStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="zhimaStatus != null">
+				zhima_status = #{zhimaStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="baseInfoStatus != null">
+				base_info_status = #{baseInfoStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="contactInfoStatus != null">
+				contact_info_status = #{contactInfoStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="accountStatus != null">
+				account_status = #{accountStatus,jdbcType=INTEGER},
+			</if>
+			<if test="abnormalNumber != null">
+				abnormal_number = #{abnormalNumber,jdbcType=INTEGER},
+			</if>
+			<if test="upgradeAccountTime != null">
+				upgrade_account_time = #{upgradeAccountTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="recoverAccountTime != null">
+				recover_account_time = #{recoverAccountTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ssqApplyStatus != null">
+				ssq_apply_status = #{ssqApplyStatus,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.model.AppLoanAppl">
+		update APP_LOAN_APPL
+		set item_code = #{itemCode,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		loaning_status = #{loaningStatus,jdbcType=VARCHAR},
+		prvince = #{prvince,jdbcType=VARCHAR},
+		city = #{city,jdbcType=VARCHAR},
+		comment = #{comment,jdbcType=VARCHAR},
+		credit_amt = #{creditAmt,jdbcType=VARCHAR},
+		update_time =#{updateTime,jdbcType=TIMESTAMP},
+		user_id = #{userId,jdbcType=INTEGER},
+		zhima_credit_score = #{zhimaCreditScore,jdbcType=VARCHAR},
+		zhima_ivs_score = #{zhimaIvsScore,jdbcType=VARCHAR},
+		watchlistii_is_matched = #{watchlistiiIsMatched,jdbcType=VARCHAR},
+		authen_time = #{authenTime,jdbcType=TIMESTAMP},
+		operator_status = #{operatorStatus,jdbcType=VARCHAR},
+		zhima_status = #{zhimaStatus,jdbcType=VARCHAR},
+		reject_status = #{rejectStatus,jdbcType=VARCHAR},
+		base_info_status = #{baseInfoStatus,jdbcType=VARCHAR},
+		contact_info_status = #{contactInfoStatus,jdbcType=VARCHAR},
+		account_status = #{accountStatus,jdbcType=INTEGER},
+		abnormal_number = #{abnormalNumber,jdbcType=INTEGER},
+		upgrade_account_time =#{upgradeAccountTime,jdbcType=TIMESTAMP},
+		recover_account_time =#{recoverAccountTime,jdbcType=TIMESTAMP},
+		ssq_apply_status = #{ssqApplyStatus,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectByInviterInviteCode" resultMap="BaseResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from APP_LOAN_APPL
+		where invite_code = #{inviterInviteCode,jdbcType=VARCHAR}
+	</select>
+	<select id="selectLoanCountByInviter" resultType="map" parameterType="String">
+		SELECT
+			*
+		FROM
+			(
+				SELECT
+					t2.appr_id,
+					COUNT(*) AS num
+				FROM
+					app_withdraw_appl t2
+				WHERE
+					t2.appr_id IN (
+						SELECT
+							t1.id
+						FROM
+							app_loan_appl t1
+						WHERE
+							t1.inviter_invite_code = #{inviterInviteCode}
+					)
+				AND t2.loan_status = '3'
+				GROUP BY
+					t2.appr_id
+			) temp;
+	</select>
+	<select id="selectAuthonCountByInviter" resultType="map" parameterType="String">
+		SELECT
+			t1.id
+		FROM
+			app_loan_appl t1
+		LEFT JOIN app_loan_custom t2 ON t1.id = t2.appr_id
+		WHERE
+			t1.id IN (
+				SELECT
+					id
+				FROM
+					app_loan_appl
+				WHERE
+					inviter_invite_code = #{inviterInviteCode}
+			)
+		AND t2.schedule_status = '8' AND t1.status = '2';
+	</select>
+	<select id="selectOverPhoneByApprIdAndMiss" resultType="map" parameterType="map">
+		select * from app_over_phone where appr_id = #{apprId} and repay_miss = #{repayMiss}
+	</select>
+	
+	<select id="selectByStartIdAndEndId" resultMap="BaseResultMap" parameterType="map">
+		select * from app_loan_appl where id BETWEEN #{startId} and #{endId};
+	</select>
+	
+	<update id="updateUserInviteCode" parameterType="list">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+        update app_loan_appl
+        <set>
+            invite_code = #{item.inviteCode},
+        </set>
+        where id = #{item.id}
+    </foreach>    
+	</update>
+</mapper>

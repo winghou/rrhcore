@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+<title>支付</title>
+<link rel="stylesheet" type="text/css" href="../../css/common.css"></link>
+<link rel="stylesheet" type="text/css" href="../../css/payment.css"></link>
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/payment.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/AESUtil.js"></script>
+<script type="text/javascript" src="../../js/util.js"></script>
+</head>
+<body>
+
+  <div class="mask hide">
+  <div class="shpwPanel">
+      <div class="shpwPaneltitle">如何开通</div>
+      <div class="shpwPanelcontent">
+          <div class='contentline'>1.拨打银行卡背后的客户服务中心热线。</div>
+          <div class='contentline'>2.按照语音提示输入数字，按照提示开通，或者切换人工客服按照提示开通。</div>
+      </div>
+      <div class="shpwPanelsureBtn">知道啦</div>
+  </div>
+  </div>
+     <div class="mask2 hide">
+  <div class="shpwPanel2">
+      <div class="shpwPaneltitle2">还款确认</div>
+      <div class="shpwPanelcontent">
+          <div class='contentline2'></div>
+      </div>
+      <div class="showPanelsureBtn">
+      <table class="btnTable" cellspacing="0" cellpadding="0">
+      	<tr>
+      		<td><div class="cancelBtn">取消</div></td>
+      		<td><div class="surePay">确认</div></td>
+      	</tr>
+      </table>
+      </div>
+  </div>
+  </div>
+	<div class='main'>
+	    <div class="top">
+	        <div class='orderNum'>订单编号：123654852321</div>
+	        <div class='overflowMoney'>待还款金额：<span class='moneyNum'>￥232.09</span></div>
+	    </div>
+	    <div class='content'>
+	    <div class="title">选择还款方式：</div>
+	    <div class="returnWays">
+	    <table class="card way">
+	    	<tr>
+	    		<td class='line1'><div><img src="../images/H5-card.png" alt="" class="payLogo"/></div></td>
+	    		<td class='line' colspan=2 style="    position: relative;"><div class='line2 bankName'>银联在线支付(中国银行6563)</div>
+	    		<img src="../images/H5-arrow.png" alt="" class="turnrightfirst"/>
+	    		</td>
+	    	</tr>
+	    </table>
+	    	  <table class="zfb way">
+	    	<tr>
+	    		<td class='line1'><img src="../images/H5-zhifu.png" alt="" class="payLogo"/></td>
+	    		<td class='line'><div class='line2'>支付宝</div></td>
+	    		<td class='line3'><img src="../images/H5-arrow.png" alt="" class="turnright"/></td>
+	    	</tr>
+	    </table>
+	      <table class="wx way">
+	    	<tr>
+	    		<td class='line1'><img src="../images/H5-wechat.png" alt="" class="payLogo"/></td>
+	    		<td class='line'><div class='line2'>微信还款</div></td>
+	    		<td class='line3'><img src="../images/H5-arrow.png" alt="" class="turnright"/></td>
+	    	</tr>
+	    </table>
+<!-- 		
+<!-- 		    <div class='zfb'></div> -->
+<!-- 		    <div class='wx'></div> -->
+	    </div>
+	    
+	    </div>
+	    <div class="tip">
+	    <div>备注：</div>
+	    <div>01.银行卡需开通银联在线支付，<span class='idea'>如何开通；</span></div>
+	    <div>02.当银行卡余额不足时，建议您更换银行卡或保证银行卡账户资金充足后，再进行支付；</div>
+	    <div>03.若付款时显示该银行【正在维护、不支持验证、不支持该通道交易】，建议您更换银行卡，支持绑定的银行卡类型可在【我的】-【帮助】-【常见问题】-【还款问题】中查看；</div>
+	    <div>04.如银行卡还款失败超过3次，银行卡会被禁止当天主动还款，此种情况你可以在第二天再次尝试。</div>
+	    <div>如果还有任何疑问，请关注随心花公众号“随心花服务号”或拨打客服电话<span class='telNumber'></span>进行咨询。</div>
+	    </div>
+	</div>
+</body>
+</html>

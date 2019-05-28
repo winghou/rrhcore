@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppRedBagWithdrawOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppRedBagWithdrawOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="bank_code" property="bankCode" jdbcType="VARCHAR" />
+    <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+    <result column="withdraw_amt" property="withdrawAmt" jdbcType="VARCHAR" />
+    <result column="tax_amt" property="taxAmt" jdbcType="VARCHAR" />
+    <result column="tax_rate" property="taxRate" jdbcType="VARCHAR" />
+    <result column="loan_amt" property="loanAmt" jdbcType="VARCHAR" />
+    <result column="loan_status" property="loanStatus" jdbcType="VARCHAR" />
+    <result column="withdraw_time" property="withdrawTime" jdbcType="TIMESTAMP" />
+    <result column="loan_time" property="loanTime" jdbcType="TIMESTAMP" />
+    <result column="settle_time" property="settleTime" jdbcType="TIMESTAMP" />
+    <result column="settle_url" property="settleUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,appr_id,bank_code,bank_card,withdraw_amt,tax_amt,tax_rate,loan_amt,loan_status,withdraw_time,loan_time,settle_time,settle_url
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_redbag_withdraw_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_redbag_withdraw_order
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_redbag_withdraw_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.model.AppRedBagWithdrawOrder" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_redbag_withdraw_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="bankCode != null" >
+        bank_code,
+      </if>
+      <if test="bankCard != null" >
+        bank_card,
+      </if>
+      <if test="withdrawAmt != null" >
+        withdraw_amt,
+      </if>
+      <if test="taxAmt != null" >
+        tax_amt,
+      </if>
+      <if test="taxRate != null" >
+        tax_rate,
+      </if>
+      <if test="loanAmt != null" >
+        loan_amt,
+      </if>
+      <if test="loanStatus != null" >
+        loan_status,
+      </if>
+      <if test="withdrawTime != null" >
+        withdraw_time,
+      </if>
+      <if test="loanTime != null" >
+        loan_time,
+      </if>
+      <if test="settleTime != null" >
+        settle_time,
+      </if>
+      <if test="settleUrl != null" >
+        settle_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawAmt != null" >
+        #{withdrawAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="taxAmt != null" >
+        #{taxAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAmt != null" >
+        #{loanAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="loanStatus != null" >
+        #{loanStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawTime != null" >
+        #{withdrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanTime != null" >
+        #{loanTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleTime != null" >
+        #{settleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleUrl != null" >
+        #{settleUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppRedBagWithdrawOrder" >
+    update app_redbag_withdraw_order
+    <set >
+      <if test="bankCode != null" >
+        bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null" >
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawAmt != null" >
+        withdraw_amt = #{withdrawAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="taxAmt != null" >
+        tax_amt = #{taxAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRate != null" >
+        tax_rate = #{taxRate,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAmt != null" >
+        loan_amt = #{loanAmt,jdbcType=VARCHAR},
+      </if>
+      <if test="loanStatus != null" >
+        loan_status = #{loanStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawTime != null" >
+        withdraw_time = #{withdrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanTime != null" >
+        loan_time = #{loanTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleTime != null" >
+        settle_time = #{settleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleUrl != null" >
+        settle_url = #{settleUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

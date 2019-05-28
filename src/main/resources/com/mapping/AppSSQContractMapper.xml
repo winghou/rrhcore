@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppSSQContractMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppSSQContract" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="withdraw_id" property="withdrawId" jdbcType="INTEGER" />
+    <result column="contract_id" property="contractId" jdbcType="VARCHAR" />
+    <result column="contract_url" property="contractUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="view_time" property="viewTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="sign_status" property="signStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, appr_id, withdraw_id, contract_id, contract_url, create_time, view_time, type, download_url, sign_status
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_shangshangqian_contract
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByContractIdAndType" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_shangshangqian_contract
+    where contract_id = #{contractId,jdbcType=VARCHAR} and type = #{type,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByApprIdAndType" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_shangshangqian_contract
+    where appr_id = #{apprId,jdbcType=INTEGER} and type = #{type,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByWithdrawIdAndType" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_shangshangqian_contract
+    where withdraw_id = #{withdrawId,jdbcType=INTEGER} and type = #{type,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.model.AppSSQContract" >
+    insert into app_shangshangqian_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="withdrawId != null" >
+        withdraw_id,
+      </if>
+      <if test="contractId != null" >
+        contract_id,
+      </if>
+      <if test="contractUrl != null" >
+        contract_url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="viewTime != null" >
+        view_time,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="downloadUrl != null" >
+        download_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawId != null" >
+        #{withdrawId,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null" >
+        #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractUrl != null" >
+        #{contractUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="viewTime != null" >
+        #{viewTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppSSQContract" >
+    update app_shangshangqian_contract
+    <set >
+      <if test="contractId != null" >
+        contract_id = #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractUrl != null" >
+        contract_url = #{contractUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="viewTime != null" >
+        view_time = #{viewTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="downloadUrl != null" >
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="signStatus != null" >
+        sign_status = #{signStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

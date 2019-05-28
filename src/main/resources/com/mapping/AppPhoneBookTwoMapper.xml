@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppPhoneBookTwoMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppPhoneBookTwo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="phone_name" property="phoneName" jdbcType="VARCHAR" />
+    <result column="loanPhone" property="loanphone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, appr_id, phone_name, loanPhone
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_phone_book_two
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByapprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_phone_book_two
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_phone_book_two
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppPhoneBookTwo" >
+    insert into app_phone_book_two (id, appr_id, phone_name, 
+      loanPhone)
+    values (#{id,jdbcType=INTEGER}, #{apprId,jdbcType=INTEGER}, #{phoneName,jdbcType=VARCHAR}, 
+      #{loanphone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertListAppPhoneBook" useGeneratedKeys="true" parameterType="java.util.List">  
+    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+        SELECT  
+        LAST_INSERT_ID()  
+    </selectKey>  
+    insert into app_phone_book_two ( appr_id, phone_name, 
+      loanPhone) values 
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.apprId,jdbcType=INTEGER}, #{item.phoneName,jdbcType=VARCHAR}, 
+      #{item.loanphone,jdbcType=VARCHAR}) 
+    </foreach>  
+</insert>
+  <insert id="insertSelective" parameterType="com.model.AppPhoneBookTwo" >
+    insert into app_phone_book_two
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="phoneName != null" >
+        phone_name,
+      </if>
+      <if test="loanphone != null" >
+        loanPhone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="phoneName != null" >
+        #{phoneName,jdbcType=VARCHAR},
+      </if>
+      <if test="loanphone != null" >
+        #{loanphone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppPhoneBookTwo" >
+    update app_phone_book_two
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="phoneName != null" >
+        phone_name = #{phoneName,jdbcType=VARCHAR},
+      </if>
+      <if test="loanphone != null" >
+        loanPhone = #{loanphone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppPhoneBookTwo" >
+    update app_phone_book_two
+    set appr_id = #{apprId,jdbcType=INTEGER},
+      phone_name = #{phoneName,jdbcType=VARCHAR},
+      loanPhone = #{loanphone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

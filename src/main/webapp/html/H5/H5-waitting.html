@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>付款倒数秒计时器</title>
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/util.js"></script>
+<script type="text/javascript" src="../../js/time_js.js"></script>
+<script type="text/javascript" src="../../js/AESUtil.js"></script>
+<link type="text/css" rel="stylesheet" href="../../css/time_css.css" />
+<link type="text/css" rel="stylesheet" href="../../css/common.css" />
+</head>
+<body>
+<div class="game_time">
+	<div class="hold">
+		<div class="pie pie1"></div>
+	</div>
+	<div class="hold">
+		<div class="pie pie2"></div>
+	</div>
+	<div class="bg"></div>
+	<div class="time"></div>
+</div>
+<div class='bottom'>
+<div class='wait'>正在等待处理结果，请稍后...</div>
+<div class='tip'>温馨提示：结果返回前，请勿重复支付</div>
+</div>
+<script type="text/javascript">
+ countDown(); 
+ </script>
+</body>
+
+</html>

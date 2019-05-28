@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppPostboxMapper">
+	<resultMap id="BaseResultMap" type="com.model.AppPostbox">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="postboxurl" property="postboxurl" jdbcType="VARCHAR" />
+		<result column="postboxname" property="postboxname" jdbcType="VARCHAR" />
+		<result column="postboxtype" property="postboxtype" jdbcType="INTEGER" />
+		<result column="postboxImg" property="postboxImg" jdbcType="VARCHAR" />
+		<result column="loginSuccess" property="loginSuccess" jdbcType="VARCHAR" />
+		<result column="html" property="html" jdbcType="VARCHAR" />
+		<result column="agent" property="agent" jdbcType="VARCHAR" />
+		<result column="postboxalias" property="postboxalias" jdbcType="VARCHAR" />
+		
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, postboxurl, postboxname, postboxtype, postboxImg,loginSuccess,html,agent,postboxalias
+	</sql>
+
+	<select id="selectPostboxList" resultType="com.model.AppPostbox">
+		select
+		<include refid="Base_Column_List" />
+		from app_postbox_list order by postboxtype
+	</select>
+
+<select id="selectappPostboxType" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from app_postbox_list
+		where postboxtype=#{postboxtype,jdbcType=INTEGER}
+	</select>
+
+
+
+
+</mapper>

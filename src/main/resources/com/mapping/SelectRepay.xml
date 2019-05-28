@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IfmBaseDictMappper">
+	<select id="selectWebsite" resultType="java.util.Map" >
+		SELECT
+			ITEM_VALUE
+		FROM
+			IFM_BASE_DICT
+		WHERE
+			DATA_TYPE = 'OUT_WEB_SMS'
+	</select>
+	
+	<select id="selectNotwithDrawId" resultType="java.util.Map" >
+		select a.id apprId,u.userId,w.id withDrawId from app_withdraw_appl w
+		join app_loan_appl a on a.id=w.appr_id 
+		join ifm_sys_user u on a.item_code =u.user_name
+ 		where w.id not in (
+		select t1.id from app_loan_appl t
+		join app_withdraw_appl t1 on t.id=t1.appr_id
+  		join app_order_appl t2 on t1.id=t2.withDraw_id )
+	</select>
+</mapper>

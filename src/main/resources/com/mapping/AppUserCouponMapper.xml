@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppUserCouponMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppUserCoupon" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="coupon_id" property="couponId" jdbcType="INTEGER" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, appr_id, coupon_id, creat_time, status, start_date, end_date
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_user_coupon
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询用户所有优惠券 -->
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_user_coupon
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询用户不同状态的优惠券 -->
+  <select id="selectByApprIdAndStatus" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_user_coupon
+    where appr_id = #{apprId} and status = #{status} order by end_date
+  </select>
+  
+  <!-- 查询用户不同状态的有效的优惠券 -->
+  <select id="selectEffectiveByApprIdAndStatus" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_user_coupon
+    where appr_id = #{apprId} and status = #{status} and DATE_FORMAT(NOW(), '%Y-%m-%d') BETWEEN DATE_FORMAT(start_date, '%Y-%m-%d') AND DATE_FORMAT(end_date, '%Y-%m-%d') order by end_date
+  </select>
+  
+  <!-- 查询appr_id和coupon_id查询优惠券 -->
+  <select id="selectByApprIdAndCouponId" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_user_coupon
+    where appr_id = #{apprId} and coupon_id = #{couponId}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_user_coupon
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.model.AppUserCoupon" >
+	insert into app_user_coupon (
+		id, appr_id, coupon_id, creat_time, status, start_date, end_date)
+	values (
+		#{id,jdbcType=INTEGER}, 
+		#{apprId,jdbcType=INTEGER},
+		#{couponId,jdbcType=INTEGER},
+		#{creatTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=VARCHAR}
+		#{startDate,jdbcType=TIMESTAMP}
+		#{endDate,jdbcType=TIMESTAMP}
+		)
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.model.AppUserCoupon" useGeneratedKeys="true" keyProperty="id">
+    insert into app_user_coupon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="creatTime != null" >
+        creat_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER}, 
+      </if>
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppUserCoupon" >
+    update app_user_coupon
+    <set >
+      <if test="apprId != null" >
+        appr_id = #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null" >
+        coupon_id = #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.model.AppUserCoupon" >
+    update app_user_coupon
+    set 
+    	appr_id = #{apprId,jdbcType=INTEGER},
+      	coupon_id = #{couponId,jdbcType=INTEGER},
+      	status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

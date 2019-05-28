@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppEbAddressMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppEbAddress" >
+    <id column="address_id" property="addressId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="eb_from" property="ebFrom" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+    <result column="revice_name" property="reviceName" jdbcType="VARCHAR" />
+    <result column="revice_phone" property="revicePhone" jdbcType="VARCHAR" />
+    <result column="revice_tel" property="reviceTel" jdbcType="VARCHAR" />
+    <result column="query_date" property="queryDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    address_id, user_id, eb_from, address, zipcode, revice_name, revice_phone, revice_tel, 
+    query_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_eb_address
+    where address_id = #{addressId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_eb_address
+    where address_id = #{addressId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.model.AppEbAddress" >
+    insert into app_eb_address (address_id, user_id, eb_from, 
+      address, zipcode, revice_name, 
+      revice_phone, revice_tel, query_date
+      )
+    values (#{addressId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{ebFrom,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}, #{reviceName,jdbcType=VARCHAR}, 
+      #{revicePhone,jdbcType=VARCHAR}, #{reviceTel,jdbcType=VARCHAR}, #{queryDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.model.AppEbAddress" >
+    insert into app_eb_address
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="addressId != null" >
+        address_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="ebFrom != null" >
+        eb_from,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="zipcode != null" >
+        zipcode,
+      </if>
+      <if test="reviceName != null" >
+        revice_name,
+      </if>
+      <if test="revicePhone != null" >
+        revice_phone,
+      </if>
+      <if test="reviceTel != null" >
+        revice_tel,
+      </if>
+      <if test="queryDate != null" >
+        query_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="addressId != null" >
+        #{addressId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="ebFrom != null" >
+        #{ebFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="reviceName != null" >
+        #{reviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="revicePhone != null" >
+        #{revicePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="reviceTel != null" >
+        #{reviceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="queryDate != null" >
+        #{queryDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppEbAddress" >
+    update app_eb_address
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="ebFrom != null" >
+        eb_from = #{ebFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        zipcode = #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="reviceName != null" >
+        revice_name = #{reviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="revicePhone != null" >
+        revice_phone = #{revicePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="reviceTel != null" >
+        revice_tel = #{reviceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="queryDate != null" >
+        query_date = #{queryDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where address_id = #{addressId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.model.AppEbAddress" >
+    update app_eb_address
+    set user_id = #{userId,jdbcType=VARCHAR},
+      eb_from = #{ebFrom,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      zipcode = #{zipcode,jdbcType=VARCHAR},
+      revice_name = #{reviceName,jdbcType=VARCHAR},
+      revice_phone = #{revicePhone,jdbcType=VARCHAR},
+      revice_tel = #{reviceTel,jdbcType=VARCHAR},
+      query_date = #{queryDate,jdbcType=TIMESTAMP}
+    where address_id = #{addressId,jdbcType=INTEGER}
+  </update>
+</mapper>

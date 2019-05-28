@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>订单消息</title>
+<link rel="stylesheet" type="text/css" href="../../css/common.css"></link>
+<link rel="stylesheet" type="text/css" href="../../css/H5-orderStatus.css"></link>
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/H5-orderStatus.js"></script>
+<script type="text/javascript" src="../../js/AESUtil.js"></script>
+</head>
+<body>
+<div class="main">
+   <div class="top">
+	   <div>
+		  
+		   <div class='orderAccount'>订单编号：</div>
+	   </div>
+	   <div class='loanMoney'>借款金额：</div>
+   </div>
+   <div class='middle'>
+   <div class='middleTitle'>订单状态</div>
+   <table class='statusTable' cellpadding="0" cellspacing="0" >
+   	<tr>
+   		<td> <img src='../images/H5-step1-1.png' class='statusImage step3'></td>
+   		<td class="status" style="vertical-align: top;">放款中</td>
+   		</tr>
+   		<tr>
+   		<td> <img src='../images/H5-step2-2.png' class='statusImage step2' style='    margin-top: -4px;'></td>
+   		<td class="status">订单处理中</td>
+   		</tr>
+   		<tr>
+   		<td> <img src='../images/H5-step3-2.png' class='statusImage step1' style='    margin-top: -4px;'></td>
+   		<td class="status" style="vertical-align: bottom;">订单提交</td>
+   	</tr>
+   </table>
+   <div class='tips'>Tip;从借款申请到放款平均需要8小时</div>
+   </div>
+   <div class='sureBtn'>返回首页</div>
+</div>
+</body>
+</html>

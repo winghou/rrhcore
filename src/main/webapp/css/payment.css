@@ -1,0 +1,189 @@
+@CHARSET "UTF-8";
+
+html, body {
+	margin: 0px;
+	background: #f1f1f1;
+}
+
+.main {
+	background: #f1f1f1;
+	padding-top: 5px;
+}
+
+.top {
+	background: #fff;
+	padding: 20px 0px;
+	padding-left: 7%;
+	line-height: 35px;
+	font-size: 18px;
+	color: #999999;
+}
+
+.moneyNum {
+	color: red
+}
+
+.title {
+	padding: 20px 0;
+	font-size: 18px;
+	color: #999999;
+	padding-left: 7%;
+}
+
+.returnWays {
+	background: #fff;
+}
+
+.payLogo {
+	width: 45px;
+}
+
+.turnright {
+	width: 10px;
+}
+
+.line1 {
+	width: 20%;
+	text-align: center
+}
+
+.line2 {
+	width: 80%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.line3 {
+	width: 10%;
+}
+
+.way {
+	padding: 10px 0px;
+	border-bottom: solid 1px #f3f3f3;
+	font-size: 16px;
+	color: #999999;
+	width: 100%;
+}
+
+.line {
+	width: 60%;
+}
+
+.tip {
+	padding: 7%;
+	color: #999999;
+	line-height: 1.5;
+	font-size: 15px;
+}
+
+.idea {
+	color: red;
+}
+
+.mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	bottom: 0px;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 1000;
+}
+
+.mask2 {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	bottom: 0px;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 1000;
+}
+
+.shpwPanel {
+	width: 80%;
+	margin-left: 10%;
+	background: #fff;
+	margin-top: 50%;
+	height: 290px;
+	border-radius: 5px;
+}
+
+.shpwPanel2 {
+	width: 70%;
+	margin-left: 16%;
+	background: #f5f5f5;
+	margin-top: 50%;
+	height: 170px;
+	border-radius: 10px;
+	position: relative;
+}
+
+.shpwPaneltitle {
+	padding: 15px;
+	font-size: 20px;
+	color: #333333;
+	text-align: center;
+	padding-top: 38px;
+}
+
+.shpwPaneltitle2 {
+	padding: 15px;
+	font-size: 17px;
+	color: #333333;
+	text-align: center;
+	padding-top: 17px;
+}
+
+.shpwPanelcontent {
+	color: #666666;
+	font-size: 15px;
+	line-height: 1.5;
+	width: 80%;
+	margin-left: 10%;
+}
+
+.showPanelsureBtn {
+	
+}
+
+.contentline {
+	
+}
+
+.contentline {
+	
+}
+
+.shpwPanelsureBtn {
+	margin-top: 40px;
+	width: 60%;
+	margin-left: 20%;
+	text-align: center;
+	background: #E284D2;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 35px;
+	color: #fff;
+}
+
+.turnrightfirst {
+	position: absolute;
+	width: 10px;
+	right: 10%;
+	top: 19px;
+}
+
+.btnTable {
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	color: #147ff1;
+	width: 100%;
+	border-top: solid 1px #e6e5e5;
+	height: 45px;
+}
+.cancelBtn{
+	    height: 44px;
+    line-height: 44px;
+    border-right: solid 1px #e6e5e5;
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AppLotteryCalculateMapper" >
+  <resultMap id="BaseResultMap" type="com.model.AppLotteryCalculate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appr_id" property="apprId" jdbcType="INTEGER" />
+    <result column="total_num" property="totalNum" jdbcType="INTEGER" />
+    <result column="remaining_num" property="remainingNum" jdbcType="INTEGER" />
+    <result column="consumed_num" property="consumedNum" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,appr_id,total_num,remaining_num,consumed_num,status
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_lottery_calculate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByApprId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_lottery_calculate
+    where appr_id = #{apprId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_lottery_calculate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.model.AppLotteryCalculate" useGeneratedKeys="true" keyProperty="id" >
+    insert into app_lottery_calculate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        appr_id,
+      </if>
+      <if test="totalNum != null" >
+        total_num,
+      </if>
+      <if test="remainingNum != null" >
+        remaining_num,
+      </if>
+      <if test="consumedNum != null" >
+        consumed_num,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="apprId != null" >
+        #{apprId,jdbcType=INTEGER},
+      </if>
+      <if test="totalNum != null" >
+        #{totalNum,jdbcType=INTEGER},
+      </if>
+      <if test="remainingNum != null" >
+        #{remainingNum,jdbcType=INTEGER},
+      </if>
+      <if test="consumedNum != null" >
+        #{consumedNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.model.AppLotteryCalculate" >
+    update app_lottery_calculate
+    <set >
+      <if test="totalNum != null" >
+        total_num = #{totalNum,jdbcType=INTEGER},
+      </if>
+      <if test="remainingNum != null" >
+        remaining_num = #{remainingNum,jdbcType=INTEGER},
+      </if>
+      <if test="consumedNum != null" >
+        consumed_num = #{consumedNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>
