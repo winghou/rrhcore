@@ -244,8 +244,9 @@ public class HttpClientUtil {
 	  void main1() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("id","110");
-		//String s = doPostJson("http://www.ganhaw.club:8081/find2",jsonObject.toString());
-		String s = doPostJson("http://www.ganhaw.club:8081/find2",new JSONObject().toString());
+		System.out.println(jsonObject.toString());
+		String s = doPostJson("http://127.0.0.1:8081/find2",jsonObject.toString());
+		//String s = doPostJson("http://www.ganhaw.club:8081/find2",new JSONObject().toString());
 		//String s = doPost("http://www.ganhaw.club:8081/find2");
 		System.out.println(s);
 		JSONObject jsonObject1 = JSONObject.parseObject(s);
@@ -256,7 +257,7 @@ public class HttpClientUtil {
 		HashMap<String, String> map = new HashMap<>();
 		map.put("id","011");
 		String s = doPost("http://127.0.0.1:8081/find3", map);
-		//String s = doPost("https://www.baidu.com");
+		//String s = doPost("https://www.2345.com/");
 		System.out.println(s);
 		//{"id":"011","name":null,"age":null}
 
